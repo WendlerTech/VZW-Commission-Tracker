@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QuickAdds"
+    tools:layout_editor_absoluteY="81dp">
+
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="25dp"
+        android:text="Submit Quick Adds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl3" />
+
+    <TextView
+        android:id="@+id/tvTabletlbl3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Tablets, Jetpacks, Home Phones or HumX"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/tvTabletlbl2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Hum, Connected Devices"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/button11"
+        app:layout_constraintEnd_toStartOf="@+id/button11"
+        app:layout_constraintStart_toEndOf="@+id/button9" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/button10"
+        app:layout_constraintEnd_toStartOf="@+id/button10"
+        app:layout_constraintStart_toEndOf="@+id/button8" />
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="18dp"
+        android:text="+"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl2" />
+
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="18dp"
+        android:text="+"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl" />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="18dp"
+        android:text="-"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/button11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl2" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="18dp"
+        android:text="-"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/button10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl" />
+
+    <TextView
+        android:id="@+id/tvTabletlbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="$89.99 Bundles"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/button7"
+        app:layout_constraintEnd_toStartOf="@+id/button7"
+        app:layout_constraintStart_toEndOf="@+id/button6" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="18dp"
+        android:text="-"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/button7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="18dp"
+        android:text="+"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Upgrade Phones"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblUpgPhones" />
+
+    <TextView
+        android:id="@+id/lblUpgPhones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusUpgPhone"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlusUpgPhone"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toEndOf="@+id/btnMinusUpgPhone" />
+
+    <Button
+        android:id="@+id/btnMinusUpgPhone"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="18dp"
+        android:text="-"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusUpgPhone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/btnPlusUpgPhone"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="18dp"
+        android:text="+"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/btnPlusNewPhone"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="18dp"
+        android:text="+"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="Quick Adds"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="New Line Phones"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblNewPhones" />
+
+    <TextView
+        android:id="@+id/lblNewPhones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusNewPhone"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlusNewPhone"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toEndOf="@+id/btnMinusNewPhone" />
+
+    <Button
+        android:id="@+id/btnMinusNewPhone"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="18dp"
+        android:text="-"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusNewPhone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+</android.support.constraint.ConstraintLayout>

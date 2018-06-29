@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_quick_adds"
+        android:icon="@drawable/ic_quick"
+        android:title="@string/title_quick"/>
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_new_trans"
+        android:title="@string/title_new_trans"/>
+
+    <item
+        android:id="@+id/navigation_totals"
+        android:icon="@drawable/ic_totals"
+        android:title="@string/title_totals"/>
+
+</menu>

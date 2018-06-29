@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:context=".NewTransaction"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:layout_editor_absoluteY="81dp">
+
+        <EditText
+            android:id="@+id/txtTablets"
+            android:layout_width="318dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <EditText
+            android:id="@+id/txtNewPhones"
+            android:layout_width="147dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="0"
+            android:inputType="number"
+            app:layout_constraintEnd_toStartOf="@+id/txtUpgPhones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
+        <EditText
+            android:id="@+id/txtUpgPhones"
+            android:layout_width="147dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="0"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="New Phones"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtNewPhones"
+            app:layout_constraintTop_toBottomOf="@+id/txtNewPhones" />
+
+        <TextView
+            android:id="@+id/lblTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="New Transaction"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Upgrade Phones"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtUpgPhones"
+            app:layout_constraintTop_toBottomOf="@+id/txtUpgPhones" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tablets, Jetpacks, Home Phone or HumX"
+            android:textColor="#616A6B"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTablets" />
+
+        <EditText
+            android:id="@+id/txtConnectedDev"
+            android:layout_width="318dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hum, Connected Devices"
+            android:textColor="#616A6B"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtConnectedDev" />
+
+        <EditText
+            android:id="@+id/txtTMP"
+            android:layout_width="149dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="26dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:inputType="number"
+            app:layout_constraintEnd_toStartOf="@+id/chkMultiTMP"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <CheckBox
+            android:id="@+id/chkMultiTMP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="33dp"
+            android:text="Multi-Device TMP"
+            android:textColor="#616A6B"
+            app:layout_constraintBottom_toBottomOf="@+id/txtTMP"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/txtRevenue"
+            android:layout_width="318dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <TextView
+            android:id="@+id/lblBucketLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="Total toward bucket this transaction:"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="New TMP"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtTMP"
+            app:layout_constraintTop_toBottomOf="@+id/txtTMP" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Total Revenue"
+            android:textColor="#616A6B"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtRevenue" />
+
+        <TextView
+            android:id="@+id/lblTotalBucket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="$0.00"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblBucketLabel" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="41dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:text="Submit Transaction"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTotalBucket" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

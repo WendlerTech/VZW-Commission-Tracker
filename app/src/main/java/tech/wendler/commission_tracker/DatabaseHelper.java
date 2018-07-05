@@ -28,13 +28,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 + " DATE, " +
+                COL2 + " TEXT, " +
                 COL3 + " INTEGER, " +
                 COL4 + " INTEGER, " +
                 COL5 + " INTEGER, " +
                 COL6 + " INTEGER, " +
                 COL7 + " INTEGER, " +
-                COL8 + " INTEGER, " +
+                COL8 + " BOOLEAN, " +
                 COL9 + " DOUBLE, " +
                 COL10 + " DOUBLE);";
         db.execSQL(createTable);
@@ -42,12 +42,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-     //   db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
-    public boolean addData(long date, int newPhones, int upgPhones, int tablets,
-                           int CD, int tmp, int multiTMP, double rev, double salesBucket) {
+    public boolean addData(String date, int newPhones, int upgPhones, int tablets,
+                           int CD, int tmp, boolean multiTMP, double rev, double salesBucket) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2, date);

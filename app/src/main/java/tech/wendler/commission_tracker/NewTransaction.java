@@ -7,12 +7,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class NewTransaction extends Fragment {
 
@@ -25,11 +28,17 @@ public class NewTransaction extends Fragment {
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev;
     private TextView lblBucketTotal;
     private CheckBox chkMultiTMP;
+    private Button btnSubmit;
     private double totalBucketAchieved = 0;
     private double tabletBucketAmt = 0, connectedBucketAmt = 0,
             singleTMPBucketAmt = 0, multiTMPBucketAmt = 0, revBucketAmt = 0;
+    private int totalNewPhones = 0, totalUpgPhones = 0, totalTablets = 0, totalConnected = 0,
+            totalTMP = 0;
+    private boolean newMultiTMP = false;
+    private double totalRev = 0;
 
     NumberFormat format = NumberFormat.getCurrencyInstance();
+    private DatabaseHelper databaseHelper;
 
     public NewTransaction() {
         // Required empty public constructor
@@ -55,14 +64,16 @@ public class NewTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        txtNewPhone = (EditText) getView().findViewById(R.id.txtNewPhones);
-        txtUpgPhone = (EditText) getView().findViewById(R.id.txtUpgPhones);
-        txtTablet = (EditText) getView().findViewById(R.id.txtTablets);
-        txtConnected = (EditText) getView().findViewById(R.id.txtConnectedDev);
-        txtTMP = (EditText) getView().findViewById(R.id.txtTMP);
-        txtRev = (EditText) getView().findViewById(R.id.txtRevenue);
-        chkMultiTMP = (CheckBox) getView().findViewById(R.id.chkMultiTMP);
-        lblBucketTotal = (TextView) getView().findViewById(R.id.lblTotalBucket);
+        databaseHelper = new DatabaseHelper(getActivity());
+        txtNewPhone =  getView().findViewById(R.id.txtNewPhones);
+        txtUpgPhone =  getView().findViewById(R.id.txtUpgPhones);
+        txtTablet =  getView().findViewById(R.id.txtTablets);
+        txtConnected =  getView().findViewById(R.id.txtConnectedDev);
+        txtTMP =  getView().findViewById(R.id.txtTMP);
+        txtRev = getView().findViewById(R.id.txtRevenue);
+        chkMultiTMP =  getView().findViewById(R.id.chkMultiTMP);
+        lblBucketTotal =  getView().findViewById(R.id.lblTotalBucket);
+        btnSubmit =  getView().findViewById(R.id.btnSubmit);
 
     //TextWatcher listeners update the bucket total label in real time
         txtTablet.addTextChangedListener(new TextWatcher() {
@@ -73,7 +84,8 @@ public class NewTransaction extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtTablet.getText().toString().length() > 0) {
-                    tabletBucketAmt = (Integer.parseInt(txtTablet.getText().toString()) * TABLET_ASSUMED_VALUE);
+                    totalTablets = Integer.parseInt(txtTablet.getText().toString());
+                    tabletBucketAmt = totalTablets * TABLET_ASSUMED_VALUE;
                     updateBucketTotalLabel();
                 }
             }
@@ -82,6 +94,7 @@ public class NewTransaction extends Fragment {
                 //Updates label if user deletes their entry
                 if (txtTablet.getText().toString().length() == 0) {
                     tabletBucketAmt = 0;
+                    totalTablets = 0;
                     updateBucketTotalLabel();
                 }
             }
@@ -95,7 +108,8 @@ public class NewTransaction extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtConnected.getText().toString().length() > 0) {
-                    connectedBucketAmt = (Integer.parseInt(txtConnected.getText().toString()) * CONNECTED_ASSUMED_VALUE);
+                    totalConnected = Integer.parseInt(txtConnected.getText().toString());
+                    connectedBucketAmt = (totalConnected * CONNECTED_ASSUMED_VALUE);
                     updateBucketTotalLabel();
                 }
             }
@@ -104,6 +118,7 @@ public class NewTransaction extends Fragment {
                 //Updates label if user deletes their entry
                 if (txtConnected.getText().toString().length() == 0) {
                     connectedBucketAmt = 0;
+                    totalConnected = 0;
                     updateBucketTotalLabel();
                 }
             }
@@ -117,7 +132,8 @@ public class NewTransaction extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtTMP.getText().toString().length() > 0) {
-                    singleTMPBucketAmt = (Integer.parseInt(txtTMP.getText().toString()) * SINGLE_TMP_ASSUMED_VALUE);
+                    totalTMP = Integer.parseInt(txtTMP.getText().toString());
+                    singleTMPBucketAmt = (totalTMP * SINGLE_TMP_ASSUMED_VALUE);
                     updateBucketTotalLabel();
                 }
             }
@@ -126,6 +142,7 @@ public class NewTransaction extends Fragment {
                 //Updates label if user deletes their entry
                 if (txtTMP.getText().toString().length() == 0) {
                     singleTMPBucketAmt = 0;
+                    totalTMP = 0;
                     updateBucketTotalLabel();
                 }
             }
@@ -139,7 +156,8 @@ public class NewTransaction extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtRev.getText().toString().length() > 0) {
-                    revBucketAmt = (Integer.parseInt(txtRev.getText().toString()) * REVENUE_ASSUMED_VALUE);
+                    totalRev = Double.parseDouble(txtRev.getText().toString());
+                    revBucketAmt = (totalRev * REVENUE_ASSUMED_VALUE);
                     updateBucketTotalLabel();
                 }
             }
@@ -148,6 +166,7 @@ public class NewTransaction extends Fragment {
                 //Updates label if user deletes their entry
                 if (txtRev.getText().toString().length() == 0) {
                     revBucketAmt = 0;
+                    totalRev = 0;
                     updateBucketTotalLabel();
                 }
             }
@@ -160,14 +179,28 @@ public class NewTransaction extends Fragment {
                     txtTMP.setText("");
                     txtTMP.setEnabled(false);
                     singleTMPBucketAmt = 0;
+                    totalTMP = 0;
                     multiTMPBucketAmt = MULTI_TMP_ASSUMED_VALUE;
+                    newMultiTMP = true;
                     updateBucketTotalLabel();
                 } else {
                     txtTMP.setEnabled(true);
                     multiTMPBucketAmt = 0;
+                    newMultiTMP = false;
                     updateBucketTotalLabel();
                 }
 
+            }
+        });
+
+        //Submit button handles database transaction
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                totalNewPhones = Integer.parseInt(txtNewPhone.getText().toString());
+                totalUpgPhones = Integer.parseInt(txtUpgPhone.getText().toString());
+                databaseHelper.addData(currentTime(), totalNewPhones, totalUpgPhones, totalTablets,
+                        totalConnected, totalTMP, newMultiTMP, totalRev, totalBucketAchieved);
             }
         });
     }
@@ -177,5 +210,13 @@ public class NewTransaction extends Fragment {
                 + singleTMPBucketAmt + multiTMPBucketAmt + revBucketAmt;
 
         lblBucketTotal.setText(format.format(totalBucketAchieved));
+    }
+
+    public String currentTime() {
+        //Gets current date & formats it as such: Nov 23, 2015, 3:55 PM
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy, hh:mm a");
+        String date = simpleDateFormat.format(calendar.getTime());
+        return date;
     }
 }

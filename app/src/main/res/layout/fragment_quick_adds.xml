@@ -52,9 +52,9 @@
         android:layout_marginStart="8dp"
         android:text="0"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/button11"
-        app:layout_constraintEnd_toStartOf="@+id/button11"
-        app:layout_constraintStart_toEndOf="@+id/button9" />
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusTablet"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlusTablet"
+        app:layout_constraintStart_toEndOf="@+id/btnMinusTablet" />
 
     <TextView
         android:id="@+id/textView12"
@@ -64,12 +64,12 @@
         android:layout_marginStart="8dp"
         android:text="0"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/button10"
-        app:layout_constraintEnd_toStartOf="@+id/button10"
-        app:layout_constraintStart_toEndOf="@+id/button8" />
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusCD"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlusCD"
+        app:layout_constraintStart_toEndOf="@+id/btnMinusCD" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/btnPlusTablet"
         android:layout_width="43dp"
         android:layout_height="38dp"
         android:layout_marginEnd="93dp"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl2" />
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/btnPlusCD"
         android:layout_width="43dp"
         android:layout_height="38dp"
         android:layout_marginEnd="93dp"
@@ -91,26 +91,26 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/btnMinusTablet"
         android:layout_width="43dp"
         android:layout_height="38dp"
         android:layout_marginStart="93dp"
         android:layout_marginTop="18dp"
         android:text="-"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/button11"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusTablet"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl2" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/btnMinusCD"
         android:layout_width="43dp"
         android:layout_height="38dp"
         android:layout_marginStart="93dp"
         android:layout_marginTop="18dp"
         android:text="-"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/button10"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusCD"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTabletlbl" />
 
@@ -135,24 +135,24 @@
         android:layout_marginStart="8dp"
         android:text="0"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/button7"
-        app:layout_constraintEnd_toStartOf="@+id/button7"
-        app:layout_constraintStart_toEndOf="@+id/button6" />
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusBundle"
+        app:layout_constraintEnd_toStartOf="@+id/btnPlusBundle"
+        app:layout_constraintStart_toEndOf="@+id/btnMinusBundle" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/btnMinusBundle"
         android:layout_width="43dp"
         android:layout_height="38dp"
         android:layout_marginStart="93dp"
         android:layout_marginTop="18dp"
         android:text="-"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/button7"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPlusBundle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/btnPlusBundle"
         android:layout_width="43dp"
         android:layout_height="38dp"
         android:layout_marginEnd="93dp"

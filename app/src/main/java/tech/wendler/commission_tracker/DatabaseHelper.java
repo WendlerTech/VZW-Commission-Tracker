@@ -9,11 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private final static String TABLE_NAME = "Transactions";
-    private final static String COL1 = "transID";
-    private final static String COL2 = "date";
-    private final static String COL3 = "new_phones";
-    private final static String COL4 = "upgrade_phones";
-    private final static String COL5 = "tablets_etc";
+    private final static String COL0 = "transID";
+    private final static String COL1 = "date";
+    private final static String COL2 = "new_phones";
+    private final static String COL3 = "upgrade_phones";
+    private final static String COL4 = "tablets_etc";
+    private final static String COL5 = "hum";
     private final static String COL6 = "connected_devices_etc";
     private final static String COL7 = "new_tmp";
     private final static String COL8 = "new_multi_tmp";
@@ -27,8 +28,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 + " TEXT, " +
+                COL0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL1 + " TEXT, " +
+                COL2 + " INTEGER, " +
                 COL3 + " INTEGER, " +
                 COL4 + " INTEGER, " +
                 COL5 + " INTEGER, " +
@@ -46,14 +48,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String date, int newPhones, int upgPhones, int tablets,
+    public boolean addData(String date, int newPhones, int upgPhones, int tablets, int hum,
                            int CD, int tmp, boolean multiTMP, double rev, double salesBucket) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL2, date);
-        contentValues.put(COL3, newPhones);
-        contentValues.put(COL4, upgPhones);
-        contentValues.put(COL5, tablets);
+        contentValues.put(COL1, date);
+        contentValues.put(COL2, newPhones);
+        contentValues.put(COL3, upgPhones);
+        contentValues.put(COL4, tablets);
+        contentValues.put(COL5, hum);
         contentValues.put(COL6, CD);
         contentValues.put(COL7, tmp);
         contentValues.put(COL8, multiTMP);

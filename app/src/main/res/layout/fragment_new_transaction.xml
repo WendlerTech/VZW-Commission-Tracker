@@ -10,16 +10,42 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:context=".NewTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        tools:context=".NewTransaction"
         tools:layout_editor_absoluteY="81dp">
+
+        <TextView
+            android:id="@+id/lblHum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Hum+"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtHum"
+            app:layout_constraintTop_toBottomOf="@+id/txtHum" />
+
+        <EditText
+            android:id="@+id/txtHum"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:inputType="number"
+            android:nextFocusDown="@id/txtConnectedDev"
+            android:importantForAutofill="no"
+            app:layout_constraintEnd_toStartOf="@+id/txtConnectedDev"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTablets" />
 
         <EditText
             android:id="@+id/txtTablets"
-            android:layout_width="318dp"
+            android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginEnd="33dp"
             android:layout_marginStart="33dp"
@@ -27,38 +53,44 @@
             android:ems="10"
             android:hint="0"
             android:inputType="number"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/lblUpgPhones" />
 
         <EditText
             android:id="@+id/txtNewPhones"
-            android:layout_width="147dp"
+            android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="0"
             android:inputType="number"
+            android:nextFocusDown="@id/txtUpgPhones"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toStartOf="@+id/txtUpgPhones"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
 
         <EditText
             android:id="@+id/txtUpgPhones"
-            android:layout_width="147dp"
+            android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginEnd="33dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="0"
             android:inputType="number"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtNewPhones"
             app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/lblNewPhones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -81,7 +113,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/lblUpgPhones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -91,7 +123,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txtUpgPhones" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/lblTablets"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tablets, Jetpacks, Home Phone or HumX"
@@ -102,65 +134,71 @@
 
         <EditText
             android:id="@+id/txtConnectedDev"
-            android:layout_width="318dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
             android:layout_marginEnd="33dp"
-            android:layout_marginStart="33dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="0"
             android:inputType="number"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintStart_toEndOf="@+id/txtHum"
+            app:layout_constraintTop_toBottomOf="@+id/lblTablets" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/lblConnectedDev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hum, Connected Devices"
+            android:layout_marginStart="8dp"
+            android:text="Connected Devices"
             android:textColor="#616A6B"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtConnectedDev"
             app:layout_constraintTop_toBottomOf="@+id/txtConnectedDev" />
 
         <EditText
             android:id="@+id/txtTMP"
-            android:layout_width="149dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="26dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="0"
             android:inputType="number"
+            android:importantForAutofill="no"
             app:layout_constraintEnd_toStartOf="@+id/chkMultiTMP"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toBottomOf="@+id/lblHum" />
 
         <CheckBox
             android:id="@+id/chkMultiTMP"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="33dp"
+            android:layout_marginStart="12dp"
             android:text="Multi-Device TMP"
             android:textColor="#616A6B"
             app:layout_constraintBottom_toBottomOf="@+id/txtTMP"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtTMP" />
 
         <EditText
             android:id="@+id/txtRevenue"
-            android:layout_width="318dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
             android:layout_marginEnd="33dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="0.00"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
             android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+            app:layout_constraintTop_toBottomOf="@+id/lblTMP" />
 
         <TextView
             android:id="@+id/lblBucketLabel"
@@ -174,10 +212,10 @@
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@+id/lblRevenue" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/lblTMP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -187,7 +225,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txtTMP" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/lblRevenue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"

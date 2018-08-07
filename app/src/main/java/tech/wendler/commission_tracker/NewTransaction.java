@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -22,18 +23,19 @@ public class NewTransaction extends Fragment {
     final static double REVENUE_ASSUMED_VALUE = .35;
     final static int CONNECTED_ASSUMED_VALUE = 50;
     final static int SINGLE_TMP_ASSUMED_VALUE = 70;
+    final static int HUM_ASSUMED_VALUE = 100;
     final static int MULTI_TMP_ASSUMED_VALUE = 200;
     final static int TABLET_ASSUMED_VALUE = 200;
 
-    private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev;
+    private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal;
     private CheckBox chkMultiTMP;
     private Button btnSubmit;
     private double totalBucketAchieved = 0;
-    private double tabletBucketAmt = 0, connectedBucketAmt = 0,
+    private double tabletBucketAmt = 0, connectedBucketAmt = 0, humBucketAmt = 0,
             singleTMPBucketAmt = 0, multiTMPBucketAmt = 0, revBucketAmt = 0;
     private int totalNewPhones = 0, totalUpgPhones = 0, totalTablets = 0, totalConnected = 0,
-            totalTMP = 0;
+            totalHum = 0, totalTMP = 0;
     private boolean newMultiTMP = false;
     private double totalRev = 0;
 
@@ -68,6 +70,7 @@ public class NewTransaction extends Fragment {
         txtNewPhone =  getView().findViewById(R.id.txtNewPhones);
         txtUpgPhone =  getView().findViewById(R.id.txtUpgPhones);
         txtTablet =  getView().findViewById(R.id.txtTablets);
+        txtHum = getView().findViewById(R.id.txtHum);
         txtConnected =  getView().findViewById(R.id.txtConnectedDev);
         txtTMP =  getView().findViewById(R.id.txtTMP);
         txtRev = getView().findViewById(R.id.txtRevenue);
@@ -95,6 +98,32 @@ public class NewTransaction extends Fragment {
                 if (txtTablet.getText().toString().length() == 0) {
                     tabletBucketAmt = 0;
                     totalTablets = 0;
+                    updateBucketTotalLabel();
+                }
+            }
+        });
+
+        txtHum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (txtHum.getText().toString().length() > 0) {
+                    totalHum = Integer.parseInt(txtHum.getText().toString());
+                    humBucketAmt = (totalHum * HUM_ASSUMED_VALUE);
+                    updateBucketTotalLabel();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Updates label if user deletes their entry
+                if (txtHum.getText().toString().length() == 0) {
+                    humBucketAmt = 0;
+                    totalHum = 0;
                     updateBucketTotalLabel();
                 }
             }
@@ -197,16 +226,28 @@ public class NewTransaction extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalNewPhones = Integer.parseInt(txtNewPhone.getText().toString());
-                totalUpgPhones = Integer.parseInt(txtUpgPhone.getText().toString());
-                databaseHelper.addData(currentTime(), totalNewPhones, totalUpgPhones, totalTablets,
-                        totalConnected, totalTMP, newMultiTMP, totalRev, totalBucketAchieved);
+                if (txtNewPhone.getText().toString().length() > 0) {
+                    totalNewPhones = Integer.parseInt(txtNewPhone.getText().toString());
+                }
+                if (txtUpgPhone.getText().toString().length() > 0) {
+                    totalUpgPhones = Integer.parseInt(txtUpgPhone.getText().toString());
+                }
+
+                if (databaseHelper.addData(currentTime(), totalNewPhones, totalUpgPhones,
+                        totalTablets, totalHum, totalConnected, totalTMP, newMultiTMP,
+                        totalRev, totalBucketAchieved)) {
+                    Toast.makeText(getContext(), "Transaction successfully added to database.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Error while writing to the database.",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
     //Changes label to reflect updated bucket dollars earned
     public void updateBucketTotalLabel() {
-        totalBucketAchieved = tabletBucketAmt + connectedBucketAmt
+        totalBucketAchieved = tabletBucketAmt + connectedBucketAmt + humBucketAmt
                 + singleTMPBucketAmt + multiTMPBucketAmt + revBucketAmt;
 
         lblBucketTotal.setText(format.format(totalBucketAchieved));

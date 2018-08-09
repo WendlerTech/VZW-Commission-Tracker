@@ -66,6 +66,7 @@ public class NewTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         databaseHelper = new DatabaseHelper(getActivity());
         txtNewPhone =  getView().findViewById(R.id.txtNewPhones);
         txtUpgPhone =  getView().findViewById(R.id.txtUpgPhones);
@@ -254,9 +255,9 @@ public class NewTransaction extends Fragment {
     }
 
     public String currentTime() {
-        //Gets current date & formats it as such: Nov 23, 2015, 3:55 PM
+        //Gets current date & returns it as a string to be inserted into the database
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy, hh:mm a");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date = simpleDateFormat.format(calendar.getTime());
         return date;
     }

@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL1 + " TEXT, " +
+                COL1 + " DATETIME, " +
                 COL2 + " INTEGER, " +
                 COL3 + " INTEGER, " +
                 COL4 + " INTEGER, " +
@@ -72,10 +72,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getData() {
+    public Cursor getData(String queryString) {
+       // String[] selectArg = new String[]{};
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME;
-        Cursor data = db.rawQuery(query, null);
+        Cursor data = db.rawQuery(queryString, null);
         return data;
     }
 }

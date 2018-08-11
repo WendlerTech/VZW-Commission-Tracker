@@ -3,9 +3,9 @@
 
 
     <item
-        android:id="@+id/navigation_quick_adds"
-        android:icon="@drawable/ic_quick"
-        android:title="@string/title_quick"/>
+        android:id="@+id/navigation_monthly_totals"
+        android:icon="@drawable/ic_monthly_totals"
+        android:title="@string/title_monthly_totals"/>
 
     <item
         android:id="@+id/navigation_home"

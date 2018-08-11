@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_totals:
                         selectedFragment = Totals.newInstance();
                         break;
-                    case R.id.navigation_quick_adds:
-                        selectedFragment = QuickAdds.newInstance();
+                    case R.id.navigation_monthly_totals:
+                        selectedFragment = MonthlyTotals.newInstance();
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -2,6 +2,7 @@
     <string name="app_name">Commission Tracker</string>
     <string name="title_new_trans">New Transaction</string>
     <string name="title_quick">Quick Adds</string>
-    <string name="title_totals">Totals</string>
+    <string name="title_monthly_totals">Monthly Totals</string>
+    <string name="title_totals">Daily Totals</string>
 
 </resources>

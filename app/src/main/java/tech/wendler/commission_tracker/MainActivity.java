@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = NewTransaction.newInstance();
                         break;
                     case R.id.navigation_totals:
-                        selectedFragment = Totals.newInstance();
+                        selectedFragment = DailyTotals.newInstance();
                         break;
                     case R.id.navigation_monthly_totals:
                         selectedFragment = MonthlyTotals.newInstance();

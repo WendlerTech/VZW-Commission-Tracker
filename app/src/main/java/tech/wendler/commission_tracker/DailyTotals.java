@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -15,11 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class Totals extends Fragment {
+public class DailyTotals extends Fragment {
 
     private TextView txtDisplayDate;
     private TextView lblNewPhones, lblUpgPhones, lblTablets, lblAccessoryRev, lblHum,
     lblCD, lblNewTMP, lblMultiTMP, lblSalesDollars;
+    private Button btnEditTotals;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private DatabaseHelper databaseHelper;
 
@@ -27,12 +29,12 @@ public class Totals extends Fragment {
     connectedDeviceTotal = 0, newTMPTotal = 0, revenueTotal = 0, salesBucketTotal = 0;
     private int multiTMPTotal = 0;
 
-    public Totals() {
+    public DailyTotals() {
         // Required empty public constructor
     }
 
-    public static Totals newInstance() {
-        Totals fragment = new Totals();
+    public static DailyTotals newInstance() {
+        DailyTotals fragment = new DailyTotals();
         return fragment;
     }
 
@@ -45,7 +47,7 @@ public class Totals extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_totals, container, false);
+        return inflater.inflate(R.layout.fragment_daily_totals, container, false);
     }
 
     @Override
@@ -54,6 +56,8 @@ public class Totals extends Fragment {
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtDisplayDate = getView().findViewById(R.id.txtDatePicker);
+
+        btnEditTotals = getView().findViewById(R.id.btnEditDailyTotals);
 
         lblNewPhones = getView().findViewById(R.id.lblNewPhones);
         lblUpgPhones = getView().findViewById(R.id.lblUpgPhones);
@@ -98,6 +102,13 @@ public class Totals extends Fragment {
                 populateData(calendar);
             }
         };
+
+        btnEditTotals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     //Takes in calendar instance & returns a string formatted as such: Mon, November 23, '15

@@ -23,11 +23,11 @@
       android:layout_marginStart="8dp"
       android:text="Hum+"
       android:textColor="#616A6B"
-      app:layout_constraintStart_toStartOf="@+id/txtHum"
-      app:layout_constraintTop_toBottomOf="@+id/txtHum" />
+      app:layout_constraintStart_toStartOf="@+id/txtEditHum"
+      app:layout_constraintTop_toBottomOf="@+id/txtEditHum" />
 
   <EditText
-      android:id="@+id/txtHum"
+      android:id="@+id/txtEditHum"
       android:layout_width="0dp"
       android:layout_height="46dp"
       android:layout_marginEnd="12dp"
@@ -43,7 +43,7 @@
       app:layout_constraintTop_toBottomOf="@+id/lblTablets" />
 
   <EditText
-      android:id="@+id/txtTablets"
+      android:id="@+id/txtEditTablets"
       android:layout_width="0dp"
       android:layout_height="46dp"
       android:layout_marginEnd="33dp"
@@ -58,7 +58,7 @@
       app:layout_constraintTop_toBottomOf="@+id/lblUpgPhones" />
 
   <EditText
-      android:id="@+id/txtNewPhones"
+      android:id="@+id/txtEditNewPhones"
       android:layout_width="0dp"
       android:layout_height="46dp"
       android:layout_marginEnd="12dp"
@@ -68,13 +68,13 @@
       android:hint="0"
       android:importantForAutofill="no"
       android:inputType="number"
-      android:nextFocusDown="@id/txtUpgPhones"
-      app:layout_constraintEnd_toStartOf="@+id/txtUpgPhones"
+      android:nextFocusDown="@id/txtEditUpgPhones"
+      app:layout_constraintEnd_toStartOf="@+id/txtEditUpgPhones"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
 
   <EditText
-      android:id="@+id/txtUpgPhones"
+      android:id="@+id/txtEditUpgPhones"
       android:layout_width="0dp"
       android:layout_height="46dp"
       android:layout_marginEnd="33dp"
@@ -85,7 +85,7 @@
       android:importantForAutofill="no"
       android:inputType="number"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/txtNewPhones"
+      app:layout_constraintStart_toEndOf="@+id/txtEditNewPhones"
       app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
 
   <TextView
@@ -95,8 +95,8 @@
       android:layout_marginStart="8dp"
       android:text="New Phones"
       android:textColor="#616A6B"
-      app:layout_constraintStart_toStartOf="@+id/txtNewPhones"
-      app:layout_constraintTop_toBottomOf="@+id/txtNewPhones" />
+      app:layout_constraintStart_toStartOf="@+id/txtEditNewPhones"
+      app:layout_constraintTop_toBottomOf="@+id/txtEditNewPhones" />
 
   <TextView
       android:id="@+id/lblTitle"
@@ -118,8 +118,8 @@
       android:layout_marginStart="8dp"
       android:text="Upgrade Phones"
       android:textColor="#616A6B"
-      app:layout_constraintStart_toStartOf="@+id/txtUpgPhones"
-      app:layout_constraintTop_toBottomOf="@+id/txtUpgPhones" />
+      app:layout_constraintStart_toStartOf="@+id/txtEditUpgPhones"
+      app:layout_constraintTop_toBottomOf="@+id/txtEditUpgPhones" />
 
   <TextView
       android:id="@+id/lblTablets"
@@ -129,7 +129,7 @@
       android:textColor="#616A6B"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/txtTablets" />
+      app:layout_constraintTop_toBottomOf="@+id/txtEditTablets" />
 
   <EditText
       android:id="@+id/txtConnectedDev"
@@ -143,7 +143,7 @@
       android:importantForAutofill="no"
       android:inputType="number"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/txtHum"
+      app:layout_constraintStart_toEndOf="@+id/txtEditHum"
       app:layout_constraintTop_toBottomOf="@+id/lblTablets" />
 
   <TextView
@@ -157,7 +157,7 @@
       app:layout_constraintTop_toBottomOf="@+id/txtConnectedDev" />
 
   <EditText
-      android:id="@+id/txtTMP"
+      android:id="@+id/txtEditTMP"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginEnd="12dp"
@@ -179,9 +179,9 @@
       android:layout_marginStart="12dp"
       android:text="Multi-Device TMP"
       android:textColor="#616A6B"
-      app:layout_constraintBottom_toBottomOf="@+id/txtTMP"
+      app:layout_constraintBottom_toBottomOf="@+id/txtEditTMP"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/txtTMP" />
+      app:layout_constraintStart_toEndOf="@+id/txtEditTMP" />
 
   <EditText
       android:id="@+id/txtRevenue"
@@ -220,8 +220,8 @@
       android:layout_marginStart="8dp"
       android:text="New TMP"
       android:textColor="#616A6B"
-      app:layout_constraintStart_toStartOf="@+id/txtTMP"
-      app:layout_constraintTop_toBottomOf="@+id/txtTMP" />
+      app:layout_constraintStart_toStartOf="@+id/txtEditTMP"
+      app:layout_constraintTop_toBottomOf="@+id/txtEditTMP" />
 
   <TextView
       android:id="@+id/lblRevenue"

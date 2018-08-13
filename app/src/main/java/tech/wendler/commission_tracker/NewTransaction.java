@@ -68,12 +68,12 @@ public class NewTransaction extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         databaseHelper = new DatabaseHelper(getActivity());
-        txtNewPhone =  getView().findViewById(R.id.txtNewPhones);
-        txtUpgPhone =  getView().findViewById(R.id.txtUpgPhones);
-        txtTablet =  getView().findViewById(R.id.txtTablets);
-        txtHum = getView().findViewById(R.id.txtHum);
+        txtNewPhone =  getView().findViewById(R.id.txtEditNewPhones);
+        txtUpgPhone =  getView().findViewById(R.id.txtEditUpgPhones);
+        txtTablet =  getView().findViewById(R.id.txtEditTablets);
+        txtHum = getView().findViewById(R.id.txtEditHum);
         txtConnected =  getView().findViewById(R.id.txtConnectedDev);
-        txtTMP =  getView().findViewById(R.id.txtTMP);
+        txtTMP =  getView().findViewById(R.id.txtEditTMP);
         txtRev = getView().findViewById(R.id.txtRevenue);
         chkMultiTMP =  getView().findViewById(R.id.chkMultiTMP);
         lblBucketTotal =  getView().findViewById(R.id.lblTotalBucket);

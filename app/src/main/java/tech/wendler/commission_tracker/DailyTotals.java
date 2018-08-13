@@ -55,7 +55,7 @@ public class DailyTotals extends Fragment {
         super.onActivityCreated(savedInstance);
 
         databaseHelper = new DatabaseHelper(getActivity());
-        txtDisplayDate = getView().findViewById(R.id.txtDatePicker);
+        txtDisplayDate = getView().findViewById(R.id.lblSelectedDate);
 
         btnEditTotals = getView().findViewById(R.id.btnEditDailyTotals);
 

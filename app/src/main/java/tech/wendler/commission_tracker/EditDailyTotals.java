@@ -2,6 +2,7 @@ package tech.wendler.commission_tracker;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ public class EditDailyTotals extends Fragment {
     txtHum, txtCD, txtTMP, txtMultiTMP;
     private TextView lblEditSalesDollars, lblSelectedDate;
     private Button btnSaveEdits;
+    private int editedNewPhones, editedUpgPhones, editedTablets, editedHum,
+            editedCD, editedTMP, editedMultiTMP;
 
     public EditDailyTotals() {
 
@@ -38,7 +41,7 @@ public class EditDailyTotals extends Fragment {
     public void onActivityCreated(Bundle savedInstance) {
         super.onActivityCreated(savedInstance);
 
-        txtNewPhones = getView().findViewById(R.id.txtEditNewPhones);
+  /*      txtNewPhones = getView().findViewById(R.id.txtEditNewPhones);
         txtUpgPhones = getView().findViewById(R.id.txtEditUpgPhones);
         txtTablets = getView().findViewById(R.id.txtEditTablets);
         txtAccessories = getView().findViewById(R.id.txtEditAccRev);
@@ -50,6 +53,7 @@ public class EditDailyTotals extends Fragment {
         lblEditSalesDollars = getView().findViewById(R.id.lblEditSalesDollars);
         lblSelectedDate = getView().findViewById(R.id.lblSelectedDate);
 
-        btnSaveEdits = getView().findViewById(R.id.btnSaveEdits);
+        btnSaveEdits = getView().findViewById(R.id.btnSaveEdits);*/
     }
+
 }

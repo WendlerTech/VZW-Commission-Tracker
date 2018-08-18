@@ -237,7 +237,7 @@ public class NewTransaction extends Fragment {
                 if (databaseHelper.addData(currentTime(), totalNewPhones, totalUpgPhones,
                         totalTablets, totalHum, totalConnected, totalTMP, newMultiTMP,
                         totalRev, totalBucketAchieved)) {
-                    Toast.makeText(getContext(), "Transaction successfully added to database.",
+                    Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Error while writing to the database.",

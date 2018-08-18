@@ -73,7 +73,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getData(String queryString) {
-       // String[] selectArg = new String[]{};
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery(queryString, null);
         return data;

@@ -1,21 +1,18 @@
 package tech.wendler.commission_tracker;
 
 import android.app.DatePickerDialog;
+import android.support.v4.app.FragmentTransaction;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -32,8 +29,9 @@ public class DailyTotals extends Fragment {
     connectedDeviceTotal = 0, newTMPTotal = 0, revenueTotal = 0, salesBucketTotal = 0;
     private int multiTMPTotal = 0;
 
-    private ArrayList<Transaction> transactionList = new ArrayList<>();
-    private String selectedDate = "";
+    private String selectedDateString = "";
+    private Calendar selectedDate = Calendar.getInstance();
+    private Fragment editTotalsFragment = null;
 
     public DailyTotals() {
         // Required empty public constructor
@@ -112,7 +110,15 @@ public class DailyTotals extends Fragment {
         btnEditTotals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //Passes the selected date by converting to the calendar instance into a long
+                Bundle bundle = new Bundle();
+                bundle.putLong("selectedDate", selectedDate.getTimeInMillis());
+                //Creates new fragment instance
+                editTotalsFragment = EditDailyTotals.newInstance();
+                editTotalsFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, editTotalsFragment);
+                fragmentTransaction.commit();
             }
         });
     }
@@ -138,7 +144,8 @@ public class DailyTotals extends Fragment {
     private void populateData(Calendar date) {
         clearOldData();
 
-        selectedDate = formatDateForQueryString(date);
+        selectedDateString = formatDateForQueryString(date);
+        selectedDate = date;
 
         //Total() sums all non-null values in a column & returns a float
         String queryString = "SELECT total(new_phones) AS ColNewPhones, " +
@@ -149,7 +156,7 @@ public class DailyTotals extends Fragment {
                 "total(new_tmp) AS ColNewTMP, " +
                 "total(revenue) AS ColRevenue, " +
                 "total(sales_bucket) AS ColSalesBucket " +
-                "FROM Transactions WHERE date LIKE '" + selectedDate + "';";
+                "FROM Transactions WHERE date LIKE '" + selectedDateString + "';";
 
         Cursor cursor = databaseHelper.getData(queryString);
 
@@ -171,7 +178,7 @@ public class DailyTotals extends Fragment {
 
         //Returns the sum of all true values in the new multi TMP column
         queryString = "SELECT COUNT(new_multi_tmp) AS newMultiTMP FROM Transactions WHERE new_multi_tmp = 1 " +
-                "AND date LIKE '" + selectedDate + "';";
+                "AND date LIKE '" + selectedDateString + "';";
         cursor = databaseHelper.getData(queryString);
 
         try {
@@ -212,26 +219,6 @@ public class DailyTotals extends Fragment {
         lblMultiTMP.setText("0");
         lblSalesDollars.setText("$0");
     }
-
-    private void initRecyclerView() {
-        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), transactionList, selectedDate);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
-    private ArrayList<Transaction> populateTransactionList() {
-        int newPhones = 0, upgPhones = 0, tablets = 0, connected = 0,
-                hum = 0, singleTMP = 0, transactionID = 0;
-        double salesDollars = 0, revenue = 0;
-        boolean newMultiTMP = false;
-
-        String queryString = "SELECT new_phones, upgrade_phones, tablets_etc, hum, " +
-                "connected_devices_etc, new_tmp, new_multi_tmp, revenue, sales_bucket " +
-                "FROM Transactions WHERE date LIKE '" + selectedDate + "';";
-
-        Cursor cursor = databaseHelper.getData(queryString);
-
         /*
         ============================================================================================
         Figure out if you need to add the sales dollars into the Transaction object
@@ -254,35 +241,4 @@ public class DailyTotals extends Fragment {
         Cancel button displays short toast stating editing cancelled, opens back to recycler view?
         ============================================================================================
          */
-
-        try {
-            while (cursor.moveToNext()) {
-                transactionID = cursor.getInt(cursor.getColumnIndex("transID"));
-                newPhones = cursor.getInt(cursor.getColumnIndex("new_phones"));
-                upgPhones = cursor.getInt(cursor.getColumnIndex("upgrade_phones"));
-                tablets = cursor.getInt(cursor.getColumnIndex("tablets_etc"));
-                connected = cursor.getInt(cursor.getColumnIndex("connected_devices_etc"));
-                hum = cursor.getInt(cursor.getColumnIndex("hum"));
-                singleTMP = cursor.getInt(cursor.getColumnIndex("new_tmp"));
-                salesDollars = cursor.getDouble(cursor.getColumnIndex("sales_bucket"));
-                revenue = cursor.getDouble(cursor.getColumnIndex("revenue"));
-                //There is no "getBoolean" function, the boolean column only includes a 0 or 1.
-                if (cursor.getInt(cursor.getColumnIndex("new_multi_tmp")) == 1) {
-                    newMultiTMP = true;
-                } else {
-                    newMultiTMP = false;
-                }
-
-                Transaction newTransaction = new Transaction(transactionID, newPhones, upgPhones,
-                        tablets, connected, hum, singleTMP, revenue, newMultiTMP);
-
-                transactionList.add(newTransaction);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        //Ensure this is in the right spot, it's here to avoid error
-        return transactionList;
-    }
 }

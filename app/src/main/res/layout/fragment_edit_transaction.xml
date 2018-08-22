@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".NewTransaction"
+        tools:layout_editor_absoluteY="81dp">
+
+        <TextView
+            android:id="@+id/lblHum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Hum+"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtEditHum"
+            app:layout_constraintTop_toBottomOf="@+id/txtEditHum" />
+
+        <EditText
+            android:id="@+id/txtEditHum"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:nextFocusDown="@id/txtConnectedDev"
+            app:layout_constraintEnd_toStartOf="@+id/txtConnectedDev"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTablets" />
+
+        <EditText
+            android:id="@+id/txtEditTablets"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblUpgPhones" />
+
+        <EditText
+            android:id="@+id/txtEditNewPhones"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="0"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:nextFocusDown="@id/txtEditUpgPhones"
+            app:layout_constraintEnd_toStartOf="@+id/txtEditUpgPhones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
+        <EditText
+            android:id="@+id/txtEditUpgPhones"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="0"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtEditNewPhones"
+            app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
+        <TextView
+            android:id="@+id/lblNewPhones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="New Phones"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtEditNewPhones"
+            app:layout_constraintTop_toBottomOf="@+id/txtEditNewPhones" />
+
+        <TextView
+            android:id="@+id/lblTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="Edit Transaction"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lblUpgPhones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Upgrade Phones"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtEditUpgPhones"
+            app:layout_constraintTop_toBottomOf="@+id/txtEditUpgPhones" />
+
+        <TextView
+            android:id="@+id/lblTablets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tablets, Jetpacks, Home Phone or HumX"
+            android:textColor="#616A6B"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtEditTablets" />
+
+        <EditText
+            android:id="@+id/txtConnectedDev"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtEditHum"
+            app:layout_constraintTop_toBottomOf="@+id/lblTablets" />
+
+        <TextView
+            android:id="@+id/lblConnectedDev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Connected Devices"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtConnectedDev"
+            app:layout_constraintTop_toBottomOf="@+id/txtConnectedDev" />
+
+        <EditText
+            android:id="@+id/txtEditTMP"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintEnd_toStartOf="@+id/chkMultiTMP"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblHum" />
+
+        <CheckBox
+            android:id="@+id/chkMultiTMP"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="12dp"
+            android:text="Multi-Device TMP"
+            android:textColor="#616A6B"
+            app:layout_constraintBottom_toBottomOf="@+id/txtEditTMP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtEditTMP" />
+
+        <EditText
+            android:id="@+id/txtRevenue"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="0.00"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTMP" />
+
+        <TextView
+            android:id="@+id/lblBucketLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="Total toward bucket this transaction:"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblRevenue" />
+
+        <TextView
+            android:id="@+id/lblTMP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="New TMP"
+            android:textColor="#616A6B"
+            app:layout_constraintStart_toStartOf="@+id/txtEditTMP"
+            app:layout_constraintTop_toBottomOf="@+id/txtEditTMP" />
+
+        <TextView
+            android:id="@+id/lblRevenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Total Revenue"
+            android:textColor="#616A6B"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtRevenue" />
+
+        <TextView
+            android:id="@+id/lblTotalBucket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="$0.00"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblBucketLabel" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="155dp"
+            android:layout_height="41dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="Edit Transaction"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblTotalBucket" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

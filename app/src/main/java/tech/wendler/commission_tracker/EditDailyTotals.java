@@ -3,8 +3,10 @@ package tech.wendler.commission_tracker;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,20 +107,16 @@ public class EditDailyTotals extends Fragment {
 
     //Opens recycler view
     public void initRecyclerView() {
-  //      if (!transactionList.isEmpty()) { //.get(0).getTransactionID() > 0) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         recyclerView = getView().findViewById(R.id.recyclerView);
-        adapter = new RecyclerViewAdapter(getContext(), transactionList, calendar);
+        adapter = new RecyclerViewAdapter(getContext(), transactionList, calendar, fragmentTransaction);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-  //  }
 
-
-       //     transactionList.clear();
-       //     adapter.notifyDataSetChanged();
-      //  else {
-      //      Toast.makeText(getContext(), "There are no transactions saved.", Toast.LENGTH_SHORT);
-      //  }
-
+        Toast toast = Toast.makeText(getContext(), "Click to view/edit, " +
+                "long press to delete.", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP, 0, 20);
+        toast.show();
     }
 
     //Formats user selected date into "2018-11-23%" - this effectively returns all entries

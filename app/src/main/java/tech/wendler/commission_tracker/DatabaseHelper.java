@@ -21,6 +21,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String COL9 = "revenue";
     private final static String COL10 = "sales_bucket";
 
+    private int totalTablets = 0, totalConnected = 0, totalHum = 0, totalTMP = 0,
+            totalNewPhones = 0, totalUpgPhones = 0, transID, boolNewMultiTMP = 0;
+    private double totalRev = 0, totalBucketAchieved = 0;
+    private boolean newMultiTMP;
+
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
@@ -76,5 +81,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = db.rawQuery(queryString, null);
         return data;
+    }
+
+    public void updateTransaction(Transaction editedTrans) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        totalNewPhones = editedTrans.getTotalNewPhones();
+        totalUpgPhones = editedTrans.getTotalUpgPhones();
+        totalTablets = editedTrans.getTotalTablets();
+        totalHum = editedTrans.getTotalHum();
+        totalConnected = editedTrans.getTotalConnected();
+        totalTMP = editedTrans.getTotalTMP();
+        totalRev = editedTrans.getTotalRev();
+        totalBucketAchieved = editedTrans.getTotalSalesDollars();
+        transID = editedTrans.getTransactionID();
+
+        if (editedTrans.isNewMultiTMP()) {
+            boolNewMultiTMP = 1;
+        } else {
+            boolNewMultiTMP = 0;
+        }
+
+        String queryString = "UPDATE Transactions " +
+                "SET new_phones = '" + totalNewPhones +
+                "', upgrade_phones = '" + totalUpgPhones +
+                "', tablets_etc = '" + totalTablets +
+                "', hum = '" + totalHum +
+                "', connected_devices_etc = '" + totalConnected +
+                "', new_tmp = '" + totalTMP +
+                "', new_multi_tmp = '" + boolNewMultiTMP +
+                "', revenue = " + totalRev +
+                ", sales_bucket = " + totalBucketAchieved +
+                " WHERE transID = " + transID + ";";
+
+        db.execSQL(queryString);
+
+        db.close();
+    }
+
+    public void deleteTransaction(int transIdToBeDeleted) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String queryString = "DELETE FROM Transactions WHERE transID = " + transIdToBeDeleted + ";";
+        db.execSQL(queryString);
+
+        db.close();
     }
 }

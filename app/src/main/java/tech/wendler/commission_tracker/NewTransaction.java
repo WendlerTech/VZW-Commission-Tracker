@@ -246,6 +246,7 @@ public class NewTransaction extends Fragment {
             }
         });
     }
+
     //Changes label to reflect updated bucket dollars earned
     public void updateBucketTotalLabel() {
         totalBucketAchieved = tabletBucketAmt + connectedBucketAmt + humBucketAmt

@@ -118,7 +118,7 @@ public class DailyTotals extends Fragment {
                 editTotalsFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, editTotalsFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
             }
         });
     }
@@ -219,26 +219,4 @@ public class DailyTotals extends Fragment {
         lblMultiTMP.setText("0");
         lblSalesDollars.setText("$0");
     }
-        /*
-        ============================================================================================
-        Figure out if you need to add the sales dollars into the Transaction object
-        Might need it if they're editing the sales bucket, assuming option is given
-        Could force user to not have ability to edit sales bucket, making it auto-generate based on
-            the changed values (probably better)
-        Button listener for Edit Totals calls initRecyclerView
-        Populate transaction list
-        Recycler view adapter takes list, fills each layout list item
-        Remove numbering header, probably. Figure out an image or add other data for design
-        Add click listener for each list item
-        Upon clicking, opens up a new fragment similar to new transaction fragment
-        New transaction fragment is pre-populated from array list data
-        Submit & cancel button on edit transaction page
-        If submit is clicked, asks for user confirmation
-        Possibly highlight text boxes that have been changed
-        Label at top stating that any changes are highlighted, dialog states it cannot be undone
-        After confirmation is given, updates database using transID from array list
-        Toast displays stating item was successfully edited, closes fragment, opens daily totals?
-        Cancel button displays short toast stating editing cancelled, opens back to recycler view?
-        ============================================================================================
-         */
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/lblMonthHeader"
+        android:layout_width="38dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="APR"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="8dp"
+        android:text="Devices:"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/lblMonthHeader"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="8dp"
+        android:text="Sales Dollars:"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/lblMonthHeader"
+        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+    <TextView
+        android:id="@+id/lblDevicesCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/textView26"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblSalesDollarCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/textView26"
+        app:layout_constraintTop_toBottomOf="@+id/lblDevicesCount" />
+
+    <TextView
+        android:id="@+id/lblDayNumHeader"
+        android:layout_width="38dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="20"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Display1"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblMonthHeader" />
+</android.support.constraint.ConstraintLayout>

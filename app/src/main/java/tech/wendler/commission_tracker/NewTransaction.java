@@ -68,31 +68,37 @@ public class NewTransaction extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         databaseHelper = new DatabaseHelper(getActivity());
-        txtNewPhone =  getView().findViewById(R.id.txtEditNewPhones);
-        txtUpgPhone =  getView().findViewById(R.id.txtEditUpgPhones);
-        txtTablet =  getView().findViewById(R.id.txtEditTablets);
+        txtNewPhone = getView().findViewById(R.id.txtEditNewPhones);
+        txtUpgPhone = getView().findViewById(R.id.txtEditUpgPhones);
+        txtTablet = getView().findViewById(R.id.txtEditTablets);
         txtHum = getView().findViewById(R.id.txtEditHum);
-        txtConnected =  getView().findViewById(R.id.txtConnectedDev);
-        txtTMP =  getView().findViewById(R.id.txtEditTMP);
+        txtConnected = getView().findViewById(R.id.txtConnectedDev);
+        txtTMP = getView().findViewById(R.id.txtEditTMP);
         txtRev = getView().findViewById(R.id.txtRevenue);
-        chkMultiTMP =  getView().findViewById(R.id.chkMultiTMP);
-        lblBucketTotal =  getView().findViewById(R.id.lblTotalBucket);
-        btnSubmit =  getView().findViewById(R.id.btnSubmit);
+        chkMultiTMP = getView().findViewById(R.id.chkMultiTMP);
+        lblBucketTotal = getView().findViewById(R.id.lblTotalBucket);
+        btnSubmit = getView().findViewById(R.id.btnSubmit);
 
-    //TextWatcher listeners update the bucket total label in real time
+        //TextWatcher listeners update the bucket total label in real time
         txtTablet.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtTablet.getText().toString().length() > 0) {
-                    totalTablets = Integer.parseInt(txtTablet.getText().toString());
-                    tabletBucketAmt = totalTablets * TABLET_ASSUMED_VALUE;
-                    updateBucketTotalLabel();
+                    if (txtTablet.getText().toString().length() < 8) {
+                        totalTablets = Integer.parseInt(txtTablet.getText().toString());
+                        tabletBucketAmt = totalTablets * TABLET_ASSUMED_VALUE;
+                        updateBucketTotalLabel();
+                    } else {
+                        txtTablet.setText("");
+                    }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 //Updates label if user deletes their entry
@@ -113,9 +119,13 @@ public class NewTransaction extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtHum.getText().toString().length() > 0) {
-                    totalHum = Integer.parseInt(txtHum.getText().toString());
-                    humBucketAmt = (totalHum * HUM_ASSUMED_VALUE);
-                    updateBucketTotalLabel();
+                    if (txtHum.getText().toString().length() < 9) {
+                        totalHum = Integer.parseInt(txtHum.getText().toString());
+                        humBucketAmt = (totalHum * HUM_ASSUMED_VALUE);
+                        updateBucketTotalLabel();
+                    } else {
+                        txtHum.setText("");
+                    }
                 }
             }
 
@@ -135,14 +145,20 @@ public class NewTransaction extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtConnected.getText().toString().length() > 0) {
-                    totalConnected = Integer.parseInt(txtConnected.getText().toString());
-                    connectedBucketAmt = (totalConnected * CONNECTED_ASSUMED_VALUE);
-                    updateBucketTotalLabel();
+                    if (txtConnected.getText().toString().length() < 9) {
+                        totalConnected = Integer.parseInt(txtConnected.getText().toString());
+                        connectedBucketAmt = (totalConnected * CONNECTED_ASSUMED_VALUE);
+                        updateBucketTotalLabel();
+                    } else {
+                        txtConnected.setText("");
+                    }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 //Updates label if user deletes their entry
@@ -159,14 +175,20 @@ public class NewTransaction extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtTMP.getText().toString().length() > 0) {
-                    totalTMP = Integer.parseInt(txtTMP.getText().toString());
-                    singleTMPBucketAmt = (totalTMP * SINGLE_TMP_ASSUMED_VALUE);
-                    updateBucketTotalLabel();
+                    if (txtTMP.getText().toString().length() < 8) {
+                        totalTMP = Integer.parseInt(txtTMP.getText().toString());
+                        singleTMPBucketAmt = (totalTMP * SINGLE_TMP_ASSUMED_VALUE);
+                        updateBucketTotalLabel();
+                    } else {
+                        txtTMP.setText("");
+                    }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 //Updates label if user deletes their entry
@@ -183,14 +205,20 @@ public class NewTransaction extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtRev.getText().toString().length() > 0) {
-                    totalRev = Double.parseDouble(txtRev.getText().toString());
-                    revBucketAmt = (totalRev * REVENUE_ASSUMED_VALUE);
-                    updateBucketTotalLabel();
+                    if (txtRev.getText().toString().length() < 9) {
+                        totalRev = Double.parseDouble(txtRev.getText().toString());
+                        revBucketAmt = (totalRev * REVENUE_ASSUMED_VALUE);
+                        updateBucketTotalLabel();
+                    } else {
+                        txtRev.setText("");
+                    }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 //Updates label if user deletes their entry
@@ -199,6 +227,52 @@ public class NewTransaction extends Fragment {
                     totalRev = 0;
                     updateBucketTotalLabel();
                 }
+            }
+        });
+
+        txtNewPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (txtNewPhone.getText().toString().length() > 0) {
+                    if (txtNewPhone.getText().toString().length() < 9) {
+                        totalNewPhones = Integer.parseInt(txtNewPhone.getText().toString());
+                    } else {
+                        txtNewPhone.setText("");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        txtUpgPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (txtUpgPhone.getText().toString().length() > 0) {
+                    if (txtUpgPhone.getText().toString().length() < 9) {
+                        totalUpgPhones = Integer.parseInt(txtUpgPhone.getText().toString());
+                    } else {
+                        txtUpgPhone.setText("");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -219,7 +293,6 @@ public class NewTransaction extends Fragment {
                     newMultiTMP = false;
                     updateBucketTotalLabel();
                 }
-
             }
         });
 
@@ -227,14 +300,7 @@ public class NewTransaction extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (txtNewPhone.getText().toString().length() > 0) {
-                    totalNewPhones = Integer.parseInt(txtNewPhone.getText().toString());
-                }
-                if (txtUpgPhone.getText().toString().length() > 0) {
-                    totalUpgPhones = Integer.parseInt(txtUpgPhone.getText().toString());
-                }
-
-                if (databaseHelper.addData(currentTime(), totalNewPhones, totalUpgPhones,
+                if (databaseHelper.addTransactionData(currentTime(), totalNewPhones, totalUpgPhones,
                         totalTablets, totalHum, totalConnected, totalTMP, newMultiTMP,
                         totalRev, totalBucketAchieved)) {
                     Toast.makeText(getContext(), "Transaction successfully added.",

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    private final static String DATABASE_NAME = "Commission_Tracker_Database";
     private final static String TABLE_NAME = "Transactions";
     private final static String COL0 = "transID";
     private final static String COL1 = "date";
@@ -21,18 +22,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String COL9 = "revenue";
     private final static String COL10 = "sales_bucket";
 
+    private final static String QUOTA_TABLE_NAME = "Quota";
+    private final static String QUOTA_COL0 = "month";
+    private final static String QUOTA_COL1 = "year";
+    private final static String QUOTA_COL2 = "new_phone_quota";
+    private final static String QUOTA_COL3 = "upgrade_phone_quota";
+    private final static String QUOTA_COL4 = "sales_bucket_quota";
+
     private int totalTablets = 0, totalConnected = 0, totalHum = 0, totalTMP = 0,
             totalNewPhones = 0, totalUpgPhones = 0, transID, boolNewMultiTMP = 0;
     private double totalRev = 0, totalBucketAchieved = 0;
     private boolean newMultiTMP;
 
     public DatabaseHelper(Context context) {
-        super(context, TABLE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
+        String createTransactionTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL1 + " DATETIME, " +
                 COL2 + " INTEGER, " +
@@ -44,17 +52,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL8 + " BOOLEAN, " +
                 COL9 + " DOUBLE, " +
                 COL10 + " DOUBLE);";
-        db.execSQL(createTable);
+
+        String createQuotaTable = "CREATE TABLE " + QUOTA_TABLE_NAME + " (" +
+                QUOTA_COL0 + " INTEGER NOT NULL, " +
+                QUOTA_COL1 + " INTEGER NOT NULL, " +
+                QUOTA_COL2 + " INTEGER, " +
+                QUOTA_COL3 + " INTEGER, " +
+                QUOTA_COL4 + " DOUBLE, PRIMARY KEY (" +
+                QUOTA_COL0 + ", " + QUOTA_COL1 + "));";
+
+        db.execSQL(createTransactionTable);
+        db.execSQL(createQuotaTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //Drops older tables on upgrade
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + QUOTA_TABLE_NAME);
+        //Creates new tables
         onCreate(db);
     }
 
-    public boolean addData(String date, int newPhones, int upgPhones, int tablets, int hum,
-                           int CD, int tmp, boolean multiTMP, double rev, double salesBucket) {
+    public boolean addTransactionData(String date, int newPhones, int upgPhones, int tablets, int hum,
+                                      int CD, int tmp, boolean multiTMP, double rev, double salesBucket) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, date);
@@ -69,6 +90,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL10, salesBucket);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean addQuotaData(int month, int year, int newPhones, int upgPhones, double salesBucket) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(QUOTA_COL0, month);
+        contentValues.put(QUOTA_COL1, year);
+        contentValues.put(QUOTA_COL2, newPhones);
+        contentValues.put(QUOTA_COL3, upgPhones);
+        contentValues.put(QUOTA_COL4, salesBucket);
+
+        //If quota already exists for a given month, replace it with the new one
+        long result = db.insertWithOnConflict(QUOTA_TABLE_NAME, null, contentValues,
+                SQLiteDatabase.CONFLICT_REPLACE);
 
         if (result == -1) {
             return false;

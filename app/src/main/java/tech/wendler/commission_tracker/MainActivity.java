@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navigation.setSelectedItemId(R.id.navigation_home); //Sets middle nav button as default
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing
     }
 
 }

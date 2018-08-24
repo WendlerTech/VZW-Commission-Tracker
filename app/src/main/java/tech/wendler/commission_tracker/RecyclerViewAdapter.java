@@ -68,14 +68,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 editTransaction = EditTransaction.newInstance();
                 editTransaction.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, editTransaction);
-                fragmentTransaction.addToBackStack(null).commit();
+                fragmentTransaction.commit();
             }
         });
 
         holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext, R.style.DialogTheme);
                 dialog.setTitle("Delete Transaction");
                 dialog.setMessage("Warning!" + "\n\nAre you sure you want to delete this " +
                         "transaction? This action cannot be undone!");
@@ -87,7 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         Toast.makeText(mContext, "Transaction deleted", Toast.LENGTH_SHORT).show();
                         dailyTotals = DailyTotals.newInstance();
                         fragmentTransaction.replace(R.id.fragment_container, dailyTotals);
-                        fragmentTransaction.addToBackStack(null).commit();
+                        fragmentTransaction.commit();
                     }
                 })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -116,7 +116,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     //Holds widgets (each individual item in recycler view) in memory
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView lblMonthHeader, lblDayHeader, lblDevicesCount, lblSalesDollarCount;
         ConstraintLayout parentLayout;
 

@@ -5,4 +5,19 @@
     <string name="title_monthly_totals">Monthly Totals</string>
     <string name="title_totals">Daily Totals</string>
 
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
 </resources>

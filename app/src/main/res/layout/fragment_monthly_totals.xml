@@ -14,35 +14,67 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView35"
+        android:id="@+id/lblMonthlyMultiTMP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginTop="16dp"
         android:text="1.0"
         android:textColor="@color/colorPrimary"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
     <TextView
-        android:id="@+id/textView34"
+        android:id="@+id/lblMonthlyTMP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="1.0"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/lblMonthlyCD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
         android:text="1.0"
         android:textColor="@color/colorPrimary"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/lblMonthlyHum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="1.0"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+    <TextView
+        android:id="@+id/lblMonthlyRevenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:text="1.0"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/lblQuotaBucket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -54,7 +86,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/lblQuotaUpgPhones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -66,7 +98,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/lblQuotaNewPhones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -77,8 +109,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+    <Button
+        android:id="@+id/btnSelectYear"
+        android:layout_width="60dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:text="2018"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/lblMonthlyTablets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="1.0"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/lblCurrentBucket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -90,7 +146,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/lblCurrentUpgPhones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -102,7 +158,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/lblCurrentNewPhones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -121,7 +177,7 @@
         android:text="New Phones"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toBottomOf="@+id/lblQuotaNewPhones" />
 
     <TextView
         android:id="@+id/textView9"
@@ -131,7 +187,7 @@
         android:text="Upgrade Phones"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintTop_toBottomOf="@+id/lblQuotaUpgPhones" />
 
     <TextView
         android:id="@+id/textView10"
@@ -141,8 +197,9 @@
         android:text="Sales Dollars"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/lblQuotaBucket" />
 
+    <!--
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
@@ -151,41 +208,41 @@
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" /> -->
+
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnEditQuota"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="32dp"
         android:text="Add/Edit Quota"
         android:textAppearance="@android:style/TextAppearance.Material.Small"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Quota"
+        android:layout_marginTop="32dp"
+        android:text="Current"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/btnEditQuota" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Current"
+        android:layout_marginTop="32dp"
+        android:text="Quota"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/btnEditQuota" />
 
     <TextView
         android:id="@+id/textView3"
@@ -193,9 +250,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="New Phones"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
-        android:textSize="15sp" />
+        app:layout_constraintTop_toBottomOf="@+id/lblCurrentNewPhones" />
 
     <TextView
         android:id="@+id/textView6"
@@ -205,7 +262,7 @@
         android:text="Upgrade Phones"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toBottomOf="@+id/lblCurrentUpgPhones" />
 
     <TextView
         android:id="@+id/textView7"
@@ -215,57 +272,100 @@
         android:text="Sales Dollars"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/lblCurrentBucket" />
 
     <TextView
         android:id="@+id/textView30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Expected Total Compensation"
+        android:layout_marginEnd="24dp"
+        android:text="New Multi TMP"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView31" />
-
-    <TextView
-        android:id="@+id/textView31"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="$1,225"
-        android:textColor="@color/colorPrimary"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+        app:layout_constraintTop_toBottomOf="@+id/lblMonthlyMultiTMP" />
 
     <TextView
         android:id="@+id/textView32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Phone Multiplier"
+        android:layout_marginStart="24dp"
+        android:text="Tablets"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+        app:layout_constraintTop_toBottomOf="@+id/lblMonthlyTablets" />
 
     <TextView
         android:id="@+id/textView33"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Bucket Multiplier"
+        android:layout_marginEnd="24dp"
+        android:text="Connected Devices"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblMonthlyCD" />
+
+    <Spinner
+        android:id="@+id/monthSelector"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnEditQuota"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView35" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="Monthly Totals"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Totals this month:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Accessory Revenue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblMonthlyRevenue" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Hum+"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblMonthlyHum" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="New TMP"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblMonthlyTMP" />
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>

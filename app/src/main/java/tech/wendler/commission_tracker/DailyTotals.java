@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,13 +21,13 @@ public class DailyTotals extends Fragment {
 
     private TextView txtDisplayDate;
     private TextView lblNewPhones, lblUpgPhones, lblTablets, lblAccessoryRev, lblHum,
-    lblCD, lblNewTMP, lblMultiTMP, lblSalesDollars;
+            lblCD, lblNewTMP, lblMultiTMP, lblSalesDollars;
     private Button btnEditTotals;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private DatabaseHelper databaseHelper;
 
     private float newPhoneTotal = 0, upgPhoneTotal = 0, tabletTotal = 0, humTotal = 0,
-    connectedDeviceTotal = 0, newTMPTotal = 0, revenueTotal = 0, salesBucketTotal = 0;
+            connectedDeviceTotal = 0, newTMPTotal = 0, revenueTotal = 0, salesBucketTotal = 0;
     private int multiTMPTotal = 0;
 
     private String selectedDateString = "";
@@ -60,9 +61,7 @@ public class DailyTotals extends Fragment {
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtDisplayDate = getView().findViewById(R.id.lblSelectedDate);
-
         btnEditTotals = getView().findViewById(R.id.btnEditDailyTotals);
-
         lblNewPhones = getView().findViewById(R.id.lblNewPhones);
         lblUpgPhones = getView().findViewById(R.id.lblUpgPhones);
         lblTablets = getView().findViewById(R.id.lblTablets);
@@ -118,7 +117,7 @@ public class DailyTotals extends Fragment {
                 editTotalsFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, editTotalsFragment);
-                fragmentTransaction.addToBackStack(null).commit();
+                fragmentTransaction.commit();
             }
         });
     }
@@ -199,7 +198,7 @@ public class DailyTotals extends Fragment {
         lblNewPhones.setText("" + (int) newPhoneTotal);
         lblUpgPhones.setText("" + (int) upgPhoneTotal);
         lblTablets.setText("" + (int) tabletTotal);
-        lblAccessoryRev.setText("" +  revenueTotal);
+        lblAccessoryRev.setText("" + revenueTotal);
         lblHum.setText("" + (int) humTotal);
         lblCD.setText("" + (int) connectedDeviceTotal);
         lblNewTMP.setText("" + (int) newTMPTotal);

@@ -305,6 +305,7 @@ public class NewTransaction extends Fragment {
                         totalRev, totalBucketAchieved)) {
                     Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
+                    clearFields();
                 } else {
                     Toast.makeText(getContext(), "Error while writing to the database.",
                             Toast.LENGTH_SHORT).show();
@@ -327,5 +328,25 @@ public class NewTransaction extends Fragment {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date = simpleDateFormat.format(calendar.getTime());
         return date;
+    }
+
+    public void clearFields() {
+         totalNewPhones = 0;
+         totalUpgPhones = 0;
+         totalTablets = 0;
+         totalConnected = 0;
+         totalHum = 0;
+         totalTMP = 0;
+         totalRev = 0;
+
+        txtNewPhone.setText("");
+        txtUpgPhone.setText("");
+        txtTablet.setText("");
+        txtHum.setText("");
+        txtConnected.setText("");
+        txtTMP.setText("");
+        txtRev.setText("");
+        chkMultiTMP.setChecked(false);
+        updateBucketTotalLabel();
     }
 }

@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -27,14 +28,21 @@ public class MonthlyTotals extends Fragment {
 
     private TextView lblQuotaNewPhones, lblQuotaUpgPhones, lblQuotaBucket,
             lblCurrentNewPhones, lblCurrentUpgPhones, lblCurrentBucket, lblMonthlyTablets,
-            lblMonthlyRev, lblMonthlyHum, lblMonthlyTMP, lblMonthlyCD, lblMonthlyMultiTMP;
-    private Button btnAddEditQuota, btnSelectYear;
+            lblMonthlyRev, lblMonthlyHum, lblMonthlyTMP, lblMonthlyCD, lblMonthlyMultiTMP,
+            lblMetricsTablets, lblMetricsHum, lblMetricsNewTMP, lblMetricsRev, lblMetricsCD,
+            lblMetricsMultiTMP, lblShowHide, lblTargetPaycheck, lblExpectedPaycheck,
+            lblPhoneMultiplier, lblSalesMultiplier, lblTargetPaycheckTitle, lblExpectedPayTitle,
+            lblTargetPaySubTitle, lblPhoneMultTitle, lblSalesMultTitle;
+    private Button btnAddEditQuota, btnSelectYear, btnMetrics, btnPaycheck;
     private Spinner monthSelectorSpinner;
     private int selectedMonth, selectedYear;
     private String selectedMonthString;
     private Calendar calendar = Calendar.getInstance();
     private DatabaseHelper databaseHelper;
     private AlertDialog alert;
+    private double targetPaycheck, phoneMultiplier = 0, salesMultiplier, expectedPaycheck;
+    private int newPhoneQuotaGlobal = 0, upgradeQuotaGlobal = 0, totalPhonesGlobal = 0;
+    private double salesDollarQuotaGlobal = 0, expectedCheckGlobal = 0, totalSalesDollarsGlobal = 0;
 
     public MonthlyTotals() {
 
@@ -77,6 +85,26 @@ public class MonthlyTotals extends Fragment {
         lblMonthlyTMP = getView().findViewById(R.id.lblMonthlyTMP);
         lblMonthlyMultiTMP = getView().findViewById(R.id.lblMonthlyMultiTMP);
 
+        lblMetricsTablets = getView().findViewById(R.id.lblMetricsTablet);
+        lblMetricsHum = getView().findViewById(R.id.lblMetricsHum);
+        lblMetricsNewTMP = getView().findViewById(R.id.lblMetricsNewTMP);
+        lblMetricsRev = getView().findViewById(R.id.lblMetricsRev);
+        lblMetricsCD = getView().findViewById(R.id.lblMetricsCD);
+        lblMetricsMultiTMP = getView().findViewById(R.id.lblMetricsMultiTMP);
+        lblShowHide = getView().findViewById(R.id.lblShowHide);
+        btnMetrics = getView().findViewById(R.id.btnMetrics);
+        btnPaycheck = getView().findViewById(R.id.btnPaycheck);
+
+        lblTargetPaycheck = getView().findViewById(R.id.lblTargetPaycheck);
+        lblExpectedPaycheck = getView().findViewById(R.id.lblExpectedPaycheck);
+        lblPhoneMultiplier = getView().findViewById(R.id.lblPhoneMultiplier);
+        lblSalesMultiplier = getView().findViewById(R.id.lblSalesMultiplier);
+        lblTargetPaycheckTitle = getView().findViewById(R.id.lblTargetPayTitle);
+        lblTargetPaySubTitle = getView().findViewById(R.id.lblTargetPaySubTitle);
+        lblPhoneMultTitle = getView().findViewById(R.id.lblPhoneMultTitle);
+        lblSalesMultTitle = getView().findViewById(R.id.lblSalesMultTitle);
+        lblExpectedPayTitle = getView().findViewById(R.id.lblExpectedPayTitle);
+
         //Instantiates month selection spinner
         monthSelectorSpinner = getView().findViewById(R.id.monthSelector);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource
@@ -91,7 +119,10 @@ public class MonthlyTotals extends Fragment {
         monthSelectorSpinner.setSelection(selectedMonth);
         btnSelectYear.setText("" + selectedYear);
 
+        hideMetrics();
+        hidePaycheck();
         populateData();
+        calculatePaycheck();
 
         monthSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -101,6 +132,7 @@ public class MonthlyTotals extends Fragment {
                 selectedMonthString = new DateFormatSymbols(Locale.US)
                         .getMonths()[selectedMonth];
                 populateData();
+                calculatePaycheck();
             }
 
             @Override
@@ -141,11 +173,13 @@ public class MonthlyTotals extends Fragment {
                                 selectedYear = 2018;
                                 btnSelectYear.setText("2018");
                                 populateData();
+                                calculatePaycheck();
                                 break;
                             case 1:
                                 selectedYear = 2019;
                                 btnSelectYear.setText("2019");
                                 populateData();
+                                calculatePaycheck();
                                 break;
                         }
                         alert.dismiss();
@@ -155,17 +189,42 @@ public class MonthlyTotals extends Fragment {
                 alert.show();
             }
         });
+
+        btnPaycheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lblExpectedPaycheck.getVisibility() == View.INVISIBLE) {
+                    hideMetrics();
+                    showPaycheck();
+                } else {
+                    hidePaycheck();
+                    hideMetrics();
+                }
+            }
+        });
+
+        btnMetrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lblMetricsTablets.getVisibility() == View.VISIBLE) {
+                    hideMetrics();
+                } else {
+                    hidePaycheck();
+                    showMetrics();
+                }
+            }
+        });
     }
 
     private void populateData() {
         //Returns monthly quota
-        String queryString = "SELECT new_phone_quota, upgrade_phone_quota, sales_bucket_quota " +
-                "FROM Quota WHERE month LIKE '" + selectedMonth + "' AND year LIKE '"
+        String queryString = "SELECT new_phone_quota, upgrade_phone_quota, sales_bucket_quota, " +
+                "paycheck_target FROM Quota WHERE month LIKE '" + selectedMonth + "' AND year LIKE '"
                 + selectedYear + "';";
         int newPhones = 0, totalNewPhones = 0, upgPhones = 0, totalUpgPhones = 0,
                 totalTablets = 0, totalHum = 0, totalCD = 0, totalTMP = 0, totalRev = 0,
                 totalMultiTMP = 0;
-        double salesBucket = 0, totalSalesBucket = 1;
+        double salesBucket = 0, totalSalesBucket = 1, expectedCheck = 0;
 
         Cursor quotaCursor = databaseHelper.getData(queryString);
 
@@ -174,10 +233,16 @@ public class MonthlyTotals extends Fragment {
                 newPhones = quotaCursor.getInt(quotaCursor.getColumnIndex("new_phone_quota"));
                 upgPhones = quotaCursor.getInt(quotaCursor.getColumnIndex("upgrade_phone_quota"));
                 salesBucket = quotaCursor.getDouble(quotaCursor.getColumnIndex("sales_bucket_quota"));
+                expectedCheck = quotaCursor.getDouble(quotaCursor.getColumnIndex("paycheck_target"));
             }
         } finally {
             quotaCursor.close();
         }
+
+        newPhoneQuotaGlobal = newPhones;
+        upgradeQuotaGlobal = upgPhones;
+        salesDollarQuotaGlobal = salesBucket;
+        expectedCheckGlobal = expectedCheck;
 
         int selectedMonthQuery = selectedMonth + 1;
         String formattedMonth = String.format("%02d", selectedMonthQuery);
@@ -210,6 +275,9 @@ public class MonthlyTotals extends Fragment {
             currentCursor.close();
         }
 
+        totalPhonesGlobal = totalNewPhones + totalUpgPhones;
+        totalSalesDollarsGlobal = totalSalesBucket;
+
         //Returns the sum of all true values in the new multi TMP column
         queryString = "SELECT COUNT(new_multi_tmp) AS newMultiTMP FROM Transactions " +
                 "WHERE new_multi_tmp = 1 AND date LIKE " +
@@ -223,6 +291,13 @@ public class MonthlyTotals extends Fragment {
             }
         } finally {
             multiTMPCursor.close();
+        }
+
+        if (expectedCheck == 0) {
+            lblTargetPaycheck.setText("Add your paycheck target with your quota!");
+
+        } else {
+            lblTargetPaycheck.setText(formatCurrency(expectedCheck));
         }
 
         lblQuotaNewPhones.setText("" + newPhones);
@@ -253,30 +328,59 @@ public class MonthlyTotals extends Fragment {
         TextView lblNewPhone = new TextView(getContext());
         TextView lblUpgPhone = new TextView(getContext());
         TextView lblSalesBucket = new TextView(getContext());
+        TextView lblExpectedCheck = new TextView(getContext());
         final EditText txtNewPhones = new EditText(getContext());
         final EditText txtUpgPhones = new EditText(getContext());
         final EditText txtSalesBucket = new EditText(getContext());
+        final EditText txtExpectedCheck = new EditText(getContext());
 
         lblNewPhone.setText("New Phones:");
         lblUpgPhone.setText("Upgrade Phones:");
         lblSalesBucket.setText("Sales Bucket:");
-        txtNewPhones.setHint("0");
-        txtUpgPhones.setHint("0");
-        txtSalesBucket.setHint("0");
+        lblExpectedCheck.setText("Commission Paycheck At Risk:");
         txtNewPhones.setInputType(InputType.TYPE_CLASS_NUMBER);
         txtUpgPhones.setInputType(InputType.TYPE_CLASS_NUMBER);
         txtSalesBucket.setInputType(InputType.TYPE_CLASS_NUMBER);
+        txtExpectedCheck.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        //Auto-fills fields if quota was previously entered
+        if (newPhoneQuotaGlobal == 0) {
+            txtNewPhones.setHint("0");
+        } else {
+            txtNewPhones.setText("" + newPhoneQuotaGlobal);
+        }
+
+        if (upgradeQuotaGlobal == 0) {
+            txtUpgPhones.setHint("0");
+        } else {
+            txtUpgPhones.setText("" + upgradeQuotaGlobal);
+        }
+
+        if (salesDollarQuotaGlobal == 0) {
+            txtSalesBucket.setHint("0");
+        } else {
+            txtSalesBucket.setText("" + salesDollarQuotaGlobal);
+        }
+
+        if (expectedCheckGlobal == 0) {
+            txtExpectedCheck.setHint("0");
+        } else {
+            txtExpectedCheck.setText("" + expectedCheckGlobal);
+        }
 
         lblNewPhone.setPadding(40, 40, 40, 40);
         lblUpgPhone.setPadding(40, 40, 40, 40);
         lblSalesBucket.setPadding(40, 40, 40, 40);
+        lblExpectedCheck.setPadding(40, 40, 40, 40);
         txtNewPhones.setPadding(40, 40, 40, 40);
         txtUpgPhones.setPadding(40, 40, 40, 40);
         txtSalesBucket.setPadding(40, 40, 40, 40);
+        txtExpectedCheck.setPadding(40, 40, 40, 40);
 
         lblNewPhone.setTextColor(Color.DKGRAY);
         lblUpgPhone.setTextColor(Color.DKGRAY);
         lblSalesBucket.setTextColor(Color.DKGRAY);
+        lblExpectedCheck.setTextColor(Color.DKGRAY);
 
         LinearLayout dialogLayout = new LinearLayout(getContext());
         dialogLayout.setOrientation(LinearLayout.VERTICAL);
@@ -286,6 +390,8 @@ public class MonthlyTotals extends Fragment {
         dialogLayout.addView(txtUpgPhones);
         dialogLayout.addView(lblSalesBucket);
         dialogLayout.addView(txtSalesBucket);
+        dialogLayout.addView(lblExpectedCheck);
+        dialogLayout.addView(txtExpectedCheck);
         dialogLayout.setPadding(40, 40, 40, 40);
 
         dialog.setView(dialogLayout);
@@ -296,16 +402,17 @@ public class MonthlyTotals extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int newPhoneQuota = 0, upgPhoneQuota = 0;
-                double bucketQuota = 0;
+                double bucketQuota = 0, expectedCheck = 0;
                 boolean badNum = false;
 
                 //Checks for empty fields
                 if (txtNewPhones.length() > 0 && txtUpgPhones.length() > 0
-                        && txtSalesBucket.length() > 0) {
+                        && txtSalesBucket.length() > 0 && txtExpectedCheck.length() > 0) {
                     try {
                         newPhoneQuota = Integer.parseInt(txtNewPhones.getText().toString());
                         upgPhoneQuota = Integer.parseInt(txtUpgPhones.getText().toString());
                         bucketQuota = Double.parseDouble(txtSalesBucket.getText().toString());
+                        expectedCheck = Double.parseDouble(txtExpectedCheck.getText().toString());
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         badNum = true;
@@ -314,12 +421,13 @@ public class MonthlyTotals extends Fragment {
                     if (!badNum) {
                         //Adds data
                         if (databaseHelper.addQuotaData(selectedMonth, selectedYear,
-                                newPhoneQuota, upgPhoneQuota, bucketQuota)) {
+                                newPhoneQuota, upgPhoneQuota, bucketQuota, expectedCheck)) {
                             Toast.makeText(getContext(), "Quota added successfully",
                                     Toast.LENGTH_SHORT).show();
 
                             //Updates fragment if save was successful
                             populateData();
+                            calculatePaycheck();
                         } else {
                             Toast.makeText(getContext(), "Error while saving quota",
                                     Toast.LENGTH_SHORT).show();
@@ -341,5 +449,125 @@ public class MonthlyTotals extends Fragment {
                 });
         final AlertDialog alert = dialog.create();
         alert.show();
+    }
+
+    private void calculatePaycheck() {
+        DecimalFormat format = new DecimalFormat("##.00");
+        int netPhoneQuota = newPhoneQuotaGlobal + upgradeQuotaGlobal;
+        double currentPhoneQuota = (double) totalPhonesGlobal / (double) netPhoneQuota;
+
+        //Determines phone multiplier based on currently achieved percentage
+        if (currentPhoneQuota < .60) {
+            phoneMultiplier = 0;
+        } else if (currentPhoneQuota < .80) {
+            phoneMultiplier = .75;
+        } else if (currentPhoneQuota < 1) {
+            phoneMultiplier = .9;
+        } else if (currentPhoneQuota < 1.1) {
+            phoneMultiplier = 1;
+        } else if (currentPhoneQuota < 1.2) {
+            phoneMultiplier = 1.1;
+        } else if (currentPhoneQuota < 1.3) {
+            phoneMultiplier = 1.2;
+        } else if (currentPhoneQuota < 1.4) {
+            phoneMultiplier = 1.3;
+        } else if (currentPhoneQuota < 1.5) {
+            phoneMultiplier = 1.4;
+        } else if (currentPhoneQuota < 1.6) {
+            phoneMultiplier = 1.5;
+        } else if (currentPhoneQuota < 1.7) {
+            phoneMultiplier = 1.6;
+        } else if (currentPhoneQuota < 1.8) {
+            phoneMultiplier = 1.7;
+        } else if (currentPhoneQuota < 1.9) {
+            phoneMultiplier = 1.8;
+        } else if (currentPhoneQuota < 2) {
+            phoneMultiplier = 1.9;
+        } else if (netPhoneQuota == 0) {
+            phoneMultiplier = 0;
+        } else {
+            phoneMultiplier = 2;
+        }
+
+        if (salesDollarQuotaGlobal == 0) {
+            salesMultiplier = 0;
+        } else {
+            salesMultiplier = totalSalesDollarsGlobal / salesDollarQuotaGlobal;
+        }
+        expectedPaycheck = expectedCheckGlobal * phoneMultiplier * (Math.round(salesMultiplier * 100.0) / 100.0);
+
+        //Checks for windfall
+        if (expectedPaycheck > (expectedCheckGlobal * 3.0)) {
+            double over300Adjustment = (expectedPaycheck - (expectedCheckGlobal * 3.0)) * .50;
+            expectedPaycheck = expectedPaycheck - over300Adjustment;
+        }
+        lblPhoneMultiplier.setText("" + phoneMultiplier);
+        lblSalesMultiplier.setText(format.format(salesMultiplier));
+        lblExpectedPaycheck.setText(formatCurrency(expectedPaycheck));
+    }
+
+    private void hidePaycheck() {
+        lblTargetPaycheck.setVisibility(View.INVISIBLE);
+        lblTargetPaycheckTitle.setVisibility(View.INVISIBLE);
+        lblTargetPaySubTitle.setVisibility(View.INVISIBLE);
+        lblPhoneMultiplier.setVisibility(View.INVISIBLE);
+        lblPhoneMultTitle.setVisibility(View.INVISIBLE);
+        lblSalesMultiplier.setVisibility(View.INVISIBLE);
+        lblSalesMultTitle.setVisibility(View.INVISIBLE);
+        lblExpectedPaycheck.setVisibility(View.INVISIBLE);
+        lblExpectedPayTitle.setVisibility(View.INVISIBLE);
+
+        lblShowHide.setVisibility(View.VISIBLE);
+    }
+
+    private void showPaycheck() {
+        lblTargetPaycheck.setVisibility(View.VISIBLE);
+        lblTargetPaycheckTitle.setVisibility(View.VISIBLE);
+        lblTargetPaySubTitle.setVisibility(View.VISIBLE);
+        lblPhoneMultiplier.setVisibility(View.VISIBLE);
+        lblPhoneMultTitle.setVisibility(View.VISIBLE);
+        lblSalesMultiplier.setVisibility(View.VISIBLE);
+        lblSalesMultTitle.setVisibility(View.VISIBLE);
+        lblExpectedPaycheck.setVisibility(View.VISIBLE);
+        lblExpectedPayTitle.setVisibility(View.VISIBLE);
+
+        lblShowHide.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void hideMetrics() {
+        lblMonthlyTablets.setVisibility(View.INVISIBLE);
+        lblMonthlyHum.setVisibility(View.INVISIBLE);
+        lblMonthlyTMP.setVisibility(View.INVISIBLE);
+        lblMonthlyRev.setVisibility(View.INVISIBLE);
+        lblMonthlyCD.setVisibility(View.INVISIBLE);
+        lblMonthlyMultiTMP.setVisibility(View.INVISIBLE);
+
+        lblMetricsTablets.setVisibility(View.INVISIBLE);
+        lblMetricsHum.setVisibility(View.INVISIBLE);
+        lblMetricsNewTMP.setVisibility(View.INVISIBLE);
+        lblMetricsRev.setVisibility(View.INVISIBLE);
+        lblMetricsCD.setVisibility(View.INVISIBLE);
+        lblMetricsMultiTMP.setVisibility(View.INVISIBLE);
+
+        lblShowHide.setVisibility(View.VISIBLE);
+    }
+
+    private void showMetrics() {
+        lblMonthlyTablets.setVisibility(View.VISIBLE);
+        lblMonthlyHum.setVisibility(View.VISIBLE);
+        lblMonthlyTMP.setVisibility(View.VISIBLE);
+        lblMonthlyRev.setVisibility(View.VISIBLE);
+        lblMonthlyCD.setVisibility(View.VISIBLE);
+        lblMonthlyMultiTMP.setVisibility(View.VISIBLE);
+
+        lblMetricsTablets.setVisibility(View.VISIBLE);
+        lblMetricsHum.setVisibility(View.VISIBLE);
+        lblMetricsNewTMP.setVisibility(View.VISIBLE);
+        lblMetricsRev.setVisibility(View.VISIBLE);
+        lblMetricsCD.setVisibility(View.VISIBLE);
+        lblMetricsMultiTMP.setVisibility(View.VISIBLE);
+
+        lblShowHide.setVisibility(View.INVISIBLE);
     }
 }

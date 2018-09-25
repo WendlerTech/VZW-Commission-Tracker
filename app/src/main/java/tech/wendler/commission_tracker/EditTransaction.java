@@ -375,7 +375,6 @@ public class EditTransaction extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Edit cancelled", Toast.LENGTH_SHORT).show();
                 dailyTotalsFragment = DailyTotals.newInstance();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, dailyTotalsFragment);

@@ -28,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String QUOTA_COL2 = "new_phone_quota";
     private final static String QUOTA_COL3 = "upgrade_phone_quota";
     private final static String QUOTA_COL4 = "sales_bucket_quota";
+    private final static String QUOTA_COL5 = "paycheck_target";
 
     private int totalTablets = 0, totalConnected = 0, totalHum = 0, totalTMP = 0,
             totalNewPhones = 0, totalUpgPhones = 0, transID, boolNewMultiTMP = 0;
@@ -35,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private boolean newMultiTMP;
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 2);
     }
 
     @Override
@@ -53,13 +54,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL9 + " DOUBLE, " +
                 COL10 + " DOUBLE);";
 
-        String createQuotaTable = "CREATE TABLE " + QUOTA_TABLE_NAME + " (" +
+ /*       String createQuotaTable = "CREATE TABLE " + QUOTA_TABLE_NAME + " (" +
                 QUOTA_COL0 + " INTEGER NOT NULL, " +
                 QUOTA_COL1 + " INTEGER NOT NULL, " +
                 QUOTA_COL2 + " INTEGER, " +
                 QUOTA_COL3 + " INTEGER, " +
                 QUOTA_COL4 + " DOUBLE, PRIMARY KEY (" +
-                QUOTA_COL0 + ", " + QUOTA_COL1 + "));";
+                QUOTA_COL0 + ", " + QUOTA_COL1 + "));";*/
+
+
+
+        String createQuotaTable = "CREATE TABLE " + QUOTA_TABLE_NAME + " (" +
+                QUOTA_COL0 + " INTEGER NOT NULL, " +
+                QUOTA_COL1 + " INTEGER NOT NULL, " +
+                QUOTA_COL2 + " INTEGER, " +
+                QUOTA_COL3 + " INTEGER, " +
+                QUOTA_COL4 + " DOUBLE, " +
+                QUOTA_COL5 + " DOUBLE, " +
+                "PRIMARY KEY (" + QUOTA_COL0 + ", " + QUOTA_COL1 + "));";
 
         db.execSQL(createTransactionTable);
         db.execSQL(createQuotaTable);
@@ -67,11 +79,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //Drops older tables on upgrade
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + QUOTA_TABLE_NAME);
-        //Creates new tables
-        onCreate(db);
+        switch(oldVersion) {
+            case 1:
+                //Adds column to quota table for paycheck estimation
+                db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN paycheck_target DOUBLE");
+                break;
+        }
     }
 
     public boolean addTransactionData(String date, int newPhones, int upgPhones, int tablets, int hum,
@@ -98,7 +111,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addQuotaData(int month, int year, int newPhones, int upgPhones, double salesBucket) {
+    public boolean addQuotaData(int month, int year, int newPhones, int upgPhones,
+                                double salesBucket, double paycheckTarget) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -107,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(QUOTA_COL2, newPhones);
         contentValues.put(QUOTA_COL3, upgPhones);
         contentValues.put(QUOTA_COL4, salesBucket);
+        contentValues.put(QUOTA_COL5, paycheckTarget);
 
         //If quota already exists for a given month, replace it with the new one
         long result = db.insertWithOnConflict(QUOTA_TABLE_NAME, null, contentValues,

@@ -113,7 +113,7 @@ public class EditDailyTotals extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         Toast toast = Toast.makeText(getContext(), "Click to view/edit, " +
-                "long press to delete.", Toast.LENGTH_LONG);
+                "long press to delete.", Toast.LENGTH_SHORT);
         toast.show();
     }
 

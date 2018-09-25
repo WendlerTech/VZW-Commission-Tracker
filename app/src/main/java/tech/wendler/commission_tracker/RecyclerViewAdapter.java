@@ -109,7 +109,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //Displays toast message if recycler view is empty
         if (listOfTransactions.size() == 0) {
             Toast.makeText(mContext, "There are no transactions to view." +
-                    "\nPlease click a tab below to return.", Toast.LENGTH_LONG).show();
+                    "\nPlease click a tab below to return.", Toast.LENGTH_SHORT).show();
         }
         return listOfTransactions.size();
     }

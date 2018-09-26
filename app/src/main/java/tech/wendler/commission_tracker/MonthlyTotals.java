@@ -40,7 +40,7 @@ public class MonthlyTotals extends Fragment {
     private Calendar calendar = Calendar.getInstance();
     private DatabaseHelper databaseHelper;
     private AlertDialog alert;
-    private double targetPaycheck, phoneMultiplier = 0, salesMultiplier, expectedPaycheck;
+    private double phoneMultiplier = 0, salesMultiplier, expectedPaycheck;
     private int newPhoneQuotaGlobal = 0, upgradeQuotaGlobal = 0, totalPhonesGlobal = 0;
     private double salesDollarQuotaGlobal = 0, expectedCheckGlobal = 0, totalSalesDollarsGlobal = 0;
 

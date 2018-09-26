@@ -13,7 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

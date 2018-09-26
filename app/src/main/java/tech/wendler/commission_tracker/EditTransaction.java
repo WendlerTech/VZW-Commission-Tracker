@@ -16,7 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.NumberFormat;
 
 public class EditTransaction extends Fragment {

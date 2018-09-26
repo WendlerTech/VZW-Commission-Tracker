@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,15 +23,15 @@ import java.util.Locale;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Transaction> listOfTransactions = new ArrayList<>();
+    private ArrayList<Transaction> listOfTransactions;
     private Context mContext;
     private Calendar date;
     private Fragment editTransaction = null, dailyTotals = null;
     private FragmentTransaction fragmentTransaction;
     private DatabaseHelper databaseHelper;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<Transaction> listOfTransactions,
-                               Calendar selectedDate, FragmentTransaction fragmentTransaction) {
+    RecyclerViewAdapter(Context mContext, ArrayList<Transaction> listOfTransactions,
+                        Calendar selectedDate, FragmentTransaction fragmentTransaction) {
         this.listOfTransactions = listOfTransactions;
         this.mContext = mContext;
         this.date = selectedDate;
@@ -40,10 +41,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-
-        return holder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_item,
+                parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.lblMonthHeader.setText(formatDateGetMonth(date));
         holder.lblDayHeader.setText(formatDateGetDay(date));
-        holder.lblDevicesCount.setText("" + numberOfDevices);
+        holder.lblDevicesCount.setText(String.valueOf(numberOfDevices));
         holder.lblSalesDollarCount.setText(dollars);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -106,11 +106,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        //Displays toast message if recycler view is empty
-        if (listOfTransactions.size() == 0) {
-            Toast.makeText(mContext, "There are no transactions to view." +
-                    "\nPlease click a tab below to return.", Toast.LENGTH_SHORT).show();
-        }
         return listOfTransactions.size();
     }
 
@@ -119,7 +114,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView lblMonthHeader, lblDayHeader, lblDevicesCount, lblSalesDollarCount;
         ConstraintLayout parentLayout;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             lblMonthHeader = itemView.findViewById(R.id.lblMonthHeader);

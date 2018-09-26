@@ -1,6 +1,7 @@
 package tech.wendler.commission_tracker;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,7 +30,6 @@ public class NewTransaction extends Fragment {
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal;
     private CheckBox chkMultiTMP;
-    private Button btnSubmit;
     private double totalBucketAchieved = 0;
     private double tabletBucketAmt = 0, connectedBucketAmt = 0, humBucketAmt = 0,
             singleTMPBucketAmt = 0, multiTMPBucketAmt = 0, revBucketAmt = 0;
@@ -46,8 +46,7 @@ public class NewTransaction extends Fragment {
     }
 
     public static NewTransaction newInstance() {
-        NewTransaction fragment = new NewTransaction();
-        return fragment;
+        return new NewTransaction();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class NewTransaction extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_new_transaction, container, false);
@@ -65,6 +64,7 @@ public class NewTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Button btnSubmit;
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtNewPhone = getView().findViewById(R.id.txtEditNewPhones);
@@ -325,8 +325,7 @@ public class NewTransaction extends Fragment {
         //Gets current date & returns it as a string to be inserted into the database
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String date = simpleDateFormat.format(calendar.getTime());
-        return date;
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     public void clearFields() {

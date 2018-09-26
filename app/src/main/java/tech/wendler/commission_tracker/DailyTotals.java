@@ -1,6 +1,7 @@
 package tech.wendler.commission_tracker;
 
 import android.app.DatePickerDialog;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,7 +22,6 @@ public class DailyTotals extends Fragment {
     private TextView txtDisplayDate;
     private TextView lblNewPhones, lblUpgPhones, lblTablets, lblAccessoryRev, lblHum,
             lblCD, lblNewTMP, lblMultiTMP, lblSalesDollars;
-    private Button btnEditTotals;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private DatabaseHelper databaseHelper;
 
@@ -30,7 +29,6 @@ public class DailyTotals extends Fragment {
             connectedDeviceTotal = 0, newTMPTotal = 0, revenueTotal = 0, salesBucketTotal = 0;
     private int multiTMPTotal = 0;
 
-    private String selectedDateString = "";
     private Calendar selectedDate = Calendar.getInstance();
     private Fragment editTotalsFragment = null;
 
@@ -39,8 +37,7 @@ public class DailyTotals extends Fragment {
     }
 
     public static DailyTotals newInstance() {
-        DailyTotals fragment = new DailyTotals();
-        return fragment;
+        return new DailyTotals();
     }
 
     @Override
@@ -49,7 +46,7 @@ public class DailyTotals extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_daily_totals, container, false);
@@ -58,6 +55,7 @@ public class DailyTotals extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstance) {
         super.onActivityCreated(savedInstance);
+        Button btnEditTotals;
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtDisplayDate = getView().findViewById(R.id.lblSelectedDate);
@@ -115,9 +113,12 @@ public class DailyTotals extends Fragment {
                 //Creates new fragment instance
                 editTotalsFragment = EditDailyTotals.newInstance();
                 editTotalsFragment.setArguments(bundle);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, editTotalsFragment);
-                fragmentTransaction.commit();
+                FragmentTransaction fragmentTransaction;
+                if (getFragmentManager() != null) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, editTotalsFragment);
+                    fragmentTransaction.commit();
+                }
             }
         });
     }
@@ -143,7 +144,7 @@ public class DailyTotals extends Fragment {
     private void populateData(Calendar date) {
         clearOldData();
 
-        selectedDateString = formatDateForQueryString(date);
+        String selectedDateString = formatDateForQueryString(date);
         selectedDate = date;
 
         //Total() sums all non-null values in a column & returns a float
@@ -194,16 +195,16 @@ public class DailyTotals extends Fragment {
         String formattedSalesDollars = fmt.format(salesBucketTotal);
 
         //Updates labels with newly queried data
-        //Converts whole numbers into integers via cast
-        lblNewPhones.setText("" + (int) newPhoneTotal);
-        lblUpgPhones.setText("" + (int) upgPhoneTotal);
-        lblTablets.setText("" + (int) tabletTotal);
-        lblAccessoryRev.setText("" + revenueTotal);
-        lblHum.setText("" + (int) humTotal);
-        lblCD.setText("" + (int) connectedDeviceTotal);
-        lblNewTMP.setText("" + (int) newTMPTotal);
+        //Casts as int to remove decimals from whole numbers
+        lblNewPhones.setText(String.valueOf((int) newPhoneTotal));
+        lblUpgPhones.setText(String.valueOf((int) upgPhoneTotal));
+        lblTablets.setText(String.valueOf((int) tabletTotal));
+        lblAccessoryRev.setText(String.valueOf((int) revenueTotal));
+        lblHum.setText(String.valueOf((int) humTotal));
+        lblCD.setText(String.valueOf((int) connectedDeviceTotal));
+        lblNewTMP.setText(String.valueOf((int) newTMPTotal));
         lblSalesDollars.setText(formattedSalesDollars);
-        lblMultiTMP.setText("" + multiTMPTotal);
+        lblMultiTMP.setText(String.valueOf(multiTMPTotal));
     }
 
     private void clearOldData() {

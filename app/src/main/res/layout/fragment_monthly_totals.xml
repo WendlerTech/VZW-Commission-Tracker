@@ -10,7 +10,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/lblExpectedPaycheck"
@@ -119,6 +119,7 @@
             android:layout_height="37dp"
             android:layout_marginStart="72dp"
             android:layout_marginTop="16dp"
+            android:paddingTop="8dp"
             android:text="Metrics"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             app:layout_constraintStart_toStartOf="parent"
@@ -228,7 +229,7 @@
         <Button
             android:id="@+id/btnSelectYear"
             android:layout_width="60dp"
-            android:layout_height="31dp"
+            android:layout_height="34dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
             android:text="2018"
@@ -332,8 +333,9 @@
             android:id="@+id/btnEditQuota"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginEnd="24dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:paddingTop="8dp"
             android:text="Add/Edit Quota"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             app:layout_constraintEnd_toEndOf="parent"
@@ -343,8 +345,9 @@
             android:id="@+id/btnPaycheck"
             android:layout_width="100dp"
             android:layout_height="37dp"
-            android:layout_marginEnd="72dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="72dp"
+            android:paddingTop="8dp"
             android:text="Paycheck"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             app:layout_constraintEnd_toEndOf="parent"

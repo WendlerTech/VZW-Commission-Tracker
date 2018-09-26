@@ -10,7 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
         tools:context=".NewTransaction"
@@ -251,12 +251,15 @@
 
         <Button
             android:id="@+id/btnSubmit"
-            android:layout_width="155dp"
+            android:layout_width="wrap_content"
             android:layout_height="41dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
             android:text="Edit Transaction"
+            android:textAppearance="@android:style/TextAppearance.Material.Small"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lblTotalBucket" />
@@ -264,10 +267,14 @@
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="37dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingTop="8dp"
             android:text="Cancel"
+            android:textAppearance="@android:style/TextAppearance.Material.Small"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />

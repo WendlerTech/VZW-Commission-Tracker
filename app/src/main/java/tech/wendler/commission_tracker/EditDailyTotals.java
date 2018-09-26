@@ -2,6 +2,7 @@ package tech.wendler.commission_tracker;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +18,8 @@ import java.util.Calendar;
 
 public class EditDailyTotals extends Fragment {
 
-    private RecyclerView recyclerView;
-    private RecyclerViewAdapter adapter;
     private ArrayList<Transaction> transactionList;
     private Calendar calendar = Calendar.getInstance();
-    private String selectedDateString;
     private DatabaseHelper databaseHelper;
 
     public EditDailyTotals() {
@@ -29,15 +27,16 @@ public class EditDailyTotals extends Fragment {
     }
 
     public static EditDailyTotals newInstance() {
-        EditDailyTotals fragment = new EditDailyTotals();
-        return fragment;
+        return new EditDailyTotals();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_edit_daily_totals, container, false);
     }
@@ -50,21 +49,23 @@ public class EditDailyTotals extends Fragment {
 
         //Gets long value passed from DailyTotals
         Bundle selectedDate = this.getArguments();
-        Long selectedDateLong = selectedDate.getLong("selectedDate");
-        //Converts long into calendar containing the selected date
-        calendar.setTimeInMillis(selectedDateLong);
+        Long selectedDateLong;
+        if (selectedDate != null) {
+            selectedDateLong = selectedDate.getLong("selectedDate");
+            //Converts long into calendar containing the selected date
+            calendar.setTimeInMillis(selectedDateLong);
+        }
         transactionList = populateTransactionList();
         initRecyclerView();
     }
 
     private ArrayList<Transaction> populateTransactionList() {
-        int newPhones = 0, upgPhones = 0, tablets = 0, connected = 0,
-                hum = 0, singleTMP = 0, transactionID = 0;
-        double salesDollars = 0, revenue = 0;
-        boolean newMultiTMP = false;
+        int newPhones, upgPhones, tablets, connected, hum, singleTMP, transactionID;
+        double revenue;
+        boolean newMultiTMP;
 
         transactionList = new ArrayList<>();
-        selectedDateString = formatDateForQueryString(calendar);
+        String selectedDateString = formatDateForQueryString(calendar);
 
         String queryString = "SELECT transID AS colTransID, new_phones AS colNewPhones, " +
                 "upgrade_phones AS colUpgPhones, tablets_etc AS colTablets, hum AS colHum, " +
@@ -72,9 +73,7 @@ public class EditDailyTotals extends Fragment {
                 "new_multi_tmp AS colMultiTMP, revenue AS colRev, sales_bucket AS colSalesBucket " +
                 "FROM Transactions WHERE date LIKE '" + selectedDateString + "';";
 
-        Cursor cursor = databaseHelper.getData(queryString);
-
-        try {
+        try (Cursor cursor = databaseHelper.getData(queryString)) {
             while (cursor.moveToNext()) {
                 transactionID = cursor.getInt(cursor.getColumnIndex("colTransID"));
                 newPhones = cursor.getInt(cursor.getColumnIndex("colNewPhones"));
@@ -83,22 +82,15 @@ public class EditDailyTotals extends Fragment {
                 connected = cursor.getInt(cursor.getColumnIndex("colCD"));
                 hum = cursor.getInt(cursor.getColumnIndex("colHum"));
                 singleTMP = cursor.getInt(cursor.getColumnIndex("colTMP"));
-                salesDollars = cursor.getDouble(cursor.getColumnIndex("colSalesBucket"));
                 revenue = cursor.getDouble(cursor.getColumnIndex("colRev"));
                 //There is no "getBoolean" function, the boolean column only includes a 0 or 1.
-                if (cursor.getInt(cursor.getColumnIndex("colMultiTMP")) == 1) {
-                    newMultiTMP = true;
-                } else {
-                    newMultiTMP = false;
-                }
+                newMultiTMP = cursor.getInt(cursor.getColumnIndex("colMultiTMP")) == 1;
 
                 Transaction newTransaction = new Transaction(transactionID, newPhones, upgPhones,
                         tablets, connected, hum, singleTMP, revenue, newMultiTMP);
 
                 transactionList.add(newTransaction);
             }
-        } finally {
-            cursor.close();
         }
 
         return transactionList;
@@ -107,14 +99,22 @@ public class EditDailyTotals extends Fragment {
     //Opens recycler view
     public void initRecyclerView() {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        recyclerView = getView().findViewById(R.id.recyclerView);
-        adapter = new RecyclerViewAdapter(getContext(), transactionList, calendar, fragmentTransaction);
+        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), transactionList, calendar, fragmentTransaction);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        Toast toast = Toast.makeText(getContext(), "Click to view/edit, " +
-                "long press to delete.", Toast.LENGTH_SHORT);
-        toast.show();
+        if (adapter.getItemCount() == 0) {
+            //Displays toast message if recycler view is empty
+            Toast.makeText(getContext(), "There are no transactions to view." +
+                    "\nPlease click a tab below to return.", Toast.LENGTH_LONG).show();
+
+        } else {
+            Toast toast = Toast.makeText(getContext(), "Click to view/edit, " +
+                    "long press to delete.", Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
     }
 
     //Formats user selected date into "2018-11-23%" - this effectively returns all entries

@@ -1,10 +1,12 @@
 package tech.wendler.commission_tracker;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -33,14 +35,12 @@ public class MonthlyTotals extends Fragment {
             lblMetricsMultiTMP, lblShowHide, lblTargetPaycheck, lblExpectedPaycheck,
             lblPhoneMultiplier, lblSalesMultiplier, lblTargetPaycheckTitle, lblExpectedPayTitle,
             lblTargetPaySubTitle, lblPhoneMultTitle, lblSalesMultTitle;
-    private Button btnAddEditQuota, btnSelectYear, btnMetrics, btnPaycheck;
-    private Spinner monthSelectorSpinner;
+    private Button btnSelectYear ;
     private int selectedMonth, selectedYear;
     private String selectedMonthString;
     private Calendar calendar = Calendar.getInstance();
     private DatabaseHelper databaseHelper;
     private AlertDialog alert;
-    private double phoneMultiplier = 0, salesMultiplier, expectedPaycheck;
     private int newPhoneQuotaGlobal = 0, upgradeQuotaGlobal = 0, totalPhonesGlobal = 0;
     private double salesDollarQuotaGlobal = 0, expectedCheckGlobal = 0, totalSalesDollarsGlobal = 0;
 
@@ -49,8 +49,7 @@ public class MonthlyTotals extends Fragment {
     }
 
     public static MonthlyTotals newInstance() {
-        MonthlyTotals fragment = new MonthlyTotals();
-        return fragment;
+        return new MonthlyTotals();
     }
 
     @Override
@@ -59,7 +58,7 @@ public class MonthlyTotals extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_monthly_totals, container, false);
     }
@@ -67,6 +66,8 @@ public class MonthlyTotals extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Button btnAddEditQuota, btnMetrics, btnPaycheck;
+        Spinner monthSelectorSpinner;
 
         databaseHelper = new DatabaseHelper(getContext());
 
@@ -117,7 +118,7 @@ public class MonthlyTotals extends Fragment {
         selectedMonth = calendar.get(Calendar.MONTH);
         selectedYear = calendar.get(Calendar.YEAR);
         monthSelectorSpinner.setSelection(selectedMonth);
-        btnSelectYear.setText("" + selectedYear);
+        btnSelectYear.setText(String.valueOf(selectedYear));
 
         hideMetrics();
         hidePaycheck();
@@ -166,6 +167,7 @@ public class MonthlyTotals extends Fragment {
                 dialog.setTitle("Year Selection");
 
                 dialog.setSingleChoiceItems(years, checkedItem, new DialogInterface.OnClickListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
@@ -222,21 +224,17 @@ public class MonthlyTotals extends Fragment {
                 "paycheck_target FROM Quota WHERE month LIKE '" + selectedMonth + "' AND year LIKE '"
                 + selectedYear + "';";
         int newPhones = 0, totalNewPhones = 0, upgPhones = 0, totalUpgPhones = 0,
-                totalTablets = 0, totalHum = 0, totalCD = 0, totalTMP = 0, totalRev = 0,
+                totalTablets = 0, totalHum = 0, totalCD = 0, totalTMP = 0,
                 totalMultiTMP = 0;
-        double salesBucket = 0, totalSalesBucket = 1, expectedCheck = 0;
+        double salesBucket = 0, totalSalesBucket = 1, expectedCheck = 0, totalRev = 0;
 
-        Cursor quotaCursor = databaseHelper.getData(queryString);
-
-        try {
+        try (Cursor quotaCursor = databaseHelper.getData(queryString)) {
             while (quotaCursor.moveToNext()) {
                 newPhones = quotaCursor.getInt(quotaCursor.getColumnIndex("new_phone_quota"));
                 upgPhones = quotaCursor.getInt(quotaCursor.getColumnIndex("upgrade_phone_quota"));
                 salesBucket = quotaCursor.getDouble(quotaCursor.getColumnIndex("sales_bucket_quota"));
                 expectedCheck = quotaCursor.getDouble(quotaCursor.getColumnIndex("paycheck_target"));
             }
-        } finally {
-            quotaCursor.close();
         }
 
         newPhoneQuotaGlobal = newPhones;
@@ -245,7 +243,7 @@ public class MonthlyTotals extends Fragment {
         expectedCheckGlobal = expectedCheck;
 
         int selectedMonthQuery = selectedMonth + 1;
-        String formattedMonth = String.format("%02d", selectedMonthQuery);
+        @SuppressLint("DefaultLocale") String formattedMonth = String.format("%02d", selectedMonthQuery);
 
         //Returns sum of monthly totals
         queryString = "SELECT total(new_phones) AS colNewPhones, " +
@@ -258,9 +256,7 @@ public class MonthlyTotals extends Fragment {
                 "total(revenue) AS colRev FROM Transactions " +
                 "WHERE date LIKE '" + selectedYear + "-" + formattedMonth + "%';";
 
-        Cursor currentCursor = databaseHelper.getData(queryString);
-
-        try {
+        try (Cursor currentCursor = databaseHelper.getData(queryString)) {
             while (currentCursor.moveToNext()) {
                 totalNewPhones = currentCursor.getInt(currentCursor.getColumnIndex("colNewPhones"));
                 totalUpgPhones = currentCursor.getInt(currentCursor.getColumnIndex("colUpgPhones"));
@@ -269,10 +265,8 @@ public class MonthlyTotals extends Fragment {
                 totalHum = currentCursor.getInt(currentCursor.getColumnIndex("colHum"));
                 totalCD = currentCursor.getInt(currentCursor.getColumnIndex("colCD"));
                 totalTMP = currentCursor.getInt(currentCursor.getColumnIndex("colTMP"));
-                totalRev = currentCursor.getInt(currentCursor.getColumnIndex("colRev"));
+                totalRev = currentCursor.getDouble(currentCursor.getColumnIndex("colRev"));
             }
-        } finally {
-            currentCursor.close();
         }
 
         totalPhonesGlobal = totalNewPhones + totalUpgPhones;
@@ -283,35 +277,31 @@ public class MonthlyTotals extends Fragment {
                 "WHERE new_multi_tmp = 1 AND date LIKE " +
                 "'" + selectedYear + "-" + formattedMonth + "%';";
 
-        Cursor multiTMPCursor = databaseHelper.getData(queryString);
-
-        try {
+        try (Cursor multiTMPCursor = databaseHelper.getData(queryString)) {
             while (multiTMPCursor.moveToNext()) {
                 totalMultiTMP = multiTMPCursor.getInt(multiTMPCursor.getColumnIndex("newMultiTMP"));
             }
-        } finally {
-            multiTMPCursor.close();
         }
 
         if (expectedCheck == 0) {
-            lblTargetPaycheck.setText("Add your paycheck target with your quota!");
+            lblTargetPaycheck.setText(R.string.missing_paycheck_target_msg);
 
         } else {
             lblTargetPaycheck.setText(formatCurrency(expectedCheck));
         }
 
-        lblQuotaNewPhones.setText("" + newPhones);
-        lblQuotaUpgPhones.setText("" + upgPhones);
+        lblQuotaNewPhones.setText(String.valueOf(newPhones));
+        lblQuotaUpgPhones.setText(String.valueOf(upgPhones));
         lblQuotaBucket.setText(formatCurrency(salesBucket));
-        lblCurrentNewPhones.setText("" + totalNewPhones);
-        lblCurrentUpgPhones.setText("" + totalUpgPhones);
+        lblCurrentNewPhones.setText(String.valueOf(totalNewPhones));
+        lblCurrentUpgPhones.setText(String.valueOf(totalUpgPhones));
         lblCurrentBucket.setText(formatCurrency(totalSalesBucket));
-        lblMonthlyTablets.setText("" + totalTablets);
+        lblMonthlyTablets.setText(String.valueOf(totalTablets));
         lblMonthlyRev.setText(formatCurrency(totalRev));
-        lblMonthlyHum.setText("" + totalHum);
-        lblMonthlyCD.setText("" + totalCD);
-        lblMonthlyTMP.setText("" + totalTMP);
-        lblMonthlyMultiTMP.setText("" + totalMultiTMP);
+        lblMonthlyHum.setText(String.valueOf(totalHum));
+        lblMonthlyCD.setText(String.valueOf(totalCD));
+        lblMonthlyTMP.setText(String.valueOf(totalTMP));
+        lblMonthlyMultiTMP.setText(String.valueOf(totalMultiTMP));
     }
 
     //Formats sales dollars entry into US currency
@@ -334,10 +324,10 @@ public class MonthlyTotals extends Fragment {
         final EditText txtSalesBucket = new EditText(getContext());
         final EditText txtExpectedCheck = new EditText(getContext());
 
-        lblNewPhone.setText("New Phones:");
-        lblUpgPhone.setText("Upgrade Phones:");
-        lblSalesBucket.setText("Sales Bucket:");
-        lblExpectedCheck.setText("Commission Paycheck At Risk:");
+        lblNewPhone.setText(R.string.new_phones);
+        lblUpgPhone.setText(R.string.upgrade_phones);
+        lblSalesBucket.setText(R.string.sales_bucket);
+        lblExpectedCheck.setText(R.string.paycheck_at_risk);
         txtNewPhones.setInputType(InputType.TYPE_CLASS_NUMBER);
         txtUpgPhones.setInputType(InputType.TYPE_CLASS_NUMBER);
         txtSalesBucket.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -347,25 +337,25 @@ public class MonthlyTotals extends Fragment {
         if (newPhoneQuotaGlobal == 0) {
             txtNewPhones.setHint("0");
         } else {
-            txtNewPhones.setText("" + newPhoneQuotaGlobal);
+            txtNewPhones.setText(String.valueOf(newPhoneQuotaGlobal));
         }
 
         if (upgradeQuotaGlobal == 0) {
             txtUpgPhones.setHint("0");
         } else {
-            txtUpgPhones.setText("" + upgradeQuotaGlobal);
+            txtUpgPhones.setText(String.valueOf(upgradeQuotaGlobal));
         }
 
         if (salesDollarQuotaGlobal == 0) {
             txtSalesBucket.setHint("0");
         } else {
-            txtSalesBucket.setText("" + salesDollarQuotaGlobal);
+            txtSalesBucket.setText(String.valueOf((int) salesDollarQuotaGlobal));
         }
 
         if (expectedCheckGlobal == 0) {
             txtExpectedCheck.setHint("0");
         } else {
-            txtExpectedCheck.setText("" + expectedCheckGlobal);
+            txtExpectedCheck.setText(String.valueOf((int) expectedCheckGlobal));
         }
 
         lblNewPhone.setPadding(40, 40, 40, 40);
@@ -454,6 +444,7 @@ public class MonthlyTotals extends Fragment {
     private void calculatePaycheck() {
         DecimalFormat format = new DecimalFormat("##.00");
         int netPhoneQuota = newPhoneQuotaGlobal + upgradeQuotaGlobal;
+        double phoneMultiplier, salesMultiplier, expectedPaycheck;
         double currentPhoneQuota = (double) totalPhonesGlobal / (double) netPhoneQuota;
 
         //Determines phone multiplier based on currently achieved percentage
@@ -501,7 +492,7 @@ public class MonthlyTotals extends Fragment {
             double over300Adjustment = (expectedPaycheck - (expectedCheckGlobal * 3.0)) * .50;
             expectedPaycheck = expectedPaycheck - over300Adjustment;
         }
-        lblPhoneMultiplier.setText("" + phoneMultiplier);
+        lblPhoneMultiplier.setText(format.format(phoneMultiplier));
         lblSalesMultiplier.setText(format.format(salesMultiplier));
         lblExpectedPaycheck.setText(formatCurrency(expectedPaycheck));
     }

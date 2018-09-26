@@ -13,7 +13,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".DailyTotals">
 
 
@@ -208,10 +208,10 @@
             android:id="@+id/lblSelectedDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="3dp"
-            android:text="December 25, 2018"
+            android:layout_marginEnd="8dp"
+            android:text="Tue, December 25, '18"
             android:textAppearance="@android:style/TextAppearance.Material.Large"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -270,9 +270,10 @@
             android:id="@+id/btnEditDailyTotals"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingTop="8dp"
             android:text="View Transactions"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             app:layout_constraintEnd_toEndOf="parent"

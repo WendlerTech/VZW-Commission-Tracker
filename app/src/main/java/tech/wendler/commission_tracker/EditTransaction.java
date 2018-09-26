@@ -3,6 +3,7 @@ package tech.wendler.commission_tracker;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.text.NumberFormat;
 
 public class EditTransaction extends Fragment {
@@ -30,7 +32,6 @@ public class EditTransaction extends Fragment {
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal;
     private CheckBox chkMultiTMP;
-    private Button btnSubmit, btnCancel;
     private double totalRev = 0, totalBucketAchieved = 0;
     private double tabletBucketAmt = 0, connectedBucketAmt = 0, humBucketAmt = 0,
             singleTMPBucketAmt = 0, multiTMPBucketAmt = 0, revBucketAmt = 0;
@@ -49,8 +50,7 @@ public class EditTransaction extends Fragment {
     }
 
     public static EditTransaction newInstance() {
-        EditTransaction fragment = new EditTransaction();
-        return fragment;
+        return new EditTransaction();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class EditTransaction extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_edit_transaction, container, false);
     }
@@ -67,11 +67,14 @@ public class EditTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Button btnSubmit, btnCancel;
 
         //Gets the Transaction object passed by user selecting a transaction in recycler view
         final Bundle selectedTransaction = this.getArguments();
-        this.transaction = (Transaction) selectedTransaction
-                .getSerializable("selectedTransaction");
+        if (selectedTransaction != null) {
+            this.transaction = (Transaction) selectedTransaction
+                    .getSerializable("selectedTransaction");
+        }
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtNewPhone = getView().findViewById(R.id.txtEditNewPhones);
@@ -336,11 +339,7 @@ public class EditTransaction extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Confirmation from user
-                        if (chkMultiTMP.isChecked()) {
-                            newMultiTMP = true;
-                        } else {
-                            newMultiTMP = false;
-                        }
+                        newMultiTMP = chkMultiTMP.isChecked();
                         //Creates new Transaction object from newly edited values
                         Transaction editedTransaction = new Transaction(transaction.getTransactionID(),
                                 totalNewPhones, totalUpgPhones, totalTablets, totalConnected,
@@ -353,9 +352,12 @@ public class EditTransaction extends Fragment {
 
                         //Opens daily totals fragment upon completion
                         dailyTotalsFragment = DailyTotals.newInstance();
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, dailyTotalsFragment);
-                        fragmentTransaction.commit();
+                        FragmentTransaction fragmentTransaction;
+                        if (getFragmentManager() != null) {
+                            fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, dailyTotalsFragment);
+                            fragmentTransaction.commit();
+                        }
                     }
                 })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -375,9 +377,12 @@ public class EditTransaction extends Fragment {
             @Override
             public void onClick(View v) {
                 dailyTotalsFragment = DailyTotals.newInstance();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, dailyTotalsFragment);
-                fragmentTransaction.commit();
+                FragmentTransaction fragmentTransaction;
+                if (getFragmentManager() != null) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, dailyTotalsFragment);
+                    fragmentTransaction.commit();
+                }
             }
         });
     }
@@ -400,13 +405,13 @@ public class EditTransaction extends Fragment {
         singleTMPBucketAmt = totalTMP * SINGLE_TMP_ASSUMED_VALUE;
         revBucketAmt = totalRev * REVENUE_ASSUMED_VALUE;
 
-        txtNewPhone.setText("" + totalNewPhones);
-        txtUpgPhone.setText("" + totalUpgPhones);
-        txtConnected.setText("" + totalConnected);
-        txtHum.setText("" + totalHum);
-        txtRev.setText("" + totalRev);
-        txtTablet.setText("" + totalTablets);
-        txtTMP.setText("" + totalTMP);
+        txtNewPhone.setText(String.valueOf(totalNewPhones));
+        txtUpgPhone.setText(String.valueOf(totalUpgPhones));
+        txtConnected.setText(String.valueOf(totalConnected));
+        txtHum.setText(String.valueOf(totalHum));
+        txtRev.setText(String.valueOf(totalRev));
+        txtTablet.setText(String.valueOf(totalTablets));
+        txtTMP.setText(String.valueOf(totalTMP));
 
         if (newMultiTMP) {
             chkMultiTMP.setChecked(true);

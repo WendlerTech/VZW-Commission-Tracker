@@ -30,12 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String QUOTA_COL4 = "sales_bucket_quota";
     private final static String QUOTA_COL5 = "paycheck_target";
 
-    private int totalTablets = 0, totalConnected = 0, totalHum = 0, totalTMP = 0,
-            totalNewPhones = 0, totalUpgPhones = 0, transID, boolNewMultiTMP = 0;
-    private double totalRev = 0, totalBucketAchieved = 0;
-    private boolean newMultiTMP;
-
-    public DatabaseHelper(Context context) {
+    DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 2);
     }
 
@@ -53,16 +48,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL8 + " BOOLEAN, " +
                 COL9 + " DOUBLE, " +
                 COL10 + " DOUBLE);";
-
- /*       String createQuotaTable = "CREATE TABLE " + QUOTA_TABLE_NAME + " (" +
-                QUOTA_COL0 + " INTEGER NOT NULL, " +
-                QUOTA_COL1 + " INTEGER NOT NULL, " +
-                QUOTA_COL2 + " INTEGER, " +
-                QUOTA_COL3 + " INTEGER, " +
-                QUOTA_COL4 + " DOUBLE, PRIMARY KEY (" +
-                QUOTA_COL0 + ", " + QUOTA_COL1 + "));";*/
-
-
 
         String createQuotaTable = "CREATE TABLE " + QUOTA_TABLE_NAME + " (" +
                 QUOTA_COL0 + " INTEGER NOT NULL, " +
@@ -87,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addTransactionData(String date, int newPhones, int upgPhones, int tablets, int hum,
+    boolean addTransactionData(String date, int newPhones, int upgPhones, int tablets, int hum,
                                       int CD, int tmp, boolean multiTMP, double rev, double salesBucket) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -104,14 +89,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != -1;
     }
 
-    public boolean addQuotaData(int month, int year, int newPhones, int upgPhones,
+    boolean addQuotaData(int month, int year, int newPhones, int upgPhones,
                                 double salesBucket, double paycheckTarget) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -127,21 +108,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insertWithOnConflict(QUOTA_TABLE_NAME, null, contentValues,
                 SQLiteDatabase.CONFLICT_REPLACE);
 
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != -1;
     }
 
-    public Cursor getData(String queryString) {
+    Cursor getData(String queryString) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery(queryString, null);
-        return data;
+        return db.rawQuery(queryString, null);
     }
 
-    public void updateTransaction(Transaction editedTrans) {
+    void updateTransaction(Transaction editedTrans) {
         SQLiteDatabase db = this.getReadableDatabase();
+
+        int totalTablets, totalConnected, totalHum, totalTMP,
+                totalNewPhones, totalUpgPhones, transID, boolNewMultiTMP;
+        double totalRev, totalBucketAchieved;
+
         totalNewPhones = editedTrans.getTotalNewPhones();
         totalUpgPhones = editedTrans.getTotalUpgPhones();
         totalTablets = editedTrans.getTotalTablets();
@@ -175,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteTransaction(int transIdToBeDeleted) {
+    void deleteTransaction(int transIdToBeDeleted) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String queryString = "DELETE FROM Transactions WHERE transID = " + transIdToBeDeleted + ";";

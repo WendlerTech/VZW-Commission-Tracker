@@ -14,11 +14,11 @@ public class Transaction implements Serializable {
     private int totalNewPhones, totalUpgPhones, totalTablets, totalConnected,
             totalHum, totalTMP;
     private int transactionID;
-    private double totalSalesDollars, totalRev;
+    private double totalRev;
     private boolean newMultiTMP;
 
-    public Transaction(int transactionID, int newPhones, int upgPhones, int tablets, int CD, int hum, int TMP,
-                       double revenue, boolean newMultiTMP) {
+    Transaction(int transactionID, int newPhones, int upgPhones, int tablets, int CD, int hum, int TMP,
+                double revenue, boolean newMultiTMP) {
         this.transactionID = transactionID;
         this.totalNewPhones = newPhones;
         this.totalUpgPhones = upgPhones;
@@ -30,8 +30,8 @@ public class Transaction implements Serializable {
         this.newMultiTMP = newMultiTMP;
     }
 
-    public double getTotalSalesDollars() {
-        totalSalesDollars = (totalTablets * TABLET_ASSUMED_VALUE) +
+    double getTotalSalesDollars() {
+        double totalSalesDollars = (totalTablets * TABLET_ASSUMED_VALUE) +
                 (totalConnected * CONNECTED_ASSUMED_VALUE) + (totalHum * HUM_ASSUMED_VALUE) +
                 (totalTMP * SINGLE_TMP_ASSUMED_VALUE) + (totalRev * REVENUE_ASSUMED_VALUE);
         if (newMultiTMP) {
@@ -41,87 +41,43 @@ public class Transaction implements Serializable {
         return totalSalesDollars;
     }
 
-    public int getTotalPhones() {
-        return totalNewPhones + totalUpgPhones;
-    }
-
-    public int getTotalDevices() {
+    int getTotalDevices() {
         return totalNewPhones + totalUpgPhones + totalConnected + totalHum + totalTablets;
     }
 
-    public int getTransactionID() {
+    int getTransactionID() {
         return transactionID;
     }
 
-    public void setTransactionID(int transactionID) {
-        this.transactionID = transactionID;
-    }
-
-    public int getTotalNewPhones() {
+    int getTotalNewPhones() {
         return totalNewPhones;
     }
 
-    public void setTotalNewPhones(int totalNewPhones) {
-        this.totalNewPhones = totalNewPhones;
-    }
-
-    public int getTotalUpgPhones() {
+    int getTotalUpgPhones() {
         return totalUpgPhones;
     }
 
-    public void setTotalUpgPhones(int totalUpgPhones) {
-        this.totalUpgPhones = totalUpgPhones;
-    }
-
-    public int getTotalTablets() {
+    int getTotalTablets() {
         return totalTablets;
     }
 
-    public void setTotalTablets(int totalTablets) {
-        this.totalTablets = totalTablets;
-    }
-
-    public int getTotalConnected() {
+    int getTotalConnected() {
         return totalConnected;
     }
 
-    public void setTotalConnected(int totalConnected) {
-        this.totalConnected = totalConnected;
-    }
-
-    public int getTotalHum() {
+    int getTotalHum() {
         return totalHum;
     }
 
-    public void setTotalHum(int totalHum) {
-        this.totalHum = totalHum;
-    }
-
-    public int getTotalTMP() {
+    int getTotalTMP() {
         return totalTMP;
     }
 
-    public void setTotalTMP(int totalTMP) {
-        this.totalTMP = totalTMP;
-    }
-
-    public void setTotalSalesDollars(double totalSalesDollars) {
-        this.totalSalesDollars = totalSalesDollars;
-    }
-
-    public double getTotalRev() {
+    double getTotalRev() {
         return totalRev;
     }
 
-    public void setTotalRev(double totalRev) {
-        this.totalRev = totalRev;
-    }
-
-    public boolean isNewMultiTMP() {
+    boolean isNewMultiTMP() {
         return newMultiTMP;
-    }
-
-    public void setNewMultiTMP(boolean newMultiTMP) {
-        this.newMultiTMP = newMultiTMP;
     }
 }

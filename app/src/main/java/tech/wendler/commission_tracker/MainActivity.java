@@ -45,5 +45,4 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         //Do nothing
     }
-
 }

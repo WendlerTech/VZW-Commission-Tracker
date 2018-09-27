@@ -199,7 +199,7 @@ public class DailyTotals extends Fragment {
         lblNewPhones.setText(String.valueOf((int) newPhoneTotal));
         lblUpgPhones.setText(String.valueOf((int) upgPhoneTotal));
         lblTablets.setText(String.valueOf((int) tabletTotal));
-        lblAccessoryRev.setText(String.valueOf((int) revenueTotal));
+        lblAccessoryRev.setText(String.valueOf(revenueTotal));
         lblHum.setText(String.valueOf((int) humTotal));
         lblCD.setText(String.valueOf((int) connectedDeviceTotal));
         lblNewTMP.setText(String.valueOf((int) newTMPTotal));

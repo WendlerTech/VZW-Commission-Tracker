@@ -14,6 +14,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +43,7 @@ public class NewTransaction extends Fragment {
 
     NumberFormat format = NumberFormat.getCurrencyInstance();
     private DatabaseHelper databaseHelper;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public NewTransaction() {
         // Required empty public constructor

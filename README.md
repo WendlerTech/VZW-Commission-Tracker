@@ -1,4 +1,6 @@
 # Commission-Tracker
-Android app for tracking daily &amp; monthly sales in the wireless industry.
+Android app for tracking daily &amp; monthly sales for corporate VZW reps.
 
-With the commission structure being re-vamped by a certain red wireless company, this app will make it easy to quickly see how much of a payout a rep can expect from a single transaction.  The app will also let you track a running total of sales for a particular month, giving a rep the ability to compare their manually inputted totals to the employer-provided commission tracker.
+You can view the app on Google Play: https://play.google.com/store/apps/details?id=tech.wendler.commissiontracker
+
+The app allows you to add transactions & view sales dollar attainment real-time. You can look at your daily totals throughout the day or look back on prior days. You can also track your month with month-to-date metrics that update from every transaction you add. Lastly, you can estimate your commission paycheck real-time.

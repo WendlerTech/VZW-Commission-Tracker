@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,6 +32,7 @@ public class DailyTotals extends Fragment {
 
     private Calendar selectedDate = Calendar.getInstance();
     private Fragment editTotalsFragment = null;
+    private Fragment addPriorTransactionFragment = null;
 
     public DailyTotals() {
         // Required empty public constructor
@@ -55,11 +57,12 @@ public class DailyTotals extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstance) {
         super.onActivityCreated(savedInstance);
-        Button btnEditTotals;
+        Button btnEditTotals, btnAddPriorTransaction;
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtDisplayDate = getView().findViewById(R.id.lblSelectedDate);
         btnEditTotals = getView().findViewById(R.id.btnEditDailyTotals);
+        btnAddPriorTransaction = getView().findViewById(R.id.btnAddPriorTransaction);
         lblNewPhones = getView().findViewById(R.id.lblNewPhones);
         lblUpgPhones = getView().findViewById(R.id.lblUpgPhones);
         lblTablets = getView().findViewById(R.id.lblTablets);
@@ -70,10 +73,20 @@ public class DailyTotals extends Fragment {
         lblMultiTMP = getView().findViewById(R.id.lblMultiTMP);
         lblSalesDollars = getView().findViewById(R.id.lblSalesDollars);
 
-        //Displays current date on load
         Calendar calendar = Calendar.getInstance();
-        updateDisplayDate(formatDate(calendar));
-        populateData(calendar);
+
+        //Allows the date displayed to be the previously chosen if coming from different fragment
+        final Bundle selectedDateBundle = this.getArguments();
+        if (selectedDateBundle != null) {
+            //Displays selected date if applicable
+            calendar.setTimeInMillis(selectedDateBundle.getLong("selectedDate"));
+            updateDisplayDate(formatDate(calendar));
+            populateData(calendar);
+        } else {
+            //Displays current date on load
+            updateDisplayDate(formatDate(calendar));
+            populateData(calendar);
+        }
 
         txtDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +130,22 @@ public class DailyTotals extends Fragment {
                 if (getFragmentManager() != null) {
                     fragmentTransaction = getFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_container, editTotalsFragment);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
+
+        btnAddPriorTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putLong("selectedDate", selectedDate.getTimeInMillis());
+                addPriorTransactionFragment = AddPriorTransaction.newInstance();
+                addPriorTransactionFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction;
+                if (getFragmentManager() != null) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, addPriorTransactionFragment);
                     fragmentTransaction.commit();
                 }
             }

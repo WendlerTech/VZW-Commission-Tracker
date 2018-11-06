@@ -65,6 +65,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Transaction selectedTransaction = listOfTransactions.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("selectedTransaction", selectedTransaction);
+                bundle.putLong("selectedDate", date.getTimeInMillis());
                 editTransaction = EditTransaction.newInstance();
                 editTransaction.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, editTransaction);
@@ -85,7 +86,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         int transToBeDeleted = listOfTransactions.get(position).getTransactionID();
                         databaseHelper.deleteTransaction(transToBeDeleted);
                         Toast.makeText(mContext, "Transaction deleted", Toast.LENGTH_SHORT).show();
+                        Bundle bundle = new Bundle();
+                        bundle.putLong("selectedDate", date.getTimeInMillis());
                         dailyTotals = DailyTotals.newInstance();
+                        dailyTotals.setArguments(bundle);
                         fragmentTransaction.replace(R.id.fragment_container, dailyTotals);
                         fragmentTransaction.commit();
                     }

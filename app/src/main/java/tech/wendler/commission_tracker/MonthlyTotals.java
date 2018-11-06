@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -35,13 +36,14 @@ public class MonthlyTotals extends Fragment {
             lblMetricsMultiTMP, lblShowHide, lblTargetPaycheck, lblExpectedPaycheck,
             lblPhoneMultiplier, lblSalesMultiplier, lblTargetPaycheckTitle, lblExpectedPayTitle,
             lblTargetPaySubTitle, lblPhoneMultTitle, lblSalesMultTitle;
-    private Button btnSelectYear ;
+    private Button btnSelectYear, btnChargebacks;
     private int selectedMonth, selectedYear;
     private String selectedMonthString;
     private Calendar calendar = Calendar.getInstance();
     private DatabaseHelper databaseHelper;
     private AlertDialog alert;
     private int newPhoneQuotaGlobal = 0, upgradeQuotaGlobal = 0, totalPhonesGlobal = 0;
+    private int newPhoneChargebackGlobal, upgradePhoneChargebackGlobal = 0;
     private double salesDollarQuotaGlobal = 0, expectedCheckGlobal = 0, totalSalesDollarsGlobal = 0;
 
     public MonthlyTotals() {
@@ -72,6 +74,7 @@ public class MonthlyTotals extends Fragment {
         databaseHelper = new DatabaseHelper(getContext());
 
         btnAddEditQuota = getView().findViewById(R.id.btnEditQuota);
+        btnChargebacks = getView().findViewById(R.id.btnChargebacks);
         btnSelectYear = getView().findViewById(R.id.btnSelectYear);
         lblQuotaNewPhones = getView().findViewById(R.id.lblQuotaNewPhones);
         lblQuotaUpgPhones = getView().findViewById(R.id.lblQuotaUpgPhones);
@@ -149,6 +152,19 @@ public class MonthlyTotals extends Fragment {
             }
         });
 
+        btnChargebacks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (newPhoneQuotaGlobal == 0 && upgradeQuotaGlobal == 0) {
+                    Toast.makeText(getContext(), "Please add your quota first.",
+                            Toast.LENGTH_SHORT).show();
+                    addQuotaDialog();
+                } else {
+                    addChargebacksDialog();
+                }
+            }
+        });
+
         btnSelectYear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,11 +237,12 @@ public class MonthlyTotals extends Fragment {
     private void populateData() {
         //Returns monthly quota
         String queryString = "SELECT new_phone_quota, upgrade_phone_quota, sales_bucket_quota, " +
-                "paycheck_target FROM Quota WHERE month LIKE '" + selectedMonth + "' AND year LIKE '"
+                "paycheck_target, new_phone_chargeback, upgrade_phone_chargeback " +
+                "FROM Quota WHERE month LIKE '" + selectedMonth + "' AND year LIKE '"
                 + selectedYear + "';";
         int newPhones = 0, totalNewPhones = 0, upgPhones = 0, totalUpgPhones = 0,
                 totalTablets = 0, totalHum = 0, totalCD = 0, totalTMP = 0,
-                totalMultiTMP = 0;
+                totalMultiTMP = 0, newPhoneChargebacks = 0, upgPhoneChargebacks = 0;
         double salesBucket = 0, totalSalesBucket = 1, expectedCheck = 0, totalRev = 0;
 
         try (Cursor quotaCursor = databaseHelper.getData(queryString)) {
@@ -234,6 +251,8 @@ public class MonthlyTotals extends Fragment {
                 upgPhones = quotaCursor.getInt(quotaCursor.getColumnIndex("upgrade_phone_quota"));
                 salesBucket = quotaCursor.getDouble(quotaCursor.getColumnIndex("sales_bucket_quota"));
                 expectedCheck = quotaCursor.getDouble(quotaCursor.getColumnIndex("paycheck_target"));
+                newPhoneChargebacks = quotaCursor.getInt(quotaCursor.getColumnIndex("new_phone_chargeback"));
+                upgPhoneChargebacks = quotaCursor.getInt(quotaCursor.getColumnIndex("upgrade_phone_chargeback"));
             }
         }
 
@@ -241,6 +260,8 @@ public class MonthlyTotals extends Fragment {
         upgradeQuotaGlobal = upgPhones;
         salesDollarQuotaGlobal = salesBucket;
         expectedCheckGlobal = expectedCheck;
+        newPhoneChargebackGlobal = newPhoneChargebacks;
+        upgradePhoneChargebackGlobal = upgPhoneChargebacks;
 
         int selectedMonthQuery = selectedMonth + 1;
         @SuppressLint("DefaultLocale") String formattedMonth = String.format("%02d", selectedMonthQuery);
@@ -391,18 +412,16 @@ public class MonthlyTotals extends Fragment {
         dialog.setPositiveButton("Save Quota", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int newPhoneQuota = 0, upgPhoneQuota = 0;
-                double bucketQuota = 0, expectedCheck = 0;
                 boolean badNum = false;
 
                 //Checks for empty fields
                 if (txtNewPhones.length() > 0 && txtUpgPhones.length() > 0
                         && txtSalesBucket.length() > 0 && txtExpectedCheck.length() > 0) {
                     try {
-                        newPhoneQuota = Integer.parseInt(txtNewPhones.getText().toString());
-                        upgPhoneQuota = Integer.parseInt(txtUpgPhones.getText().toString());
-                        bucketQuota = Double.parseDouble(txtSalesBucket.getText().toString());
-                        expectedCheck = Double.parseDouble(txtExpectedCheck.getText().toString());
+                        newPhoneQuotaGlobal = Integer.parseInt(txtNewPhones.getText().toString());
+                        upgradeQuotaGlobal = Integer.parseInt(txtUpgPhones.getText().toString());
+                        salesDollarQuotaGlobal = Double.parseDouble(txtSalesBucket.getText().toString());
+                        expectedCheckGlobal = Double.parseDouble(txtExpectedCheck.getText().toString());
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         badNum = true;
@@ -411,13 +430,16 @@ public class MonthlyTotals extends Fragment {
                     if (!badNum) {
                         //Adds data
                         if (databaseHelper.addQuotaData(selectedMonth, selectedYear,
-                                newPhoneQuota, upgPhoneQuota, bucketQuota, expectedCheck)) {
+                                newPhoneQuotaGlobal, upgradeQuotaGlobal, salesDollarQuotaGlobal,
+                                expectedCheckGlobal, newPhoneChargebackGlobal,
+                                upgradePhoneChargebackGlobal)) {
                             Toast.makeText(getContext(), "Quota added successfully",
                                     Toast.LENGTH_SHORT).show();
 
                             //Updates fragment if save was successful
                             populateData();
                             calculatePaycheck();
+                            addChargebacksDialog();
                         } else {
                             Toast.makeText(getContext(), "Error while saving quota",
                                     Toast.LENGTH_SHORT).show();
@@ -441,9 +463,147 @@ public class MonthlyTotals extends Fragment {
         alert.show();
     }
 
+    private void addChargebacksDialog() {
+        //Creates layout & views for dialog
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(),
+                R.style.AlertDialogTheme);
+        TextView lblNewPhoneChargeback = new TextView(getContext());
+        TextView lblUpgPhoneChargeback = new TextView(getContext());
+        final EditText txtNewPhoneChargeback = new EditText(getContext());
+        final EditText txtUpgPhoneChargeback = new EditText(getContext());
+
+        lblNewPhoneChargeback.setText(R.string.new_phone_chargeback);
+        lblUpgPhoneChargeback.setText(R.string.upgrade_phone_chargeback);
+        txtNewPhoneChargeback.setInputType(InputType.TYPE_CLASS_NUMBER);
+        txtUpgPhoneChargeback.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        //Auto-fills fields if chargebacks were previously entered
+        if (newPhoneChargebackGlobal == 0) {
+            txtNewPhoneChargeback.setHint("0");
+        } else {
+            txtNewPhoneChargeback.setText(String.valueOf(newPhoneChargebackGlobal));
+        }
+
+        if (upgradePhoneChargebackGlobal == 0) {
+            txtUpgPhoneChargeback.setHint("0");
+        } else {
+            txtUpgPhoneChargeback.setText(String.valueOf(upgradePhoneChargebackGlobal));
+        }
+        lblNewPhoneChargeback.setPadding(40, 40, 40, 40);
+        lblUpgPhoneChargeback.setPadding(40, 40, 40, 40);
+        txtNewPhoneChargeback.setPadding(40, 40, 40, 40);
+        txtUpgPhoneChargeback.setPadding(40, 40, 40, 40);
+
+        lblNewPhoneChargeback.setTextColor(Color.DKGRAY);
+        lblUpgPhoneChargeback.setTextColor(Color.DKGRAY);
+
+        LinearLayout dialogLayout = new LinearLayout(getContext());
+        dialogLayout.setOrientation(LinearLayout.VERTICAL);
+        dialogLayout.addView(lblNewPhoneChargeback);
+        dialogLayout.addView(txtNewPhoneChargeback);
+        dialogLayout.addView(lblUpgPhoneChargeback);
+        dialogLayout.addView(txtUpgPhoneChargeback);
+        dialogLayout.setPadding(40, 40, 40, 40);
+
+        dialog.setView(dialogLayout);
+
+        dialog.setTitle("Chargebacks for " + selectedMonthString + ", " + selectedYear);
+
+        dialog.setPositiveButton("Save Chargebacks", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int newPhoneChargebacks = 0, upgPhoneChargebacks = 0;
+                boolean badNum = false;
+
+                //If either field is left empty, assign 0 chargebacks
+                if (txtNewPhoneChargeback.length() == 0) {
+                    newPhoneChargebacks = 0;
+                }
+                if (txtUpgPhoneChargeback.length() == 0) {
+                    upgPhoneChargebacks = 0;
+                }
+
+                //Checks for empty fields
+                if (txtNewPhoneChargeback.length() > 0 || txtUpgPhoneChargeback.length() > 0) {
+                    //If new phone field isn't empty, retrieve entered data
+                    if (txtNewPhoneChargeback.length() > 0) {
+                        try {
+                            newPhoneChargebackGlobal = Integer.parseInt(txtNewPhoneChargeback.getText().toString());
+                            newPhoneChargebacks = newPhoneChargebackGlobal;
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            badNum = true;
+                        }
+                    }
+                    //If upgrade phone field isn't empty, retrieve entered data
+                    if (txtUpgPhoneChargeback.length() > 0) {
+                        try {
+                            upgradePhoneChargebackGlobal = Integer.parseInt(txtUpgPhoneChargeback.getText().toString());
+                            upgPhoneChargebacks = upgradePhoneChargebackGlobal;
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            badNum = true;
+                        }
+                    }
+
+                    //Valid numbers were entered
+                    if (!badNum) {
+                        //Assign entered (or zero) values into global variables for use elsewhere
+                        newPhoneChargebackGlobal = newPhoneChargebacks;
+                        upgradePhoneChargebackGlobal = upgPhoneChargebacks;
+                        //Adds data
+                        if (databaseHelper.addQuotaData(selectedMonth, selectedYear,
+                                newPhoneQuotaGlobal, upgradeQuotaGlobal, salesDollarQuotaGlobal,
+                                expectedCheckGlobal, newPhoneChargebacks, upgPhoneChargebacks)) {
+                            Toast.makeText(getContext(), "Chargebacks added successfully",
+                                    Toast.LENGTH_SHORT).show();
+
+                            //Updates fragment if save was successful
+                            populateData();
+                            calculatePaycheck();
+                        } else {
+                            Toast.makeText(getContext(), "Error while saving chargebacks.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        //Invalid input
+                        Toast.makeText(getContext(), "Don't do that.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    //Both fields were left empty
+                    Toast.makeText(getContext(), "No chargebacks, nice!",
+                            Toast.LENGTH_SHORT).show();
+                    newPhoneChargebackGlobal = 0;
+                    upgradePhoneChargebackGlobal = 0;
+                    //Adds data
+                    if (databaseHelper.addQuotaData(selectedMonth, selectedYear,
+                            newPhoneQuotaGlobal, upgradeQuotaGlobal, salesDollarQuotaGlobal,
+                            expectedCheckGlobal, newPhoneChargebackGlobal, upgradePhoneChargebackGlobal)) {
+                        //Updates fragment if save was successful
+                        populateData();
+                        calculatePaycheck();
+                    } else {
+                        Toast.makeText(getContext(), "Error while saving chargebacks.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //User cancelled, nothing happens
+                    }
+                });
+        final AlertDialog alert = dialog.create();
+        alert.show();
+    }
+
     private void calculatePaycheck() {
         DecimalFormat format = new DecimalFormat("##.00");
-        int netPhoneQuota = newPhoneQuotaGlobal + upgradeQuotaGlobal;
+        //Net quota is the sum of new & upgrade quota plus chargebacks
+        int netPhoneQuota = newPhoneQuotaGlobal + upgradeQuotaGlobal
+                + newPhoneChargebackGlobal + upgradePhoneChargebackGlobal;
         double phoneMultiplier, salesMultiplier, expectedPaycheck;
         double currentPhoneQuota = (double) totalPhonesGlobal / (double) netPhoneQuota;
 
@@ -507,6 +667,7 @@ public class MonthlyTotals extends Fragment {
         lblSalesMultTitle.setVisibility(View.INVISIBLE);
         lblExpectedPaycheck.setVisibility(View.INVISIBLE);
         lblExpectedPayTitle.setVisibility(View.INVISIBLE);
+        btnChargebacks.setVisibility(View.INVISIBLE);
 
         lblShowHide.setVisibility(View.VISIBLE);
     }
@@ -521,6 +682,7 @@ public class MonthlyTotals extends Fragment {
         lblSalesMultTitle.setVisibility(View.VISIBLE);
         lblExpectedPaycheck.setVisibility(View.VISIBLE);
         lblExpectedPayTitle.setVisibility(View.VISIBLE);
+        btnChargebacks.setVisibility(View.VISIBLE);
 
         lblShowHide.setVisibility(View.INVISIBLE);
 

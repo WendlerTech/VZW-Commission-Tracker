@@ -19,8 +19,8 @@
         <TextView
             android:id="@+id/lblHum"
             android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="Hum+ or Palm"
             android:textColor="#616A6B"
             app:autoSizeMaxTextSize="100sp"
@@ -96,8 +96,8 @@
         <TextView
             android:id="@+id/lblNewPhones"
             android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="New Phones"
             android:textColor="#616A6B"
             app:autoSizeMaxTextSize="100sp"
@@ -129,8 +129,8 @@
         <TextView
             android:id="@+id/lblUpgPhones"
             android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:text="Upgrade Phones"
             android:textColor="#616A6B"
@@ -145,7 +145,7 @@
         <TextView
             android:id="@+id/lblTablets"
             android:layout_width="0dp"
-            android:layout_height="19dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="1dp"
             android:text="Tablets, Jetpacks, Home Phones or HumX"
@@ -177,8 +177,8 @@
         <TextView
             android:id="@+id/lblConnectedDev"
             android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginEnd="1dp"
             android:text="Connected Devices"
             android:textColor="#616A6B"
@@ -235,7 +235,7 @@
         <TextView
             android:id="@+id/lblBucketLabel"
             android:layout_width="0dp"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
@@ -254,8 +254,8 @@
         <TextView
             android:id="@+id/lblTMP"
             android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="New TMP"
             android:textColor="#616A6B"
             app:autoSizeMaxTextSize="100sp"
@@ -269,7 +269,7 @@
         <TextView
             android:id="@+id/lblRevenue"
             android:layout_width="0dp"
-            android:layout_height="19dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="Total Revenue"
@@ -286,7 +286,7 @@
         <TextView
             android:id="@+id/lblTotalBucket"
             android:layout_width="0dp"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"

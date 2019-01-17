@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -393,6 +394,7 @@ public class MonthlyTotals extends Fragment {
         lblSalesBucket.setTextColor(Color.DKGRAY);
         lblExpectedCheck.setTextColor(Color.DKGRAY);
 
+        ScrollView scrollViewLayout = new ScrollView(getContext());
         LinearLayout dialogLayout = new LinearLayout(getContext());
         dialogLayout.setOrientation(LinearLayout.VERTICAL);
         dialogLayout.addView(lblNewPhone);
@@ -405,7 +407,8 @@ public class MonthlyTotals extends Fragment {
         dialogLayout.addView(txtExpectedCheck);
         dialogLayout.setPadding(40, 40, 40, 40);
 
-        dialog.setView(dialogLayout);
+        scrollViewLayout.addView(dialogLayout);
+        dialog.setView(scrollViewLayout);
 
         dialog.setTitle("New quota for " + selectedMonthString + ", " + selectedYear);
 
@@ -497,6 +500,7 @@ public class MonthlyTotals extends Fragment {
         lblNewPhoneChargeback.setTextColor(Color.DKGRAY);
         lblUpgPhoneChargeback.setTextColor(Color.DKGRAY);
 
+        ScrollView scrollViewLayout = new ScrollView(getContext());
         LinearLayout dialogLayout = new LinearLayout(getContext());
         dialogLayout.setOrientation(LinearLayout.VERTICAL);
         dialogLayout.addView(lblNewPhoneChargeback);
@@ -505,7 +509,8 @@ public class MonthlyTotals extends Fragment {
         dialogLayout.addView(txtUpgPhoneChargeback);
         dialogLayout.setPadding(40, 40, 40, 40);
 
-        dialog.setView(dialogLayout);
+        scrollViewLayout.addView(dialogLayout);
+        dialog.setView(scrollViewLayout);
 
         dialog.setTitle("Chargebacks for " + selectedMonthString + ", " + selectedYear);
 

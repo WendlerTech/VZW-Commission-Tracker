@@ -49,7 +49,7 @@ public class EditDailyTotals extends Fragment {
 
         //Gets long value passed from DailyTotals
         Bundle selectedDate = this.getArguments();
-        Long selectedDateLong;
+        long selectedDateLong;
         if (selectedDate != null) {
             selectedDateLong = selectedDate.getLong("selectedDate");
             //Converts long into calendar containing the selected date

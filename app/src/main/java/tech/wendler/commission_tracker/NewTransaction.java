@@ -20,6 +20,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class NewTransaction extends Fragment {
 
@@ -56,6 +57,8 @@ public class NewTransaction extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
+        mFirebaseAnalytics.setCurrentScreen(Objects.requireNonNull(getActivity()), "New_Transaction", "NewTransaction");
     }
 
     @Override
@@ -210,12 +213,20 @@ public class NewTransaction extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) throws NumberFormatException {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (txtRev.getText().toString().length() > 0) {
                     if (txtRev.getText().toString().length() < 9) {
+                        if (txtRev.getText().toString().equals(".")) {
+                            txtRev.setText("0.");
+                            txtRev.setSelection(txtRev.getText().length()); //Moves cursor to end
+                        }
+                        try {
                             totalRev = Double.parseDouble(txtRev.getText().toString());
-                            revBucketAmt = (totalRev * REVENUE_ASSUMED_VALUE);
-                            updateBucketTotalLabel();
+                        } catch (NumberFormatException ignored) {
+
+                        }
+                        revBucketAmt = (totalRev * REVENUE_ASSUMED_VALUE);
+                        updateBucketTotalLabel();
 
                     } else {
                         txtRev.setText("");
@@ -253,7 +264,9 @@ public class NewTransaction extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (txtNewPhone.getText().toString().length() == 0) {
+                    totalNewPhones = 0;
+                }
             }
         });
 
@@ -276,7 +289,9 @@ public class NewTransaction extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (txtUpgPhone.getText().toString().length() == 0) {
+                    totalUpgPhones = 0;
+                }
             }
         });
 
@@ -310,6 +325,7 @@ public class NewTransaction extends Fragment {
                     Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
                     clearFields();
+                    mFirebaseAnalytics.logEvent("New_Transaction_Submitted", null);
                 } else {
                     Toast.makeText(getContext(), "Error while writing to the database.",
                             Toast.LENGTH_SHORT).show();
@@ -334,13 +350,13 @@ public class NewTransaction extends Fragment {
     }
 
     public void clearFields() {
-         totalNewPhones = 0;
-         totalUpgPhones = 0;
-         totalTablets = 0;
-         totalConnected = 0;
-         totalHum = 0;
-         totalTMP = 0;
-         totalRev = 0;
+        totalNewPhones = 0;
+        totalUpgPhones = 0;
+        totalTablets = 0;
+        totalConnected = 0;
+        totalHum = 0;
+        totalTMP = 0;
+        totalRev = 0;
 
         txtNewPhone.setText("");
         txtUpgPhone.setText("");

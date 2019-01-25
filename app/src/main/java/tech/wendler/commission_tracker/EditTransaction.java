@@ -18,8 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class EditTransaction extends Fragment {
 
@@ -46,6 +49,7 @@ public class EditTransaction extends Fragment {
 
     NumberFormat format = NumberFormat.getCurrencyInstance();
     private DatabaseHelper databaseHelper;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public EditTransaction() {
 
@@ -58,6 +62,8 @@ public class EditTransaction extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
+        mFirebaseAnalytics.setCurrentScreen(Objects.requireNonNull(getActivity()), "Edit_Transaction", "EditTransaction");
     }
 
     @Override
@@ -116,7 +122,10 @@ public class EditTransaction extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                //Allows user to simply delete entry, rather than entering a 0
+                if (txtNewPhone.getText().toString().length() == 0) {
+                    totalNewPhones = 0;
+                }
             }
         });
 
@@ -141,7 +150,10 @@ public class EditTransaction extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                //Allows user to simply delete entry, rather than entering a 0
+                if (txtUpgPhone.getText().toString().length() == 0) {
+                    totalUpgPhones = 0;
+                }
             }
         });
 
@@ -280,12 +292,20 @@ public class EditTransaction extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) throws NumberFormatException {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Highlights the edit text box with a pink border upon changes being detected
                 txtRev.setBackgroundResource(R.drawable.edittext_modified_border);
                 if (txtRev.getText().toString().length() > 0) {
                     if (txtRev.getText().toString().length() < 8) {
-                        totalRev = Double.parseDouble(txtRev.getText().toString());
+                        if (txtRev.getText().toString().equals(".")) {
+                            txtRev.setText("0.");
+                            txtRev.setSelection(txtRev.getText().length()); //Moves cursor to end
+                        }
+                        try {
+                            totalRev = Double.parseDouble(txtRev.getText().toString());
+                        } catch (NumberFormatException ignored) {
+
+                        }
                         revBucketAmt = (totalRev * REVENUE_ASSUMED_VALUE);
                         updateBucketTotalLabel();
                     } else {
@@ -352,6 +372,8 @@ public class EditTransaction extends Fragment {
                         databaseHelper.updateTransaction(editedTransaction);
 
                         Toast.makeText(getContext(), "Transaction updated", Toast.LENGTH_SHORT).show();
+
+                        mFirebaseAnalytics.logEvent("Transaction_Edited", null);
 
                         //Opens daily totals fragment to selected date upon successful database edit
                         Bundle bundle = new Bundle();

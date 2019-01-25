@@ -13,10 +13,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class DailyTotals extends Fragment {
 
@@ -33,6 +36,7 @@ public class DailyTotals extends Fragment {
     private Calendar selectedDate = Calendar.getInstance();
     private Fragment editTotalsFragment = null;
     private Fragment addPriorTransactionFragment = null;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public DailyTotals() {
         // Required empty public constructor
@@ -45,6 +49,8 @@ public class DailyTotals extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
+        mFirebaseAnalytics.setCurrentScreen(Objects.requireNonNull(getActivity()), "Daily_Totals", "DailyTotals");
     }
 
     @Override
@@ -120,6 +126,7 @@ public class DailyTotals extends Fragment {
         btnEditTotals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("View_Transactions_Button", null);
                 //Passes the selected date by converting to the calendar instance into a long
                 Bundle bundle = new Bundle();
                 bundle.putLong("selectedDate", selectedDate.getTimeInMillis());
@@ -138,6 +145,7 @@ public class DailyTotals extends Fragment {
         btnAddPriorTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFirebaseAnalytics.logEvent("Add_Prior_Transactions_Button", null);
                 Bundle bundle = new Bundle();
                 bundle.putLong("selectedDate", selectedDate.getTimeInMillis());
                 addPriorTransactionFragment = AddPriorTransaction.newInstance();
@@ -222,13 +230,14 @@ public class DailyTotals extends Fragment {
         Locale locale = Locale.US;
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         String formattedSalesDollars = fmt.format(salesBucketTotal);
+        String formattedRevenue = fmt.format(revenueTotal);
 
         //Updates labels with newly queried data
         //Casts as int to remove decimals from whole numbers
         lblNewPhones.setText(String.valueOf((int) newPhoneTotal));
         lblUpgPhones.setText(String.valueOf((int) upgPhoneTotal));
         lblTablets.setText(String.valueOf((int) tabletTotal));
-        lblAccessoryRev.setText(String.valueOf(revenueTotal));
+        lblAccessoryRev.setText(formattedRevenue);
         lblHum.setText(String.valueOf((int) humTotal));
         lblCD.setText(String.valueOf((int) connectedDeviceTotal));
         lblNewTMP.setText(String.valueOf((int) newTMPTotal));

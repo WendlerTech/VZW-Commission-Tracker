@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         boolean appIsOpenedForTheFirstTime = sp.getBoolean("IsAppOpenedForFirstTime", true);
 
         if (appIsOpenedForTheFirstTime) {
+            mFirebaseAnalytics.logEvent("App_Opened_First_Time", null);
             firstTimeUserDialog();
         }
     }
@@ -74,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle("Welcome to the app!")
                 .setMessage("Thanks for downloading. \n\nYou should know that " +
                         "the app is in NO way officially endorsed by or affiliated with Verizon." +
-                        "\n\nSince you add your own numbers, accuracy can NOT be guaranteed." +
+                        "\n\nSince you add your own numbers, accuracy can't be guaranteed." +
                         "\n\nIf you have questions, comments, or concerns, please email me at: " +
-                        "Nick@Wendler.tech")
+                        "\nNick@Wendler.tech")
                 .setPositiveButton("I understand", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

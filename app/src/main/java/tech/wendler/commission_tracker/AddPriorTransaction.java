@@ -21,6 +21,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class AddPriorTransaction extends Fragment {
 
@@ -59,6 +60,8 @@ public class AddPriorTransaction extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
+        mFirebaseAnalytics.setCurrentScreen(Objects.requireNonNull(getActivity()), "Add_Prior_Transaction", "AddPriorTransaction");
     }
 
     @Override
@@ -225,7 +228,15 @@ public class AddPriorTransaction extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) throws NumberFormatException {
                 if (txtRev.getText().toString().length() > 0) {
                     if (txtRev.getText().toString().length() < 9) {
-                        totalRev = Double.parseDouble(txtRev.getText().toString());
+                        if (txtRev.getText().toString().equals(".")) {
+                            txtRev.setText("0.");
+                            txtRev.setSelection(txtRev.getText().length()); //Moves cursor to end
+                        }
+                        try {
+                            totalRev = Double.parseDouble(txtRev.getText().toString());
+                        } catch (NumberFormatException ignored) {
+
+                        }
                         revBucketAmt = (totalRev * REVENUE_ASSUMED_VALUE);
                         updateBucketTotalLabel();
                     } else {
@@ -264,7 +275,9 @@ public class AddPriorTransaction extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (txtNewPhone.getText().toString().length() == 0) {
+                    totalNewPhones = 0;
+                }
             }
         });
 
@@ -287,7 +300,9 @@ public class AddPriorTransaction extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (txtUpgPhone.getText().toString().length() == 0) {
+                    totalUpgPhones = 0;
+                }
             }
         });
 
@@ -320,6 +335,7 @@ public class AddPriorTransaction extends Fragment {
                         totalRev, totalBucketAchieved)) {
                     Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
+                    mFirebaseAnalytics.logEvent("Prior_Transaction_Added", null);
                     //Opens daily totals fragment to selected date upon successful database save
                     Bundle bundle = new Bundle();
                     bundle.putLong("selectedDate", selectedDate.getTimeInMillis());

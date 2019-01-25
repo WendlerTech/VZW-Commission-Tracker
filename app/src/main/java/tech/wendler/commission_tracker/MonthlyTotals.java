@@ -22,11 +22,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MonthlyTotals extends Fragment {
 
@@ -46,6 +49,7 @@ public class MonthlyTotals extends Fragment {
     private int newPhoneQuotaGlobal = 0, upgradeQuotaGlobal = 0, totalPhonesGlobal = 0;
     private int newPhoneChargebackGlobal, upgradePhoneChargebackGlobal = 0;
     private double salesDollarQuotaGlobal = 0, expectedCheckGlobal = 0, totalSalesDollarsGlobal = 0;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public MonthlyTotals() {
 
@@ -58,6 +62,8 @@ public class MonthlyTotals extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
+        mFirebaseAnalytics.setCurrentScreen(Objects.requireNonNull(getActivity()), "Monthly_Totals", "MonthlyTotals");
     }
 
     @Override
@@ -219,6 +225,7 @@ public class MonthlyTotals extends Fragment {
                     hidePaycheck();
                     hideMetrics();
                 }
+                mFirebaseAnalytics.logEvent("View_Paycheck_Button", null);
             }
         });
 
@@ -231,6 +238,7 @@ public class MonthlyTotals extends Fragment {
                     hidePaycheck();
                     showMetrics();
                 }
+                mFirebaseAnalytics.logEvent("View_Metrics_Button", null);
             }
         });
     }

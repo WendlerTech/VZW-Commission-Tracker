@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/lblSalesMultiplier"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
@@ -82,7 +82,7 @@
 
         <TextView
             android:id="@+id/lblPhoneMultiplier"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
@@ -159,7 +159,7 @@
 
         <TextView
             android:id="@+id/lblMonthlyMultiTMP"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
@@ -177,7 +177,7 @@
 
         <TextView
             android:id="@+id/lblMonthlyTMP"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
@@ -194,7 +194,7 @@
 
         <TextView
             android:id="@+id/lblMonthlyCD"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
@@ -212,7 +212,7 @@
 
         <TextView
             android:id="@+id/lblMonthlyHum"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
@@ -229,7 +229,7 @@
 
         <TextView
             android:id="@+id/lblMonthlyRevenue"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
@@ -310,7 +310,7 @@
 
         <TextView
             android:id="@+id/lblMonthlyTablets"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="23dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"

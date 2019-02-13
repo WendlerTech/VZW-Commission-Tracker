@@ -7,7 +7,7 @@ public class Transaction implements Serializable {
     private final static double REVENUE_ASSUMED_VALUE = .35;
     private final static int CONNECTED_ASSUMED_VALUE = 50;
     private final static int SINGLE_TMP_ASSUMED_VALUE = 70;
-    private final static int HUM_ASSUMED_VALUE = 50;
+    private final static int HUM_ASSUMED_VALUE = 100;
     private final static int MULTI_TMP_ASSUMED_VALUE = 200;
     private final static int TABLET_ASSUMED_VALUE = 200;
 

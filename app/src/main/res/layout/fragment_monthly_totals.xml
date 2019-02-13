@@ -247,7 +247,7 @@
 
         <TextView
             android:id="@+id/lblQuotaBucket"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
@@ -264,7 +264,7 @@
 
         <TextView
             android:id="@+id/lblQuotaUpgPhones"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
@@ -281,7 +281,7 @@
 
         <TextView
             android:id="@+id/lblQuotaNewPhones"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
@@ -327,7 +327,7 @@
 
         <TextView
             android:id="@+id/lblCurrentBucket"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
@@ -343,7 +343,7 @@
 
         <TextView
             android:id="@+id/lblCurrentUpgPhones"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
@@ -359,7 +359,7 @@
 
         <TextView
             android:id="@+id/lblCurrentNewPhones"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"

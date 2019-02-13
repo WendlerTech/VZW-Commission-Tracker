@@ -27,7 +27,7 @@ public class NewTransaction extends Fragment {
     final static double REVENUE_ASSUMED_VALUE = .35;
     final static int CONNECTED_ASSUMED_VALUE = 50;
     final static int SINGLE_TMP_ASSUMED_VALUE = 70;
-    final static int HUM_ASSUMED_VALUE = 50;
+    final static int HUM_ASSUMED_VALUE = 100;
     final static int MULTI_TMP_ASSUMED_VALUE = 200;
     final static int TABLET_ASSUMED_VALUE = 200;
 

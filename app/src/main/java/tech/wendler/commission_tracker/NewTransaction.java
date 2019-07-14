@@ -3,6 +3,7 @@ package tech.wendler.commission_tracker;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ public class NewTransaction extends Fragment {
     final static double REVENUE_ASSUMED_VALUE = .35;
     final static int CONNECTED_ASSUMED_VALUE = 50;
     final static int SINGLE_TMP_ASSUMED_VALUE = 70;
-    final static int HUM_ASSUMED_VALUE = 100;
+    final static int HUM_ASSUMED_VALUE = 50;
     final static int MULTI_TMP_ASSUMED_VALUE = 200;
     final static int TABLET_ASSUMED_VALUE = 200;
 
@@ -84,6 +85,20 @@ public class NewTransaction extends Fragment {
         chkMultiTMP = getView().findViewById(R.id.chkMultiTMP);
         lblBucketTotal = getView().findViewById(R.id.lblTotalBucket);
         btnSubmit = getView().findViewById(R.id.btnSubmit);
+
+        Button addDetailsBtn = getView().findViewById(R.id.btnAddDetails);
+        addDetailsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment moreDetailsFragment = MoreInfo.newInstance();
+                FragmentTransaction fragmentTransaction;
+                if (getFragmentManager() != null) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, moreDetailsFragment);
+                    fragmentTransaction.commit();
+                }
+            }
+        });
 
         //TextWatcher listeners update the bucket total label in real time
         txtTablet.addTextChangedListener(new TextWatcher() {

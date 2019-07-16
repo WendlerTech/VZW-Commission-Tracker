@@ -4,18 +4,22 @@ import java.io.Serializable;
 
 public class Transaction implements Serializable {
 
-    private final static double REVENUE_ASSUMED_VALUE = .35;
-    private final static int CONNECTED_ASSUMED_VALUE = 50;
-    private final static int SINGLE_TMP_ASSUMED_VALUE = 70;
-    private final static int HUM_ASSUMED_VALUE = 50;
-    private final static int MULTI_TMP_ASSUMED_VALUE = 200;
-    private final static int TABLET_ASSUMED_VALUE = 200;
+    private final static double REVENUE_ASSUMED_VALUE = SalesDollarValues.getRevenueAssumedValue();
+    private final static int CONNECTED_ASSUMED_VALUE = SalesDollarValues.getConnectedAssumedValue();
+    private final static int SINGLE_TMP_ASSUMED_VALUE = SalesDollarValues.getSingleTmpAssumedValue();
+    private final static int HUM_ASSUMED_VALUE = SalesDollarValues.getHumAssumedValue();
+    private final static int MULTI_TMP_ASSUMED_VALUE = SalesDollarValues.getMultiTmpAssumedValue();
+    private final static int TABLET_ASSUMED_VALUE = SalesDollarValues.getTabletAssumedValue();
 
     private int totalNewPhones, totalUpgPhones, totalTablets, totalConnected,
             totalHum, totalTMP;
     private int transactionID;
     private double totalRev;
     private boolean newMultiTMP;
+
+    Transaction() {
+
+    }
 
     Transaction(int transactionID, int newPhones, int upgPhones, int tablets, int CD, int hum, int TMP,
                 double revenue, boolean newMultiTMP) {
@@ -79,5 +83,41 @@ public class Transaction implements Serializable {
 
     boolean isNewMultiTMP() {
         return newMultiTMP;
+    }
+
+    public void setTotalNewPhones(int totalNewPhones) {
+        this.totalNewPhones = totalNewPhones;
+    }
+
+    public void setTotalUpgPhones(int totalUpgPhones) {
+        this.totalUpgPhones = totalUpgPhones;
+    }
+
+    public void setTotalTablets(int totalTablets) {
+        this.totalTablets = totalTablets;
+    }
+
+    public void setTotalConnected(int totalConnected) {
+        this.totalConnected = totalConnected;
+    }
+
+    public void setTotalHum(int totalHum) {
+        this.totalHum = totalHum;
+    }
+
+    public void setTotalTMP(int totalTMP) {
+        this.totalTMP = totalTMP;
+    }
+
+    public void setTransactionID(int transactionID) {
+        this.transactionID = transactionID;
+    }
+
+    public void setTotalRev(double totalRev) {
+        this.totalRev = totalRev;
+    }
+
+    public void setNewMultiTMP(boolean newMultiTMP) {
+        this.newMultiTMP = newMultiTMP;
     }
 }

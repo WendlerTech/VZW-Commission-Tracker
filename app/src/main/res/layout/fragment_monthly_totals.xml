@@ -643,7 +643,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="Hum+, Palm"
+            android:text="Hum+"
             android:visibility="invisible"
             app:autoSizeMaxTextSize="100sp"
             app:autoSizeMinTextSize="14sp"

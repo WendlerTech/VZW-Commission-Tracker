@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="Hum+ or Palm"
+            android:text="Hum+"
             android:textColor="#616A6B"
             app:autoSizeMaxTextSize="100sp"
             app:autoSizeMinTextSize="14sp"

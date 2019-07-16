@@ -25,12 +25,12 @@ import java.util.Objects;
 
 public class NewTransaction extends Fragment {
 
-    final static double REVENUE_ASSUMED_VALUE = .35;
-    final static int CONNECTED_ASSUMED_VALUE = 50;
-    final static int SINGLE_TMP_ASSUMED_VALUE = 70;
-    final static int HUM_ASSUMED_VALUE = 50;
-    final static int MULTI_TMP_ASSUMED_VALUE = 200;
-    final static int TABLET_ASSUMED_VALUE = 200;
+    private final static double REVENUE_ASSUMED_VALUE = SalesDollarValues.getRevenueAssumedValue();
+    private final static int CONNECTED_ASSUMED_VALUE = SalesDollarValues.getConnectedAssumedValue();
+    private final static int SINGLE_TMP_ASSUMED_VALUE = SalesDollarValues.getSingleTmpAssumedValue();
+    private final static int HUM_ASSUMED_VALUE = SalesDollarValues.getHumAssumedValue();
+    private final static int MULTI_TMP_ASSUMED_VALUE = SalesDollarValues.getMultiTmpAssumedValue();
+    private final static int TABLET_ASSUMED_VALUE = SalesDollarValues.getTabletAssumedValue();
 
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal;
@@ -46,6 +46,8 @@ public class NewTransaction extends Fragment {
     NumberFormat format = NumberFormat.getCurrencyInstance();
     private DatabaseHelper databaseHelper;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Transaction inProgressTransaction;
+    private TransactionInfo inProgressTransactionInfo;
 
     public NewTransaction() {
         // Required empty public constructor
@@ -72,7 +74,7 @@ public class NewTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button btnSubmit;
+        Button btnSubmit, addDetailsBtn;
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtNewPhone = getView().findViewById(R.id.txtEditNewPhones);
@@ -85,12 +87,44 @@ public class NewTransaction extends Fragment {
         chkMultiTMP = getView().findViewById(R.id.chkMultiTMP);
         lblBucketTotal = getView().findViewById(R.id.lblTotalBucket);
         btnSubmit = getView().findViewById(R.id.btnSubmit);
+        addDetailsBtn = getView().findViewById(R.id.btnAddDetails);
 
-        Button addDetailsBtn = getView().findViewById(R.id.btnAddDetails);
+        //Checks to see if any data has already been entered for this transaction
+        final Bundle newTransactionBundle = this.getArguments();
+        if (newTransactionBundle != null) {
+            this.inProgressTransaction = (Transaction) newTransactionBundle
+                    .getSerializable("inProgressTransaction");
+            this.inProgressTransactionInfo = (TransactionInfo) newTransactionBundle
+                    .getSerializable("inProgressTransactionInfo");
+
+            if (inProgressTransaction != null) {
+                populateInProgressTransactionData();
+            }
+        }
+
         addDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Saves current transaction data to re-populate later
+                Transaction currentTransaction = new Transaction();
+                currentTransaction.setTotalNewPhones(totalNewPhones);
+                currentTransaction.setTotalUpgPhones(totalUpgPhones);
+                currentTransaction.setTotalTablets(totalTablets);
+                currentTransaction.setTotalHum(totalHum);
+                currentTransaction.setTotalConnected(totalConnected);
+                currentTransaction.setTotalTMP(totalTMP);
+                currentTransaction.setTotalRev(totalRev);
+                currentTransaction.setNewMultiTMP(newMultiTMP);
+                Bundle currentTransBundle = new Bundle();
+                currentTransBundle.putSerializable("currentTransaction", currentTransaction);
+
+                //If user previously entered extra info, passes said data back to re-populate
+                if (inProgressTransactionInfo != null) {
+                    currentTransBundle.putSerializable("currentTransactionInfo", inProgressTransactionInfo);
+                }
+
                 Fragment moreDetailsFragment = MoreInfo.newInstance();
+                moreDetailsFragment.setArguments(currentTransBundle);
                 FragmentTransaction fragmentTransaction;
                 if (getFragmentManager() != null) {
                     fragmentTransaction = getFragmentManager().beginTransaction();
@@ -381,6 +415,57 @@ public class NewTransaction extends Fragment {
         txtTMP.setText("");
         txtRev.setText("");
         chkMultiTMP.setChecked(false);
+        updateBucketTotalLabel();
+    }
+
+    private void populateInProgressTransactionData() {
+        totalNewPhones = inProgressTransaction.getTotalNewPhones();
+        totalUpgPhones = inProgressTransaction.getTotalUpgPhones();
+        totalTablets = inProgressTransaction.getTotalTablets();
+        totalConnected = inProgressTransaction.getTotalConnected();
+        totalBucketAchieved = inProgressTransaction.getTotalSalesDollars();
+        totalHum = inProgressTransaction.getTotalHum();
+        totalTMP = inProgressTransaction.getTotalTMP();
+        totalRev = inProgressTransaction.getTotalRev();
+        newMultiTMP = inProgressTransaction.isNewMultiTMP();
+
+        //Zero values retain empty text field & show hint
+        if (totalNewPhones > 0) {
+            txtNewPhone.setText(String.valueOf(totalNewPhones));
+        }
+        if (totalUpgPhones > 0) {
+            txtUpgPhone.setText(String.valueOf(totalUpgPhones));
+        }
+        if (totalTablets > 0) {
+            txtTablet.setText(String.valueOf(totalTablets));
+            tabletBucketAmt = totalTablets * TABLET_ASSUMED_VALUE;
+        }
+        if (totalHum > 0) {
+            txtHum.setText(String.valueOf(totalHum));
+            humBucketAmt = totalHum * HUM_ASSUMED_VALUE;
+        }
+        if (totalConnected > 0) {
+            txtConnected.setText(String.valueOf(totalConnected));
+            connectedBucketAmt = totalConnected * CONNECTED_ASSUMED_VALUE;
+        }
+        if (totalRev > 0) {
+            txtRev.setText(String.valueOf(totalRev));
+            revBucketAmt = totalRev * REVENUE_ASSUMED_VALUE;
+        }
+
+        if (newMultiTMP) {
+            chkMultiTMP.setChecked(true);
+            txtTMP.setEnabled(false);
+            multiTMPBucketAmt = MULTI_TMP_ASSUMED_VALUE;
+        } else {
+            chkMultiTMP.setChecked(false);
+            txtTMP.setEnabled(true);
+            if (totalTMP > 0) {
+                txtTMP.setText(String.valueOf(totalTMP));
+                singleTMPBucketAmt = totalTMP * SINGLE_TMP_ASSUMED_VALUE;
+            }
+        }
+
         updateBucketTotalLabel();
     }
 }

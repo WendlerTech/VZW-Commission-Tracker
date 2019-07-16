@@ -26,12 +26,12 @@ import java.util.Objects;
 
 public class EditTransaction extends Fragment {
 
-    final static double REVENUE_ASSUMED_VALUE = .35;
-    final static int CONNECTED_ASSUMED_VALUE = 50;
-    final static int SINGLE_TMP_ASSUMED_VALUE = 70;
-    final static int HUM_ASSUMED_VALUE = 100;
-    final static int MULTI_TMP_ASSUMED_VALUE = 200;
-    final static int TABLET_ASSUMED_VALUE = 200;
+    private final static double REVENUE_ASSUMED_VALUE = SalesDollarValues.getRevenueAssumedValue();
+    private final static int CONNECTED_ASSUMED_VALUE = SalesDollarValues.getConnectedAssumedValue();
+    private final static int SINGLE_TMP_ASSUMED_VALUE = SalesDollarValues.getSingleTmpAssumedValue();
+    private final static int HUM_ASSUMED_VALUE = SalesDollarValues.getHumAssumedValue();
+    private final static int MULTI_TMP_ASSUMED_VALUE = SalesDollarValues.getMultiTmpAssumedValue();
+    private final static int TABLET_ASSUMED_VALUE = SalesDollarValues.getTabletAssumedValue();
 
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal;

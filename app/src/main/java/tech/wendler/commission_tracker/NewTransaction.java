@@ -128,7 +128,8 @@ public class NewTransaction extends Fragment {
                 FragmentTransaction fragmentTransaction;
                 if (getFragmentManager() != null) {
                     fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container, moreDetailsFragment);
+                    fragmentTransaction.replace(R.id.fragment_container, moreDetailsFragment, "NewTransaction");
+                    fragmentTransaction.addToBackStack("NewTransaction");
                     fragmentTransaction.commit();
                 }
             }
@@ -368,9 +369,23 @@ public class NewTransaction extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (databaseHelper.addTransactionData(currentTime(), totalNewPhones, totalUpgPhones,
-                        totalTablets, totalHum, totalConnected, totalTMP, newMultiTMP,
-                        totalRev, totalBucketAchieved)) {
+                //If user didn't enter any extra info, instantiates object prior to passing
+                if (inProgressTransactionInfo == null) {
+                    inProgressTransactionInfo = new TransactionInfo();
+                }
+
+                inProgressTransaction = new Transaction();
+                inProgressTransaction.setTotalNewPhones(totalNewPhones);
+                inProgressTransaction.setTotalUpgPhones(totalUpgPhones);
+                inProgressTransaction.setTotalTablets(totalTablets);
+                inProgressTransaction.setTotalHum(totalHum);
+                inProgressTransaction.setTotalConnected(totalConnected);
+                inProgressTransaction.setTotalTMP(totalTMP);
+                inProgressTransaction.setNewMultiTMP(newMultiTMP);
+                inProgressTransaction.setTotalRev(totalRev);
+
+                if (databaseHelper.addTransactionData(currentTime(), inProgressTransaction,
+                        totalBucketAchieved, inProgressTransactionInfo)) {
                     Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
                     clearFields();

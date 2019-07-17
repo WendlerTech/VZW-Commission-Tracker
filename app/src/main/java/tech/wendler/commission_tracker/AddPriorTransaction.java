@@ -48,6 +48,8 @@ public class AddPriorTransaction extends Fragment {
     private DatabaseHelper databaseHelper;
     private Fragment dailyTotalsFragment = null;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Transaction inProgressTransaction;
+    private TransactionInfo inProgressTransactionInfo;
 
     public AddPriorTransaction() {
         // Required empty public constructor
@@ -74,11 +76,20 @@ public class AddPriorTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button btnSubmit, btnCancel;
+        Button btnSubmit, btnCancel, btnAddDetails;
 
         final Bundle selectedDateBundle = this.getArguments();
         if (selectedDateBundle != null) {
             selectedDate.setTimeInMillis(selectedDateBundle.getLong("selectedDate"));
+        }
+
+        //Checks to see if any data has already been entered for this transaction
+        final Bundle transactionInProgressBundle = this.getArguments();
+        if (transactionInProgressBundle != null) {
+            this.inProgressTransaction = (Transaction) transactionInProgressBundle
+                    .getSerializable("inProgressTransaction");
+            this.inProgressTransactionInfo = (TransactionInfo) transactionInProgressBundle
+                    .getSerializable("inProgressTransactionInfo");
         }
 
         databaseHelper = new DatabaseHelper(getActivity());
@@ -94,6 +105,7 @@ public class AddPriorTransaction extends Fragment {
         lblHeaderTitle = getView().findViewById(R.id.lblTitle);
         btnSubmit = getView().findViewById(R.id.btnSubmit);
         btnCancel = getView().findViewById(R.id.btnCancelAddPrior);
+        btnAddDetails = getView().findViewById(R.id.btnAddPriorAddDetails);
 
         updateTitleLabel(selectedDate);
 
@@ -326,13 +338,31 @@ public class AddPriorTransaction extends Fragment {
             }
         });
 
+        if (inProgressTransaction != null) {
+            populateInProgressTransactionData();
+        }
+
         //Submit button handles database transaction
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (databaseHelper.addTransactionData(formatDateForQueryString(selectedDate), totalNewPhones, totalUpgPhones,
-                        totalTablets, totalHum, totalConnected, totalTMP, newMultiTMP,
-                        totalRev, totalBucketAchieved)) {
+                //If user didn't enter any extra info, instantiates object prior to passing
+                if (inProgressTransactionInfo == null) {
+                    inProgressTransactionInfo = new TransactionInfo();
+                }
+
+                inProgressTransaction = new Transaction();
+                inProgressTransaction.setTotalNewPhones(totalNewPhones);
+                inProgressTransaction.setTotalUpgPhones(totalUpgPhones);
+                inProgressTransaction.setTotalTablets(totalTablets);
+                inProgressTransaction.setTotalHum(totalHum);
+                inProgressTransaction.setTotalConnected(totalConnected);
+                inProgressTransaction.setTotalTMP(totalTMP);
+                inProgressTransaction.setNewMultiTMP(newMultiTMP);
+                inProgressTransaction.setTotalRev(totalRev);
+
+                if (databaseHelper.addTransactionData(formatDateForQueryString(selectedDate), inProgressTransaction,
+                        totalBucketAchieved, inProgressTransactionInfo)) {
                     Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
                     mFirebaseAnalytics.logEvent("Prior_Transaction_Added", null);
@@ -350,6 +380,40 @@ public class AddPriorTransaction extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "Error while writing to the database.",
                             Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnAddDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Saves current transaction data to re-populate later
+                Transaction currentTransaction = new Transaction();
+                currentTransaction.setTotalNewPhones(totalNewPhones);
+                currentTransaction.setTotalUpgPhones(totalUpgPhones);
+                currentTransaction.setTotalTablets(totalTablets);
+                currentTransaction.setTotalHum(totalHum);
+                currentTransaction.setTotalConnected(totalConnected);
+                currentTransaction.setTotalTMP(totalTMP);
+                currentTransaction.setTotalRev(totalRev);
+                currentTransaction.setNewMultiTMP(newMultiTMP);
+                Bundle currentTransBundle = new Bundle();
+                currentTransBundle.putSerializable("currentTransaction", currentTransaction);
+                currentTransBundle.putLong("selectedDate", selectedDate.getTimeInMillis());
+
+                //If user previously entered extra info, passes said data back to re-populate
+                if (inProgressTransactionInfo != null) {
+                    currentTransBundle.putSerializable("currentTransactionInfo", inProgressTransactionInfo);
+                }
+
+                Fragment moreDetailsFragment = MoreInfo.newInstance();
+                moreDetailsFragment.setArguments(currentTransBundle);
+                FragmentTransaction fragmentTransaction;
+                if (getFragmentManager() != null) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, moreDetailsFragment, "AddPriorTransaction");
+                    fragmentTransaction.addToBackStack("AddPriorTransaction");
+                    fragmentTransaction.commit();
                 }
             }
         });
@@ -388,5 +452,56 @@ public class AddPriorTransaction extends Fragment {
     private String formatDateForQueryString(Calendar date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return simpleDateFormat.format(date.getTime());
+    }
+
+    private void populateInProgressTransactionData() {
+        totalNewPhones = inProgressTransaction.getTotalNewPhones();
+        totalUpgPhones = inProgressTransaction.getTotalUpgPhones();
+        totalTablets = inProgressTransaction.getTotalTablets();
+        totalConnected = inProgressTransaction.getTotalConnected();
+        totalBucketAchieved = inProgressTransaction.getTotalSalesDollars();
+        totalHum = inProgressTransaction.getTotalHum();
+        totalTMP = inProgressTransaction.getTotalTMP();
+        totalRev = inProgressTransaction.getTotalRev();
+        newMultiTMP = inProgressTransaction.isNewMultiTMP();
+
+        //Zero values retain empty text field & show hint
+        if (totalNewPhones > 0) {
+            txtNewPhone.setText(String.valueOf(totalNewPhones));
+        }
+        if (totalUpgPhones > 0) {
+            txtUpgPhone.setText(String.valueOf(totalUpgPhones));
+        }
+        if (totalTablets > 0) {
+            txtTablet.setText(String.valueOf(totalTablets));
+            tabletBucketAmt = totalTablets * TABLET_ASSUMED_VALUE;
+        }
+        if (totalHum > 0) {
+            txtHum.setText(String.valueOf(totalHum));
+            humBucketAmt = totalHum * HUM_ASSUMED_VALUE;
+        }
+        if (totalConnected > 0) {
+            txtConnected.setText(String.valueOf(totalConnected));
+            connectedBucketAmt = totalConnected * CONNECTED_ASSUMED_VALUE;
+        }
+        if (totalRev > 0) {
+            txtRev.setText(String.valueOf(totalRev));
+            revBucketAmt = totalRev * REVENUE_ASSUMED_VALUE;
+        }
+
+        if (newMultiTMP) {
+            chkMultiTMP.setChecked(true);
+            txtTMP.setEnabled(false);
+            multiTMPBucketAmt = MULTI_TMP_ASSUMED_VALUE;
+        } else {
+            chkMultiTMP.setChecked(false);
+            txtTMP.setEnabled(true);
+            if (totalTMP > 0) {
+                txtTMP.setText(String.valueOf(totalTMP));
+                singleTMPBucketAmt = totalTMP * SINGLE_TMP_ASSUMED_VALUE;
+            }
+        }
+
+        updateBucketTotalLabel();
     }
 }

@@ -21,6 +21,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String COL8 = "new_multi_tmp";
     private final static String COL9 = "revenue";
     private final static String COL10 = "sales_bucket";
+    private final static String COL11 = "customer_name";
+    private final static String COL12 = "phone_number";
+    private final static String COL13 = "order_number";
+    private final static String COL14 = "sales_force_leads";
+    private final static String COL15 = "rep_assisted_order";
+    private final static String COL16 = "direct_fulfillment_order";
+    private final static String COL17 = "in_store_pickup_order";
+    private final static String COL18 = "pre_order";
+    private final static String COL19 = "extra_sales_dollars";
 
     private final static String QUOTA_TABLE_NAME = "Quota";
     private final static String QUOTA_COL0 = "month";
@@ -33,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String QUOTA_COL7 = "upgrade_phone_chargeback";
 
     DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 3);
+        super(context, DATABASE_NAME, null, 4);
     }
 
     @Override
@@ -49,7 +58,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL7 + " INTEGER, " +
                 COL8 + " BOOLEAN, " +
                 COL9 + " DOUBLE, " +
-                COL10 + " DOUBLE);";
+                COL10 + " DOUBLE, " +
+                COL11 + " TEXT, " +
+                COL12 + " TEXT, " +
+                COL13 + " TEXT, " +
+                COL14 + " INTEGER, " +
+                COL15 + " BOOLEAN, " +
+                COL16 + " BOOLEAN, " +
+                COL17 + " BOOLEAN, " +
+                COL18 + " BOOLEAN, " +
+                COL19 + " DOUBLE);";
 
         String createQuotaTable = "CREATE TABLE " + QUOTA_TABLE_NAME + " (" +
                 QUOTA_COL0 + " INTEGER NOT NULL, " +
@@ -77,23 +95,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN new_phone_chargeback INTEGER");
                 db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN upgrade_phone_chargeback INTEGER");
                 break;
+            case 4:
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL11 + " TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL12 + " TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL13 + " TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL14 + " INTEGER");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL15 + " BOOLEAN");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL16 + " BOOLEAN");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL17 + " BOOLEAN");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL18 + " BOOLEAN");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL19 + " DOUBLE");
         }
     }
 
-    boolean addTransactionData(String date, int newPhones, int upgPhones, int tablets, int hum,
-                               int CD, int tmp, boolean multiTMP, double rev, double salesBucket) {
+    boolean addTransactionData(String date, Transaction transaction, double salesBucket,
+                               TransactionInfo extraInfo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, date);
-        contentValues.put(COL2, newPhones);
-        contentValues.put(COL3, upgPhones);
-        contentValues.put(COL4, tablets);
-        contentValues.put(COL5, hum);
-        contentValues.put(COL6, CD);
-        contentValues.put(COL7, tmp);
-        contentValues.put(COL8, multiTMP);
-        contentValues.put(COL9, rev);
+        contentValues.put(COL2, transaction.getTotalNewPhones());
+        contentValues.put(COL3, transaction.getTotalUpgPhones());
+        contentValues.put(COL4, transaction.getTotalTablets());
+        contentValues.put(COL5, transaction.getTotalHum());
+        contentValues.put(COL6, transaction.getTotalConnected());
+        contentValues.put(COL7, transaction.getTotalTMP());
+        contentValues.put(COL8, transaction.isNewMultiTMP());
+        contentValues.put(COL9, transaction.getTotalRev());
         contentValues.put(COL10, salesBucket);
+        contentValues.put(COL11, extraInfo.getCustomerName());
+        contentValues.put(COL12, extraInfo.getPhoneNumber());
+        contentValues.put(COL13, extraInfo.getOrderNumber());
+        contentValues.put(COL14, extraInfo.getSalesForceLeads());
+        contentValues.put(COL15, extraInfo.isRepAssistedOrder());
+        contentValues.put(COL16, extraInfo.isdFillOrder());
+        contentValues.put(COL17, extraInfo.isInStorePickupOrder());
+        contentValues.put(COL18, extraInfo.isPreOrder());
+        contentValues.put(COL19, extraInfo.getExtraSalesDollars());
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 

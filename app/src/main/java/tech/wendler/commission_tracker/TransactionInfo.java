@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class TransactionInfo implements Serializable {
 
     private String customerName, phoneNumber, orderNumber;
-    private int salesForceLeads, transactionInfoID;
+    private int salesForceLeads;
     private boolean repAssistedOrder, dFillOrder, inStorePickupOrder, preOrder;
     private double extraSalesDollars;
 
@@ -65,14 +65,6 @@ public class TransactionInfo implements Serializable {
 
     public void setExtraSalesDollars(double extraSalesDollars) {
         this.extraSalesDollars = extraSalesDollars;
-    }
-
-    public int getTransactionInfoID() {
-        return transactionInfoID;
-    }
-
-    public void setTransactionInfoID(int transactionInfoID) {
-        this.transactionInfoID = transactionInfoID;
     }
 
     public boolean isRepAssistedOrder() {

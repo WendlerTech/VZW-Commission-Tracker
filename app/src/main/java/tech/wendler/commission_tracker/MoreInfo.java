@@ -104,6 +104,10 @@ public class MoreInfo extends Fragment {
                         break;
                     case "EditTransaction":
                         fragmentToOpen = EditTransaction.newInstance();
+                        if (getArguments() != null) {
+                            currentTransBundle.putLong("selectedDate", getArguments().getLong("selectedDate"));
+                            currentTransBundle.putSerializable("selectedTransaction", currentTransaction);
+                        }
                         break;
                     default:
                         fragmentToOpen = NewTransaction.newInstance();
@@ -123,7 +127,7 @@ public class MoreInfo extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalSalesDollars += currentTransaction.getTotalSalesDollars();
+                //          totalSalesDollars += currentTransaction.getTotalSalesDollars();
                 Calendar selectedDate = Calendar.getInstance();
 
                 //Changes date to insert depending on parent fragment
@@ -135,42 +139,57 @@ public class MoreInfo extends Fragment {
                         dateToUse = formatDateForQueryString(selectedDate);
                     }
                 }
-                if (databaseHelper.addTransactionData(dateToUse, currentTransaction,
-                        totalSalesDollars, saveData())) {
-                    Toast.makeText(getContext(), "Transaction successfully added.",
+                if (lastFragmentTag.equals("EditTransaction")) {
+                    if (getArguments() != null) {
+                        long selectedDateLong = getArguments().getLong("selectedDate");
+                        selectedDate.setTimeInMillis(selectedDateLong);
+                    }
+                    databaseHelper.updateTransaction(currentTransaction, saveData());
+                    Toast.makeText(getContext(), "Transaction updated successfully.",
                             Toast.LENGTH_SHORT).show();
-
-                    Fragment fragmentToOpen;
-
-                    switch (lastFragmentTag) {
-                        case "NewTransaction":
-                            fragmentToOpen = NewTransaction.newInstance();
-                            mFirebaseAnalytics.logEvent("New_Transaction_Info_Submitted", null);
-                            break;
-                        case "AddPriorTransaction":
-                            //Opens daily totals fragment to selected date upon successful database save
-                            fragmentToOpen = DailyTotals.newInstance();
-                            mFirebaseAnalytics.logEvent("Prior_Transaction_Info_Added", null);
-                            Bundle bundle = new Bundle();
-                            bundle.putLong("selectedDate", selectedDate.getTimeInMillis());
-                            fragmentToOpen.setArguments(bundle);
-                            break;
-                        case "EditTransaction":
-                            fragmentToOpen = EditTransaction.newInstance();
-                            break;
-                        default:
-                            fragmentToOpen = NewTransaction.newInstance();
-                    }
-
-                    FragmentTransaction fragmentTransaction;
-                    if (getFragmentManager() != null) {
-                        fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, fragmentToOpen);
-                        fragmentTransaction.commit();
-                    }
                 } else {
-                    Toast.makeText(getContext(), "Error while writing to the database.",
-                            Toast.LENGTH_SHORT).show();
+                    if (databaseHelper.addTransactionData(dateToUse, currentTransaction,
+                            saveData())) {
+                        Toast.makeText(getContext(), "Transaction successfully added.",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Error while writing to the database.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                Fragment fragmentToOpen;
+
+                switch (lastFragmentTag) {
+                    case "NewTransaction":
+                        fragmentToOpen = NewTransaction.newInstance();
+                        mFirebaseAnalytics.logEvent("New_Transaction_Info_Submitted", null);
+                        break;
+                    case "AddPriorTransaction":
+                        //Opens daily totals fragment to selected date upon successful database save
+                        fragmentToOpen = DailyTotals.newInstance();
+                        mFirebaseAnalytics.logEvent("Prior_Transaction_Info_Added", null);
+                        Bundle addPriorTransBundle = new Bundle();
+                        addPriorTransBundle.putLong("selectedDate", selectedDate.getTimeInMillis());
+                        fragmentToOpen.setArguments(addPriorTransBundle);
+                        break;
+                    case "EditTransaction":
+                        //Opens daily totals fragment to selected date upon successful database edit
+                        fragmentToOpen = DailyTotals.newInstance();
+                        mFirebaseAnalytics.logEvent("Edit_Transaction_Info_Added", null);
+                        Bundle editTransBundle = new Bundle();
+                        editTransBundle.putLong("selectedDate", selectedDate.getTimeInMillis());
+                        fragmentToOpen.setArguments(editTransBundle);
+                        break;
+                    default:
+                        fragmentToOpen = NewTransaction.newInstance();
+                }
+
+                FragmentTransaction fragmentTransaction;
+                if (getFragmentManager() != null) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, fragmentToOpen);
+                    fragmentTransaction.commit();
                 }
             }
         });
@@ -220,10 +239,23 @@ public class MoreInfo extends Fragment {
     }
 
     private void populateData() {
-        txtCustName.setText(String.valueOf(currentTransactionInfo.getCustomerName()));
-        txtPhoneNum.setText(String.valueOf(currentTransactionInfo.getPhoneNumber()));
-        txtOrderNum.setText(String.valueOf(currentTransactionInfo.getOrderNumber()));
-
+        if (currentTransactionInfo.getCustomerName() != null) {
+            //If a user submits a transaction edit without adding info & no info was previously
+            //entered, a string with the value of "null" is entered. This ensures it isn't shown.
+            if (!currentTransactionInfo.getCustomerName().equals("null")) {
+                txtCustName.setText((currentTransactionInfo.getCustomerName()));
+            }
+        }
+        if (currentTransactionInfo.getPhoneNumber() != null) {
+            if (!currentTransactionInfo.getPhoneNumber().equals("null")) {
+                txtPhoneNum.setText((currentTransactionInfo.getPhoneNumber()));
+            }
+        }
+        if (currentTransactionInfo.getOrderNumber() != null) {
+            if (!currentTransactionInfo.getOrderNumber().equals("null")) {
+                txtOrderNum.setText((currentTransactionInfo.getOrderNumber()));
+            }
+        }
         if (currentTransactionInfo.getSalesForceLeads() > 0) {
             txtSalesForce.setText(String.valueOf(currentTransactionInfo.getSalesForceLeads()));
         }

@@ -192,7 +192,8 @@ public class DailyTotals extends Fragment {
                 "total(connected_devices_etc) AS ColCD, " +
                 "total(new_tmp) AS ColNewTMP, " +
                 "total(revenue) AS ColRevenue, " +
-                "total(sales_bucket) AS ColSalesBucket " +
+                "total(sales_bucket) AS ColSalesBucket, " +
+                "total(extra_sales_dollars) AS ColExtraSalesDollars " +
                 "FROM Transactions WHERE date LIKE '" + selectedDateString + "';";
 
         Cursor cursor = databaseHelper.getData(queryString);
@@ -207,7 +208,8 @@ public class DailyTotals extends Fragment {
                 connectedDeviceTotal = cursor.getFloat(cursor.getColumnIndex("ColCD"));
                 newTMPTotal = cursor.getFloat(cursor.getColumnIndex("ColNewTMP"));
                 revenueTotal = cursor.getFloat(cursor.getColumnIndex("ColRevenue"));
-                salesBucketTotal = cursor.getFloat(cursor.getColumnIndex("ColSalesBucket"));
+                salesBucketTotal = cursor.getFloat(cursor.getColumnIndex("ColSalesBucket")) +
+                        cursor.getFloat(cursor.getColumnIndex("ColExtraSalesDollars"));
             }
         } finally {
             cursor.close();

@@ -35,6 +35,7 @@ public class NewTransaction extends Fragment {
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal;
     private CheckBox chkMultiTMP;
+    private Button addDetailsBtn;
     private double totalBucketAchieved = 0;
     private double tabletBucketAmt = 0, connectedBucketAmt = 0, humBucketAmt = 0,
             singleTMPBucketAmt = 0, multiTMPBucketAmt = 0, revBucketAmt = 0;
@@ -74,7 +75,7 @@ public class NewTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button btnSubmit, addDetailsBtn;
+        Button btnSubmit;
 
         databaseHelper = new DatabaseHelper(getActivity());
         txtNewPhone = getView().findViewById(R.id.txtEditNewPhones);
@@ -385,7 +386,7 @@ public class NewTransaction extends Fragment {
                 inProgressTransaction.setTotalRev(totalRev);
 
                 if (databaseHelper.addTransactionData(currentTime(), inProgressTransaction,
-                        totalBucketAchieved, inProgressTransactionInfo)) {
+                        inProgressTransactionInfo)) {
                     Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
                     clearFields();
@@ -482,5 +483,8 @@ public class NewTransaction extends Fragment {
         }
 
         updateBucketTotalLabel();
+
+        //Changes button text to "View Details" if more info screen has been opened
+        addDetailsBtn.setText(R.string.view_details);
     }
 }

@@ -108,8 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    boolean addTransactionData(String date, Transaction transaction, double salesBucket,
-                               TransactionInfo extraInfo) {
+    boolean addTransactionData(String date, Transaction transaction, TransactionInfo extraInfo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, date);
@@ -121,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL7, transaction.getTotalTMP());
         contentValues.put(COL8, transaction.isNewMultiTMP());
         contentValues.put(COL9, transaction.getTotalRev());
-        contentValues.put(COL10, salesBucket);
+        contentValues.put(COL10, transaction.getTotalSalesDollars());
         contentValues.put(COL11, extraInfo.getCustomerName());
         contentValues.put(COL12, extraInfo.getPhoneNumber());
         contentValues.put(COL13, extraInfo.getOrderNumber());
@@ -164,12 +163,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(queryString, null);
     }
 
-    void updateTransaction(Transaction editedTrans) {
+    void updateTransaction(Transaction editedTrans, TransactionInfo editedTransInfo) {
         SQLiteDatabase db = this.getReadableDatabase();
 
+        String custName, phoneNum, orderNum;
         int totalTablets, totalConnected, totalHum, totalTMP,
-                totalNewPhones, totalUpgPhones, transID, boolNewMultiTMP;
-        double totalRev, totalBucketAchieved;
+                totalNewPhones, totalUpgPhones, transID, boolNewMultiTMP,
+                salesForceLeads, repAssisted, dFill, ispu, preOrder;
+        double totalRev, totalBucketAchieved, extraSalesDollars;
+
 
         totalNewPhones = editedTrans.getTotalNewPhones();
         totalUpgPhones = editedTrans.getTotalUpgPhones();
@@ -180,6 +182,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         totalRev = editedTrans.getTotalRev();
         totalBucketAchieved = editedTrans.getTotalSalesDollars();
         transID = editedTrans.getTransactionID();
+
+        custName = editedTransInfo.getCustomerName();
+        phoneNum = editedTransInfo.getPhoneNumber();
+        orderNum = editedTransInfo.getOrderNumber();
+        salesForceLeads = editedTransInfo.getSalesForceLeads();
+        repAssisted = editedTransInfo.isRepAssistedOrder() ? 1 : 0;
+        dFill = editedTransInfo.isdFillOrder() ? 1 : 0;
+        ispu = editedTransInfo.isInStorePickupOrder() ? 1 : 0;
+        preOrder = editedTransInfo.isPreOrder() ? 1 : 0;
+        extraSalesDollars = editedTransInfo.getExtraSalesDollars();
 
         if (editedTrans.isNewMultiTMP()) {
             boolNewMultiTMP = 1;
@@ -197,6 +209,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "', new_multi_tmp = '" + boolNewMultiTMP +
                 "', revenue = " + totalRev +
                 ", sales_bucket = " + totalBucketAchieved +
+                ", customer_name = '" + custName +
+                "', phone_number = '" + phoneNum +
+                "', order_number = '" + orderNum +
+                "', sales_force_leads = '" + salesForceLeads +
+                "', rep_assisted_order = '" + repAssisted +
+                "', direct_fulfillment_order = '" + dFill +
+                "', in_store_pickup_order = '" + ispu +
+                "', pre_order = '" + preOrder +
+                "', extra_sales_dollars = " + extraSalesDollars +
                 " WHERE transID = " + transID + ";";
 
         db.execSQL(queryString);

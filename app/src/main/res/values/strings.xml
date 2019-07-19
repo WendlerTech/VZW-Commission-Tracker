@@ -11,6 +11,7 @@
     <string name="upgrade_phone_chargeback">Upgrade Phone Chargebacks:</string>
     <string name="sales_bucket">Sales Bucket:</string>
     <string name="paycheck_at_risk">Commission Paycheck At Risk:</string>
+    <string name="view_details">View Details</string>
 
     <string-array name="months">
         <item>January</item>

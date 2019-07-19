@@ -283,8 +283,9 @@ public class MonthlyTotals extends Fragment {
                 "total(hum) AS colHum, " +
                 "total(connected_devices_etc) AS colCD, " +
                 "total(new_tmp) AS colTMP, " +
-                "total(revenue) AS colRev FROM Transactions " +
-                "WHERE date LIKE '" + selectedYear + "-" + formattedMonth + "%';";
+                "total(revenue) AS colRev, " +
+                "total(extra_sales_dollars) AS colExtraBucket " +
+                "FROM Transactions WHERE date LIKE '" + selectedYear + "-" + formattedMonth + "%';";
 
         try (Cursor currentCursor = databaseHelper.getData(queryString)) {
             while (currentCursor.moveToNext()) {
@@ -296,6 +297,7 @@ public class MonthlyTotals extends Fragment {
                 totalCD = currentCursor.getInt(currentCursor.getColumnIndex("colCD"));
                 totalTMP = currentCursor.getInt(currentCursor.getColumnIndex("colTMP"));
                 totalRev = currentCursor.getDouble(currentCursor.getColumnIndex("colRev"));
+                totalSalesBucket += currentCursor.getDouble(currentCursor.getColumnIndex("colExtraBucket"));
             }
         }
 

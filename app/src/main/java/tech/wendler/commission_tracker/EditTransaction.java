@@ -2,6 +2,7 @@ package tech.wendler.commission_tracker;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ public class EditTransaction extends Fragment {
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal;
     private CheckBox chkMultiTMP;
+    private Button btnAddDetails;
     private double totalRev = 0, totalBucketAchieved = 0;
     private double tabletBucketAmt = 0, connectedBucketAmt = 0, humBucketAmt = 0,
             singleTMPBucketAmt = 0, multiTMPBucketAmt = 0, revBucketAmt = 0;
@@ -44,6 +46,7 @@ public class EditTransaction extends Fragment {
     private boolean newMultiTMP;
 
     private Transaction transaction = null;
+    private TransactionInfo transactionInfo = null;
     private Calendar selectedDate = Calendar.getInstance();
     private Fragment dailyTotalsFragment = null;
 
@@ -77,14 +80,6 @@ public class EditTransaction extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Button btnSubmit, btnCancel;
 
-        //Gets the Transaction object passed by user selecting a transaction in recycler view
-        final Bundle selectedTransaction = this.getArguments();
-        if (selectedTransaction != null) {
-            this.transaction = (Transaction) selectedTransaction
-                    .getSerializable("selectedTransaction");
-            this.selectedDate.setTimeInMillis(selectedTransaction.getLong("selectedDate"));
-        }
-
         databaseHelper = new DatabaseHelper(getActivity());
         txtNewPhone = getView().findViewById(R.id.txtEditNewPhones);
         txtUpgPhone = getView().findViewById(R.id.txtEditUpgPhones);
@@ -97,6 +92,23 @@ public class EditTransaction extends Fragment {
         lblBucketTotal = getView().findViewById(R.id.lblTotalBucket);
         btnSubmit = getView().findViewById(R.id.btnSubmit);
         btnCancel = getView().findViewById(R.id.btnCancel);
+        btnAddDetails = getView().findViewById(R.id.btnEditTransAddDetails);
+
+        //Gets the Transaction object passed by user selecting a transaction in recycler view
+        final Bundle selectedTransaction = this.getArguments();
+        if (selectedTransaction != null) {
+            this.transaction = (Transaction) selectedTransaction
+                    .getSerializable("selectedTransaction");
+            this.selectedDate.setTimeInMillis(selectedTransaction.getLong("selectedDate"));
+            this.transactionInfo = (TransactionInfo) selectedTransaction.getSerializable("inProgressTransactionInfo");
+
+            if (transactionInfo == null) {
+                queryTransactionInfo();
+            } else {
+                //Changes button text to "View Details" if any exist
+                btnAddDetails.setText(R.string.view_details);
+            }
+        }
 
         populateSelectedTransData();
 
@@ -369,7 +381,7 @@ public class EditTransaction extends Fragment {
                                 totalHum, totalTMP, totalRev, newMultiTMP);
 
                         //Sends new object to be updated in DB
-                        databaseHelper.updateTransaction(editedTransaction);
+                        databaseHelper.updateTransaction(editedTransaction, transactionInfo);
 
                         Toast.makeText(getContext(), "Transaction updated", Toast.LENGTH_SHORT).show();
 
@@ -397,6 +409,35 @@ public class EditTransaction extends Fragment {
 
                 final AlertDialog alert = dialog.create();
                 alert.show();
+            }
+        });
+
+        btnAddDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transaction.setTotalNewPhones(totalNewPhones);
+                transaction.setTotalUpgPhones(totalUpgPhones);
+                transaction.setTotalTablets(totalTablets);
+                transaction.setTotalHum(totalHum);
+                transaction.setTotalConnected(totalConnected);
+                transaction.setTotalTMP(totalTMP);
+                transaction.setTotalRev(totalRev);
+                transaction.setNewMultiTMP(newMultiTMP);
+
+                Bundle transactionBundle = new Bundle();
+                transactionBundle.putSerializable("currentTransaction", transaction);
+                transactionBundle.putSerializable("currentTransactionInfo", transactionInfo);
+                transactionBundle.putLong("selectedDate", selectedDate.getTimeInMillis());
+
+                Fragment moreDetailsFragment = MoreInfo.newInstance();
+                moreDetailsFragment.setArguments(transactionBundle);
+                FragmentTransaction fragmentTransaction;
+                if (getFragmentManager() != null) {
+                    fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, moreDetailsFragment, "EditTransaction");
+                    fragmentTransaction.addToBackStack("EditTransaction");
+                    fragmentTransaction.commit();
+                }
             }
         });
 
@@ -436,13 +477,27 @@ public class EditTransaction extends Fragment {
         singleTMPBucketAmt = totalTMP * SINGLE_TMP_ASSUMED_VALUE;
         revBucketAmt = totalRev * REVENUE_ASSUMED_VALUE;
 
-        txtNewPhone.setText(String.valueOf(totalNewPhones));
-        txtUpgPhone.setText(String.valueOf(totalUpgPhones));
-        txtConnected.setText(String.valueOf(totalConnected));
-        txtHum.setText(String.valueOf(totalHum));
-        txtRev.setText(String.valueOf(totalRev));
-        txtTablet.setText(String.valueOf(totalTablets));
-        txtTMP.setText(String.valueOf(totalTMP));
+        if (totalNewPhones > 0) {
+            txtNewPhone.setText(String.valueOf(totalNewPhones));
+        }
+        if (totalUpgPhones > 0) {
+            txtUpgPhone.setText(String.valueOf(totalUpgPhones));
+        }
+        if (totalConnected > 0) {
+            txtConnected.setText(String.valueOf(totalConnected));
+        }
+        if (totalHum > 0) {
+            txtHum.setText(String.valueOf(totalHum));
+        }
+        if (totalRev > 0) {
+            txtRev.setText(String.valueOf(totalRev));
+        }
+        if (totalTablets > 0) {
+            txtTablet.setText(String.valueOf(totalTablets));
+        }
+        if (totalTMP > 0) {
+            txtTMP.setText(String.valueOf(totalTMP));
+        }
 
         if (newMultiTMP) {
             chkMultiTMP.setChecked(true);
@@ -455,6 +510,42 @@ public class EditTransaction extends Fragment {
         }
 
         updateBucketTotalLabel();
+    }
+
+    private void queryTransactionInfo() {
+        String name, phoneNum, orderNum;
+        int salesForceLeads;
+        double extraSalesDollars;
+        boolean repAssisted, dFill, ispu, preOrder;
+
+        String queryString = "SELECT customer_name, phone_number, order_number, sales_force_leads, " +
+                "rep_assisted_order, direct_fulfillment_order, in_store_pickup_order, pre_order, " +
+                "extra_sales_dollars FROM Transactions WHERE transID LIKE '" +
+                transaction.getTransactionID() + "';";
+
+        try (Cursor cursor = databaseHelper.getData(queryString)) {
+            while (cursor.moveToNext()) {
+                name = cursor.getString(cursor.getColumnIndex("customer_name"));
+                phoneNum = cursor.getString(cursor.getColumnIndex("phone_number"));
+                orderNum = cursor.getString(cursor.getColumnIndex("order_number"));
+                salesForceLeads = cursor.getInt(cursor.getColumnIndex("sales_force_leads"));
+                extraSalesDollars = cursor.getFloat(cursor.getColumnIndex("extra_sales_dollars"));
+                repAssisted = cursor.getInt(cursor.getColumnIndex("rep_assisted_order")) == 1;
+                dFill = cursor.getInt(cursor.getColumnIndex("direct_fulfillment_order")) == 1;
+                ispu = cursor.getInt(cursor.getColumnIndex("in_store_pickup_order")) == 1;
+                preOrder = cursor.getInt(cursor.getColumnIndex("pre_order")) == 1;
+
+                transactionInfo = new TransactionInfo(name, phoneNum, orderNum, salesForceLeads,
+                        extraSalesDollars, repAssisted, dFill, ispu, preOrder);
+
+                //Changes button text to "View Details" if any exist
+                if (name != null || phoneNum != null || orderNum != null || salesForceLeads > 0
+                        || extraSalesDollars > 0 || repAssisted || dFill || ispu || preOrder) {
+                    btnAddDetails.setText(R.string.view_details);
+                }
+            }
+        }
+
     }
 
     //Changes label to reflect updated bucket dollars earned

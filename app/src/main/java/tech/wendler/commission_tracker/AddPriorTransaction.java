@@ -35,6 +35,7 @@ public class AddPriorTransaction extends Fragment {
     private EditText txtNewPhone, txtUpgPhone, txtTablet, txtConnected, txtTMP, txtRev, txtHum;
     private TextView lblBucketTotal, lblHeaderTitle;
     private CheckBox chkMultiTMP;
+    private Button btnAddDetails;
     private double totalBucketAchieved = 0;
     private double tabletBucketAmt = 0, connectedBucketAmt = 0, humBucketAmt = 0,
             singleTMPBucketAmt = 0, multiTMPBucketAmt = 0, revBucketAmt = 0;
@@ -76,7 +77,7 @@ public class AddPriorTransaction extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button btnSubmit, btnCancel, btnAddDetails;
+        Button btnSubmit, btnCancel;
 
         final Bundle selectedDateBundle = this.getArguments();
         if (selectedDateBundle != null) {
@@ -362,7 +363,7 @@ public class AddPriorTransaction extends Fragment {
                 inProgressTransaction.setTotalRev(totalRev);
 
                 if (databaseHelper.addTransactionData(formatDateForQueryString(selectedDate), inProgressTransaction,
-                        totalBucketAchieved, inProgressTransactionInfo)) {
+                        inProgressTransactionInfo)) {
                     Toast.makeText(getContext(), "Transaction successfully added.",
                             Toast.LENGTH_SHORT).show();
                     mFirebaseAnalytics.logEvent("Prior_Transaction_Added", null);
@@ -503,5 +504,8 @@ public class AddPriorTransaction extends Fragment {
         }
 
         updateBucketTotalLabel();
+
+        //Changes button text to "View Details" if more info screen has been opened
+        btnAddDetails.setText(R.string.view_details);
     }
 }

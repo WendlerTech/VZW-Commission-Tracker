@@ -17,4 +17,9 @@
         android:icon="@drawable/ic_totals"
         android:title="@string/title_totals"/>
 
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/title_search"/>
+
 </menu>

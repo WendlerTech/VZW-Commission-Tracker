@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Commission Tracker</string>
-    <string name="title_new_trans">New Transaction</string>
-    <string name="title_quick">Quick Adds</string>
-    <string name="title_monthly_totals">Monthly Totals</string>
-    <string name="title_totals">Daily Totals</string>
+    <string name="title_new_trans">New</string>
+    <string name="title_monthly_totals">Monthly</string>
+    <string name="title_totals">Daily</string>
+    <string name="title_search">Search</string>
     <string name="missing_paycheck_target_msg">Add your paycheck target with your quota.</string>
     <string name="new_phones">New Phones:</string>
     <string name="upgrade_phones">Upgrade Phones:</string>
@@ -12,6 +12,7 @@
     <string name="sales_bucket">Sales Bucket:</string>
     <string name="paycheck_at_risk">Commission Paycheck At Risk:</string>
     <string name="view_details">View Details</string>
+    <string name="contact_email">Nick@Wendler.Tech</string>
 
     <string-array name="months">
         <item>January</item>

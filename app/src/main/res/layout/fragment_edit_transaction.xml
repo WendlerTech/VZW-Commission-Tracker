@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,16 +18,14 @@
             android:id="@+id/btnEditTransAddDetails"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="2dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:text="Add Details"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/lblEditTransLayoutHelper"
             app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
 
         <TextView
@@ -251,7 +249,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:text="Total toward bucket this transaction:"
             android:textAlignment="center"
@@ -302,7 +300,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:text="$0.00"
             android:textAlignment="center"
@@ -337,18 +335,28 @@
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="2dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:text="Cancel"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnEditTransAddDetails" />
+            app:layout_constraintStart_toEndOf="@+id/lblEditTransLayoutHelper"
+            app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
 
-    </android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/lblEditTransLayoutHelper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="invisible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

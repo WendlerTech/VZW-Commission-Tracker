@@ -104,7 +104,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/X:/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/notification/ic_event_note_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/X:/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -115,7 +115,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_event_note_black_24dp" />
+                            <entry key="outputName" value="ic_search" />
                             <entry key="sourceFile" value="C:\Users\Nick" />
                           </map>
                         </option>

@@ -1,11 +1,11 @@
 package tech.wendler.commission_tracker;
 
 import android.app.DatePickerDialog;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,11 +97,10 @@ public class DailyTotals extends Fragment {
         txtDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Displays calendar dialog box
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                //Displays calendar dialog box, starts on previously selected date
+                int year = selectedDate.get(Calendar.YEAR);
+                int month = selectedDate.get(Calendar.MONTH);
+                int day = selectedDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(getActivity(),
                         R.style.DialogTheme,

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -283,7 +283,7 @@
             android:id="@+id/lblQuotaNewPhones"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
             android:text="0"
             android:textAlignment="textEnd"
@@ -362,7 +362,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="0"
             android:textAppearance="@android:style/TextAppearance.Material.Large"
             android:textColor="@color/colorPrimary"
@@ -434,7 +434,7 @@
             android:id="@+id/btnEditQuota"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
@@ -461,7 +461,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="Current"
             android:textSize="18sp"
             app:autoSizeMaxTextSize="100sp"
@@ -475,7 +475,7 @@
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
             android:text="Quota"
             android:textAlignment="textEnd"
@@ -597,7 +597,7 @@
             android:layout_width="0dp"
             android:layout_height="37dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
             android:paddingEnd="20dp"
             android:textAlignment="textStart"
@@ -701,12 +701,14 @@
             android:id="@+id/lblConstraintHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="I"
             android:textAlignment="center"
             android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="367dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

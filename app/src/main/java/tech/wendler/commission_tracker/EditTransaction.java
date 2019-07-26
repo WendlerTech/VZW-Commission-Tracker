@@ -549,7 +549,7 @@ public class EditTransaction extends Fragment {
     }
 
     //Changes label to reflect updated bucket dollars earned
-    public void updateBucketTotalLabel() {
+    private void updateBucketTotalLabel() {
         totalBucketAchieved = tabletBucketAmt + connectedBucketAmt + humBucketAmt
                 + singleTMPBucketAmt + multiTMPBucketAmt + revBucketAmt;
 

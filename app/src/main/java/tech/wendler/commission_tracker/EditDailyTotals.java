@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class EditDailyTotals extends Fragment {
 
@@ -63,13 +64,14 @@ public class EditDailyTotals extends Fragment {
         int newPhones, upgPhones, tablets, connected, hum, singleTMP, transactionID;
         double revenue;
         boolean newMultiTMP;
+        String transactionDate;
 
         transactionList = new ArrayList<>();
         String selectedDateString = formatDateForQueryString(calendar);
 
         String queryString = "SELECT transID AS colTransID, new_phones AS colNewPhones, " +
                 "upgrade_phones AS colUpgPhones, tablets_etc AS colTablets, hum AS colHum, " +
-                "connected_devices_etc AS colCD, new_tmp AS colTMP, " +
+                "connected_devices_etc AS colCD, new_tmp AS colTMP, " + "date AS colDate, " +
                 "new_multi_tmp AS colMultiTMP, revenue AS colRev, sales_bucket AS colSalesBucket " +
                 "FROM Transactions WHERE date LIKE '" + selectedDateString + "';";
 
@@ -85,10 +87,12 @@ public class EditDailyTotals extends Fragment {
                 revenue = cursor.getDouble(cursor.getColumnIndex("colRev"));
                 //There is no "getBoolean" function, the boolean column only includes a 0 or 1.
                 newMultiTMP = cursor.getInt(cursor.getColumnIndex("colMultiTMP")) == 1;
+                transactionDate = cursor.getString(cursor.getColumnIndex("colDate"));
 
                 Transaction newTransaction = new Transaction(transactionID, newPhones, upgPhones,
                         tablets, connected, hum, singleTMP, revenue, newMultiTMP);
 
+                newTransaction.setTransactionDate(transactionDate);
                 transactionList.add(newTransaction);
             }
         }
@@ -97,30 +101,32 @@ public class EditDailyTotals extends Fragment {
     }
 
     //Opens recycler view
-    public void initRecyclerView() {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), transactionList, calendar, fragmentTransaction);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    private void initRecyclerView() {
+        if (getFragmentManager() != null) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), transactionList, calendar, fragmentTransaction);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (adapter.getItemCount() == 0) {
-            //Displays toast message if recycler view is empty
-            Toast.makeText(getContext(), "There are no transactions to view." +
-                    "\nPlease click a tab below to return.", Toast.LENGTH_LONG).show();
+            if (adapter.getItemCount() == 0) {
+                //Displays toast message if recycler view is empty
+                Toast.makeText(getContext(), "There are no transactions to view." +
+                        "\nPlease click a tab below to return.", Toast.LENGTH_LONG).show();
 
-        } else {
-            Toast toast = Toast.makeText(getContext(), "Click to view/edit, " +
-                    "long press to delete.", Toast.LENGTH_SHORT);
-            toast.show();
+            } else {
+                Toast toast = Toast.makeText(getContext(), "Click to view/edit, " +
+                        "long press to delete.", Toast.LENGTH_SHORT);
+                toast.show();
 
+            }
         }
     }
 
     //Formats user selected date into "2018-11-23%" - this effectively returns all entries
     //from a single day, regardless of timestamp.
     private String formatDateForQueryString(Calendar date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return simpleDateFormat.format(date.getTime()) + "%";
     }
 }

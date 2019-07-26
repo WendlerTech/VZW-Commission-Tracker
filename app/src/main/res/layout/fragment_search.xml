@@ -23,7 +23,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView36" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/lblSearchLayoutHelper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/lblSearchTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -55,11 +55,11 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPersonName|textCapWords"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@+id/lblSearchInstructions" />
 
         <TextView
             android:id="@+id/textView15"
@@ -71,17 +71,17 @@
             app:layout_constraintTop_toBottomOf="@+id/txtSearchCustName" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/lblSearchInstructions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:text="Find transactions containing any information entered below. All fields optional."
+            android:layout_marginEnd="24dp"
+            android:text="@string/search_transactions_msg"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            app:layout_constraintTop_toBottomOf="@+id/lblSearchTitle" />
 
         <EditText
             android:id="@+id/txtSearchPhoneNum"
@@ -89,11 +89,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="4dp"
             android:ems="10"
             android:hint="(123) 456-7890"
             android:inputType="phone"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/lblSearchLayoutHelper"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -110,14 +110,13 @@
             android:id="@+id/txtSearchOrderNum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
             android:layout_marginEnd="32dp"
             android:ems="10"
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView32" />
+            app:layout_constraintStart_toEndOf="@+id/lblSearchLayoutHelper"
+            app:layout_constraintTop_toTopOf="@+id/txtSearchPhoneNum" />
 
         <TextView
             android:id="@+id/textView34"
@@ -133,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="41dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif"
             android:text="Search Transactions"
@@ -149,13 +148,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
             android:text="Rep Assisted Online"
             android:textAlignment="textStart"
             app:layout_constraintEnd_toStartOf="@+id/chkSearchDfill"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+            app:layout_constraintTop_toBottomOf="@+id/textView32" />
 
         <CheckBox
             android:id="@+id/chkSearchDfill"
@@ -166,7 +165,7 @@
             android:text="D-fill Orders"
             android:textAlignment="textStart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintStart_toEndOf="@+id/lblSearchLayoutHelper"
             app:layout_constraintTop_toTopOf="@+id/chkSearchRepAssisted" />
 
         <CheckBox
@@ -190,7 +189,7 @@
             android:text="Pre-Orders"
             android:textAlignment="textStart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintStart_toEndOf="@+id/lblSearchLayoutHelper"
             app:layout_constraintTop_toTopOf="@+id/chkSearchIspu" />
 
         <TextView

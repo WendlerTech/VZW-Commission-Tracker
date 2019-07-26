@@ -21,6 +21,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class NewTransaction extends Fragment {
@@ -400,21 +401,21 @@ public class NewTransaction extends Fragment {
     }
 
     //Changes label to reflect updated bucket dollars earned
-    public void updateBucketTotalLabel() {
+    private void updateBucketTotalLabel() {
         totalBucketAchieved = tabletBucketAmt + connectedBucketAmt + humBucketAmt
                 + singleTMPBucketAmt + multiTMPBucketAmt + revBucketAmt;
 
         lblBucketTotal.setText(format.format(totalBucketAchieved));
     }
 
-    public String currentTime() {
+    private String currentTime() {
         //Gets current date & returns it as a string to be inserted into the database
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
         return simpleDateFormat.format(calendar.getTime());
     }
 
-    public void clearFields() {
+    private void clearFields() {
         totalNewPhones = 0;
         totalUpgPhones = 0;
         totalTablets = 0;

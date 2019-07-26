@@ -23,20 +23,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class SearchedRecyclerViewAdapter extends RecyclerView.Adapter<SearchedRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<Transaction> listOfTransactions;
     private Context mContext;
-    private Calendar date;
-    private Fragment editTransaction = null, dailyTotals = null;
+    private Fragment editTransaction = null;
     private FragmentTransaction fragmentTransaction;
     private DatabaseHelper databaseHelper;
 
-    RecyclerViewAdapter(Context mContext, ArrayList<Transaction> listOfTransactions,
-                        Calendar selectedDate, FragmentTransaction fragmentTransaction) {
+    SearchedRecyclerViewAdapter(Context mContext, ArrayList<Transaction> listOfTransactions,
+                        FragmentTransaction fragmentTransaction) {
         this.listOfTransactions = listOfTransactions;
         this.mContext = mContext;
-        this.date = selectedDate;
         this.fragmentTransaction = fragmentTransaction;
     }
 
@@ -67,9 +65,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Transaction selectedTransaction = listOfTransactions.get(position);
+                Calendar selectedTransactionDate = getDateFromString(listOfTransactions.get(position).getTransactionDate());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("selectedTransaction", selectedTransaction);
-                bundle.putLong("selectedDate", date.getTimeInMillis());
+                bundle.putLong("selectedDate", selectedTransactionDate.getTimeInMillis());
                 editTransaction = EditTransaction.newInstance();
                 editTransaction.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, editTransaction);
@@ -95,11 +94,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             notifyItemRemoved(position);
                             notifyItemRangeChanged(position, listOfTransactions.size());
                         } else {
-                            Bundle bundle = new Bundle();
-                            bundle.putLong("selectedDate", date.getTimeInMillis());
-                            dailyTotals = DailyTotals.newInstance();
-                            dailyTotals.setArguments(bundle);
-                            fragmentTransaction.replace(R.id.fragment_container, dailyTotals);
+                            Fragment searchFragment = SearchTransactions.newInstance();
+                            fragmentTransaction.replace(R.id.fragment_container, searchFragment);
                             fragmentTransaction.commit();
                         }
                     }

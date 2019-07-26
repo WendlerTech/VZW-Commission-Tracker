@@ -16,6 +16,7 @@ public class Transaction implements Serializable {
     private int transactionID;
     private double totalRev;
     private boolean newMultiTMP;
+    private String transactionDate;
 
     Transaction() {
 
@@ -119,5 +120,13 @@ public class Transaction implements Serializable {
 
     public void setNewMultiTMP(boolean newMultiTMP) {
         this.newMultiTMP = newMultiTMP;
+    }
+
+    public String getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(String transactionDate) {
+        this.transactionDate = transactionDate;
     }
 }

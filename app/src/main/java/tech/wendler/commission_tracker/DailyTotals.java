@@ -161,14 +161,14 @@ public class DailyTotals extends Fragment {
 
     //Takes in calendar instance & returns a string formatted as such: Mon, November 23, '15
     private String formatDate(Calendar date) {
-        SimpleDateFormat format = new SimpleDateFormat("EEE, MMMM dd, ''yy");
+        SimpleDateFormat format = new SimpleDateFormat("EEE, MMMM dd, ''yy", Locale.US);
         return format.format(date.getTime());
     }
 
     //Formats user selected date into "2018-11-23%" - this effectively returns all entries
     //from a single day, regardless of timestamp.
     private String formatDateForQueryString(Calendar date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return simpleDateFormat.format(date.getTime()) + "%";
     }
 

@@ -163,6 +163,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(queryString, null);
     }
 
+    Cursor searchWithParameters(String queryString, String[] searchTerms) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery(queryString, searchTerms);
+    }
+
     void updateTransaction(Transaction editedTrans, TransactionInfo editedTransInfo) {
         SQLiteDatabase db = this.getReadableDatabase();
 

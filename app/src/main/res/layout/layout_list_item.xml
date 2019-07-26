@@ -18,15 +18,16 @@
             android:id="@+id/lblMonthHeader"
             android:layout_width="0dp"
             android:layout_height="25dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
             android:text="APR"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textAppearance="@android:style/TextAppearance.Material.Medium"
             app:autoSizeMaxTextSize="100sp"
             app:autoSizeMinTextSize="15sp"
             app:autoSizeStepGranularity="1px"
             app:autoSizeTextType="uniform"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView37"
+            app:layout_constraintStart_toStartOf="@+id/textView16"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -41,7 +42,7 @@
             app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="1px"
             app:autoSizeTextType="uniform"
-            app:layout_constraintStart_toEndOf="@+id/lblMonthHeader"
+            app:layout_constraintStart_toEndOf="@+id/lblDayNumHeader"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -56,7 +57,7 @@
             app:autoSizeMinTextSize="12sp"
             app:autoSizeStepGranularity="1px"
             app:autoSizeTextType="uniform"
-            app:layout_constraintStart_toEndOf="@+id/lblMonthHeader"
+            app:layout_constraintStart_toEndOf="@+id/lblDayNumHeader"
             app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
         <TextView
@@ -99,9 +100,8 @@
             android:id="@+id/lblDayNumHeader"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginStart="16dp"
             android:text="20"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textAppearance="@android:style/TextAppearance.Material.Display1"
             android:textColor="@color/colorPrimary"
             app:autoSizeMaxTextSize="112sp"
@@ -109,7 +109,28 @@
             app:autoSizeStepGranularity="1px"
             app:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="@+id/lblMonthHeader"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/lblMonthHeader"
             app:layout_constraintTop_toBottomOf="@+id/lblMonthHeader" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView37"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="19dp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

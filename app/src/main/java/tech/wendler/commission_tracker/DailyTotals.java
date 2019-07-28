@@ -208,7 +208,7 @@ public class DailyTotals extends Fragment {
                 newTMPTotal = cursor.getFloat(cursor.getColumnIndex("ColNewTMP"));
                 revenueTotal = cursor.getFloat(cursor.getColumnIndex("ColRevenue"));
                 salesBucketTotal = cursor.getFloat(cursor.getColumnIndex("ColSalesBucket")) +
-                        cursor.getFloat(cursor.getColumnIndex("ColExtraSalesDollars"));
+                cursor.getFloat(cursor.getColumnIndex("ColExtraSalesDollars"));
             }
         } finally {
             cursor.close();

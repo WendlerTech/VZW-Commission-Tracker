@@ -21,6 +21,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AddPriorTransaction extends Fragment {
@@ -446,12 +447,12 @@ public class AddPriorTransaction extends Fragment {
     }
 
     public void updateTitleLabel(Calendar calendar) {
-        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy");
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy", Locale.US);
         lblHeaderTitle.setText("New Transaction For " + format.format(calendar.getTime()));
     }
 
     private String formatDateForQueryString(Calendar date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return simpleDateFormat.format(date.getTime());
     }
 

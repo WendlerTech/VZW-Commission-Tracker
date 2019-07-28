@@ -42,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String QUOTA_COL7 = "upgrade_phone_chargeback";
 
     DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 4);
+        super(context, DATABASE_NAME, null, 6);
     }
 
     @Override
@@ -86,25 +86,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        switch (oldVersion) {
-            case 1:
-                //Adds column to quota table for paycheck estimation
-                db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN paycheck_target DOUBLE");
-                break;
-            case 2:
-                db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN new_phone_chargeback INTEGER");
-                db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN upgrade_phone_chargeback INTEGER");
-                break;
-            case 4:
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL11 + " TEXT");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL12 + " TEXT");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL13 + " TEXT");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL14 + " INTEGER");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL15 + " BOOLEAN");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL16 + " BOOLEAN");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL17 + " BOOLEAN");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL18 + " BOOLEAN");
-                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COL19 + " DOUBLE");
+        if (oldVersion < 2) {
+            //Adds column to quota table for paycheck estimation
+            db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN paycheck_target DOUBLE");
+        }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN new_phone_chargeback INTEGER");
+            db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN upgrade_phone_chargeback INTEGER");
+        }
+        if (oldVersion < 6) {
+            //Transaction ensures no data is lost during migration
+            db.beginTransaction();
+            try {
+                //Creates new "temp table" that matches the current schema
+                db.execSQL("CREATE TABLE new_" + TABLE_NAME + " (" +
+                        COL0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COL1 + " DATETIME, " +
+                        COL2 + " INTEGER, " +
+                        COL3 + " INTEGER, " +
+                        COL4 + " INTEGER, " +
+                        COL5 + " INTEGER, " +
+                        COL6 + " INTEGER, " +
+                        COL7 + " INTEGER, " +
+                        COL8 + " BOOLEAN, " +
+                        COL9 + " DOUBLE, " +
+                        COL10 + " DOUBLE, " +
+                        COL11 + " TEXT, " +
+                        COL12 + " TEXT, " +
+                        COL13 + " TEXT, " +
+                        COL14 + " INTEGER, " +
+                        COL15 + " BOOLEAN, " +
+                        COL16 + " BOOLEAN, " +
+                        COL17 + " BOOLEAN, " +
+                        COL18 + " BOOLEAN, " +
+                        COL19 + " DOUBLE);");
+
+                //Copies old table data into temp table (excluding more info columns)
+                db.execSQL("INSERT INTO new_" + TABLE_NAME + " (" + COL0 + ", " + COL1 + ", " +
+                        COL2 + ", " + COL3 + ", " + COL4 + ", " + COL5 + ", " + COL6 + ", " +
+                        COL7 + ", " + COL8 + ", " + COL9 + ") " + "SELECT " + COL0 + ", " +
+                        COL1 + ", " + COL2 + ", " + COL3 + ", " + COL4 + ", " + COL5 +
+                        ", " + COL6 + ", " + COL7 + ", " + COL8 + ", " + COL9 +
+                        " FROM " + TABLE_NAME + ";");
+
+                //Drops main table
+                db.execSQL("DROP TABLE " + TABLE_NAME + ";");
+
+                //Renames temp table to main table, thereby cloning original table minus more info.
+                //Any users having issues with version 5 should see problems fixed.
+                db.execSQL("ALTER TABLE new_" + TABLE_NAME + " RENAME TO " + TABLE_NAME + ";");
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
         }
     }
 

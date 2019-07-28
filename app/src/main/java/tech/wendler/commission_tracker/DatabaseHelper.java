@@ -42,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final static String QUOTA_COL7 = "upgrade_phone_chargeback";
 
     DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 6);
+        super(context, DATABASE_NAME, null, 7);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN new_phone_chargeback INTEGER");
             db.execSQL("ALTER TABLE " + QUOTA_TABLE_NAME + " ADD COLUMN upgrade_phone_chargeback INTEGER");
         }
-        if (oldVersion < 6) {
+        if (oldVersion < 7) {
             //Transaction ensures no data is lost during migration
             db.beginTransaction();
             try {
@@ -124,10 +124,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 //Copies old table data into temp table (excluding more info columns)
                 db.execSQL("INSERT INTO new_" + TABLE_NAME + " (" + COL0 + ", " + COL1 + ", " +
                         COL2 + ", " + COL3 + ", " + COL4 + ", " + COL5 + ", " + COL6 + ", " +
-                        COL7 + ", " + COL8 + ", " + COL9 + ") " + "SELECT " + COL0 + ", " +
-                        COL1 + ", " + COL2 + ", " + COL3 + ", " + COL4 + ", " + COL5 +
-                        ", " + COL6 + ", " + COL7 + ", " + COL8 + ", " + COL9 +
-                        " FROM " + TABLE_NAME + ";");
+                        COL7 + ", " + COL8 + ", " + COL9 + ", " + COL10 + ") " +
+                        "SELECT " + COL0 + ", " + COL1 + ", " + COL2 + ", " + COL3 +
+                        ", " + COL4 + ", " + COL5 + ", " + COL6 + ", " + COL7 +
+                        ", " + COL8 + ", " + COL9 + ", " + COL10 + " FROM " + TABLE_NAME + ";");
 
                 //Drops main table
                 db.execSQL("DROP TABLE " + TABLE_NAME + ";");

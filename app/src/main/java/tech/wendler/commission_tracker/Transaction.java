@@ -14,7 +14,7 @@ public class Transaction implements Serializable {
     private int totalNewPhones, totalUpgPhones, totalTablets, totalConnected,
             totalHum, totalTMP;
     private int transactionID;
-    private double totalRev;
+    private double totalRev, totalSalesDollars;
     private boolean newMultiTMP;
     private String transactionDate;
 
@@ -36,14 +36,22 @@ public class Transaction implements Serializable {
     }
 
     double getTotalSalesDollars() {
-        double totalSalesDollars = (totalTablets * TABLET_ASSUMED_VALUE) +
+        return totalSalesDollars;
+    }
+
+    public void setTotalSalesDollars(double totalSalesDollars) {
+        this.totalSalesDollars = totalSalesDollars;
+    }
+
+    double calculateTotalSalesDollars() {
+        double calculatedSalesDollars = (totalTablets * TABLET_ASSUMED_VALUE) +
                 (totalConnected * CONNECTED_ASSUMED_VALUE) + (totalHum * HUM_ASSUMED_VALUE) +
                 (totalTMP * SINGLE_TMP_ASSUMED_VALUE) + (totalRev * REVENUE_ASSUMED_VALUE);
         if (newMultiTMP) {
-            totalSalesDollars += MULTI_TMP_ASSUMED_VALUE;
+            calculatedSalesDollars += MULTI_TMP_ASSUMED_VALUE;
         }
 
-        return totalSalesDollars;
+        return calculatedSalesDollars;
     }
 
     int getTotalDevices() {

@@ -117,6 +117,7 @@ public class NewTransaction extends Fragment {
                 currentTransaction.setTotalTMP(totalTMP);
                 currentTransaction.setTotalRev(totalRev);
                 currentTransaction.setNewMultiTMP(newMultiTMP);
+                currentTransaction.setTotalSalesDollars(currentTransaction.calculateTotalSalesDollars());
                 Bundle currentTransBundle = new Bundle();
                 currentTransBundle.putSerializable("currentTransaction", currentTransaction);
 
@@ -385,6 +386,7 @@ public class NewTransaction extends Fragment {
                 inProgressTransaction.setTotalTMP(totalTMP);
                 inProgressTransaction.setNewMultiTMP(newMultiTMP);
                 inProgressTransaction.setTotalRev(totalRev);
+                inProgressTransaction.setTotalSalesDollars(inProgressTransaction.calculateTotalSalesDollars());
 
                 if (databaseHelper.addTransactionData(currentTime(), inProgressTransaction,
                         inProgressTransactionInfo)) {

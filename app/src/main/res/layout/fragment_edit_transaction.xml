@@ -16,7 +16,7 @@
 
         <Button
             android:id="@+id/btnEditTransAddDetails"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="37dp"
             android:layout_marginEnd="2dp"
             android:paddingTop="4dp"
@@ -26,6 +26,7 @@
             android:textColor="@android:color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/lblEditTransLayoutHelper"
+            app:layout_constraintStart_toStartOf="@+id/leftGuideline"
             app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
 
         <TextView
@@ -47,9 +48,9 @@
             android:id="@+id/txtEditHum"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="12dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
             android:ems="10"
             android:hint="0"
             android:importantForAutofill="no"
@@ -63,9 +64,9 @@
             android:id="@+id/txtEditTablets"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="33dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="33dp"
             android:ems="10"
             android:hint="0"
             android:importantForAutofill="no"
@@ -78,9 +79,9 @@
             android:id="@+id/txtEditNewPhones"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="12dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
             android:ems="10"
             android:hint="0"
             android:importantForAutofill="no"
@@ -94,9 +95,9 @@
             android:id="@+id/txtEditUpgPhones"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="33dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="33dp"
             android:ems="10"
             android:hint="0"
             android:importantForAutofill="no"
@@ -175,9 +176,9 @@
             android:id="@+id/txtConnectedDev"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="33dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="33dp"
             android:ems="10"
             android:hint="0"
             android:importantForAutofill="no"
@@ -222,7 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="19dp"
             android:layout_marginEnd="4dp"
-            android:text="Multi-Device TMP"
+            android:text="Multi-Device VZP"
             android:textColor="#616A6B"
             app:layout_constraintBottom_toBottomOf="@+id/txtEditTMP"
             app:layout_constraintEnd_toEndOf="parent"
@@ -232,9 +233,9 @@
             android:id="@+id/txtRevenue"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginEnd="33dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="33dp"
             android:ems="10"
             android:hint="0.00"
             android:imeOptions="actionDone"
@@ -268,7 +269,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="New TMP"
+            android:text="New VZ Protect"
             android:textColor="#616A6B"
             app:autoSizeMaxTextSize="100sp"
             app:autoSizeMinTextSize="14sp"
@@ -333,15 +334,18 @@
 
         <Button
             android:id="@+id/btnCancel"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="37dp"
             android:layout_marginStart="2dp"
+            android:minWidth="95dip"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:text="Cancel"
+            android:textAlignment="center"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             android:textColor="@android:color/black"
             android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
             app:layout_constraintStart_toEndOf="@+id/lblEditTransLayoutHelper"
             app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
 
@@ -357,6 +361,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="invisible" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.20194647" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

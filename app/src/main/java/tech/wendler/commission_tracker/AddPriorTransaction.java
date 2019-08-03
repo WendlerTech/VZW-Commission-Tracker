@@ -362,6 +362,7 @@ public class AddPriorTransaction extends Fragment {
                 inProgressTransaction.setTotalTMP(totalTMP);
                 inProgressTransaction.setNewMultiTMP(newMultiTMP);
                 inProgressTransaction.setTotalRev(totalRev);
+                inProgressTransaction.setTotalSalesDollars(inProgressTransaction.calculateTotalSalesDollars());
 
                 if (databaseHelper.addTransactionData(formatDateForQueryString(selectedDate), inProgressTransaction,
                         inProgressTransactionInfo)) {
@@ -399,6 +400,7 @@ public class AddPriorTransaction extends Fragment {
                 currentTransaction.setTotalTMP(totalTMP);
                 currentTransaction.setTotalRev(totalRev);
                 currentTransaction.setNewMultiTMP(newMultiTMP);
+                currentTransaction.setTotalSalesDollars(currentTransaction.calculateTotalSalesDollars());
                 Bundle currentTransBundle = new Bundle();
                 currentTransBundle.putSerializable("currentTransaction", currentTransaction);
                 currentTransBundle.putLong("selectedDate", selectedDate.getTimeInMillis());
@@ -439,14 +441,14 @@ public class AddPriorTransaction extends Fragment {
     }
 
     //Changes label to reflect updated bucket dollars earned
-    public void updateBucketTotalLabel() {
+    private void updateBucketTotalLabel() {
         totalBucketAchieved = tabletBucketAmt + connectedBucketAmt + humBucketAmt
                 + singleTMPBucketAmt + multiTMPBucketAmt + revBucketAmt;
 
         lblBucketTotal.setText(format.format(totalBucketAchieved));
     }
 
-    public void updateTitleLabel(Calendar calendar) {
+    private void updateTitleLabel(Calendar calendar) {
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy", Locale.US);
         lblHeaderTitle.setText("New Transaction For " + format.format(calendar.getTime()));
     }

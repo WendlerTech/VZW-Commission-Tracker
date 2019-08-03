@@ -62,7 +62,7 @@ public class EditDailyTotals extends Fragment {
 
     private ArrayList<Transaction> populateTransactionList() {
         int newPhones, upgPhones, tablets, connected, hum, singleTMP, transactionID;
-        double revenue;
+        double revenue, totalSalesBucket;
         boolean newMultiTMP;
         String transactionDate;
 
@@ -88,9 +88,11 @@ public class EditDailyTotals extends Fragment {
                 //There is no "getBoolean" function, the boolean column only includes a 0 or 1.
                 newMultiTMP = cursor.getInt(cursor.getColumnIndex("colMultiTMP")) == 1;
                 transactionDate = cursor.getString(cursor.getColumnIndex("colDate"));
+                totalSalesBucket = cursor.getDouble(cursor.getColumnIndex("colSalesBucket"));
 
                 Transaction newTransaction = new Transaction(transactionID, newPhones, upgPhones,
                         tablets, connected, hum, singleTMP, revenue, newMultiTMP);
+                newTransaction.setTotalSalesDollars(totalSalesBucket);
 
                 newTransaction.setTransactionDate(transactionDate);
                 transactionList.add(newTransaction);

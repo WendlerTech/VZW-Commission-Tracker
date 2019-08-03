@@ -66,7 +66,7 @@ public class SearchedTransactions extends Fragment {
 
             try (Cursor cursor = databaseHelper.searchWithParameters(queryString, searchArguments)) {
                 int newPhones, upgPhones, tablets, connected, hum, singleTMP, transactionID;
-                double revenue;
+                double revenue, totalSalesBucket;
                 boolean newMultiTMP;
                 String transactionDate;
 
@@ -82,10 +82,12 @@ public class SearchedTransactions extends Fragment {
                     //There is no "getBoolean" function, the boolean column only includes a 0 or 1.
                     newMultiTMP = cursor.getInt(cursor.getColumnIndex("new_multi_tmp")) == 1;
                     transactionDate = cursor.getString(cursor.getColumnIndex("date"));
+                    totalSalesBucket = cursor.getDouble(cursor.getColumnIndex("sales_bucket"));
 
                     Transaction searchedTransaction = new Transaction(transactionID, newPhones, upgPhones,
                             tablets, connected, hum, singleTMP, revenue, newMultiTMP);
                     searchedTransaction.setTransactionDate(transactionDate);
+                    searchedTransaction.setTotalSalesDollars(totalSalesBucket);
 
                     searchedTransactionList.add(searchedTransaction);
                 }

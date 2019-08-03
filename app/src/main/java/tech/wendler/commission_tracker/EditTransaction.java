@@ -379,6 +379,7 @@ public class EditTransaction extends Fragment {
                         Transaction editedTransaction = new Transaction(transaction.getTransactionID(),
                                 totalNewPhones, totalUpgPhones, totalTablets, totalConnected,
                                 totalHum, totalTMP, totalRev, newMultiTMP);
+                        editedTransaction.setTotalSalesDollars(editedTransaction.calculateTotalSalesDollars());
 
                         //Sends new object to be updated in DB
                         databaseHelper.updateTransaction(editedTransaction, transactionInfo);
@@ -423,6 +424,7 @@ public class EditTransaction extends Fragment {
                 transaction.setTotalTMP(totalTMP);
                 transaction.setTotalRev(totalRev);
                 transaction.setNewMultiTMP(newMultiTMP);
+                transaction.setTotalSalesDollars(totalBucketAchieved);
 
                 Bundle transactionBundle = new Bundle();
                 transactionBundle.putSerializable("currentTransaction", transaction);
@@ -509,7 +511,7 @@ public class EditTransaction extends Fragment {
             txtTMP.setEnabled(true);
         }
 
-        updateBucketTotalLabel();
+        lblBucketTotal.setText(format.format(totalBucketAchieved));
     }
 
     private void queryTransactionInfo() {
@@ -545,7 +547,6 @@ public class EditTransaction extends Fragment {
                 }
             }
         }
-
     }
 
     //Changes label to reflect updated bucket dollars earned

@@ -435,6 +435,11 @@ public class NewTransaction extends Fragment {
         txtRev.setText("");
         chkMultiTMP.setChecked(false);
         updateBucketTotalLabel();
+
+        //Clears transaction info if user comes back to new transaction page prior to submitting
+        inProgressTransaction = null;
+        inProgressTransactionInfo = null;
+        addDetailsBtn.setText(R.string.add_details);
     }
 
     private void populateInProgressTransactionData() {

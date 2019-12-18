@@ -175,7 +175,7 @@ public class MonthlyTotals extends Fragment {
         btnSelectYear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharSequence[] years = {"2018", "2019"};
+                CharSequence[] years = {"2018", "2019", "2020", "2021"};
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext(),
                         R.style.AlertDialogTheme);
 
@@ -183,8 +183,12 @@ public class MonthlyTotals extends Fragment {
                 int checkedItem;
                 if (selectedYear == 2018) {
                     checkedItem = 0;
-                } else {
+                } else if (selectedYear == 2019) {
                     checkedItem = 1;
+                } else if (selectedYear == 2020) {
+                    checkedItem = 2;
+                } else {
+                    checkedItem = 3;
                 }
 
                 dialog.setTitle("Year Selection");
@@ -203,6 +207,18 @@ public class MonthlyTotals extends Fragment {
                             case 1:
                                 selectedYear = 2019;
                                 btnSelectYear.setText("2019");
+                                populateData();
+                                calculatePaycheck();
+                                break;
+                            case 2:
+                                selectedYear = 2020;
+                                btnSelectYear.setText("2020");
+                                populateData();
+                                calculatePaycheck();
+                                break;
+                            case 3:
+                                selectedYear = 2021;
+                                btnSelectYear.setText("2021");
                                 populateData();
                                 calculatePaycheck();
                                 break;

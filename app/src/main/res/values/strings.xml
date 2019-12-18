@@ -12,6 +12,7 @@
     <string name="sales_bucket">Sales Bucket:</string>
     <string name="paycheck_at_risk">Commission Paycheck At Risk:</string>
     <string name="view_details">View Details</string>
+    <string name="add_details">Add Details</string>
     <string name="contact_email">Nick@Wendler.Tech</string>
     <string name="search_transactions_msg">Find transactions matching criteria entered below. Enter a specific transaction\'s information or search by transaction type.</string>
 

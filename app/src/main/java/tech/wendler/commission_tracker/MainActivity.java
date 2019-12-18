@@ -15,14 +15,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         databaseHelper.getReadableDatabase();
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -55,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_home);
 
         //Checks if it's users first time opening app
-        sp = getSharedPreferences("FirstTimeFile", Context.MODE_PRIVATE);
+        sp = getSharedPreferences("FirstTimeFilePostUpdate", Context.MODE_PRIVATE);
         boolean appIsOpenedForTheFirstTime = sp.getBoolean("IsAppOpenedForFirstTime", true);
 
         if (appIsOpenedForTheFirstTime) {
-            mFirebaseAnalytics.logEvent("App_Opened_First_Time", null);
+            mFirebaseAnalytics.logEvent("App_First_Time_After_Update", null);
             firstTimeUserDialog();
         }
     }
@@ -78,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(this, R.style.DialogTheme);
         builder.setTitle("Welcome to the app!")
-                .setMessage("Thanks for downloading. \n\nYou should know that " +
+                .setMessage("Thanks for updating. \n\nYou should know that " +
                         "the app is in NO way officially endorsed by or affiliated with Verizon." +
-                        "\n\nSince you add your own numbers, accuracy can't be guaranteed." +
+                        "\n\nDo not enter any CPNI if you can't guarantee the protection & encryption of your device." +
                         "\n\nIf you have questions, comments, or concerns, please email me at: " +
                         "\nNick@Wendler.tech")
                 .setPositiveButton("I understand", new DialogInterface.OnClickListener() {
